@@ -1,0 +1,19 @@
+{
+  "name": "voxcss",
+  "description": "Material Design framework",
+  "version": "0.0.1",
+  "license": "MIT",
+  "author": {
+    "name": "James Suárez",
+    "email": "xtreme.maicolxt94@gmail.com"
+  },
+  "maintainers": [
+    {
+      "name": "James",
+      "email": "xtreme.maicolxt94@gmail"
+    }
+  ],
+  "dependencies": {
+    "bluebird": "^3.3.4"
+  }
+}

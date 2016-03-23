@@ -1,0 +1,25 @@
+@import "vars.less";
+@import "base.less";
+.pagination{
+    list-style:none;
+    padding:0;
+    
+    li{
+        display: inline-block;
+        vertical-align:middle;
+        border-radius: 2px;
+        
+        &[disabled]{
+            color:@gray;
+        }
+        >a{
+            padding: 0.3em 10px;
+            font-size: 1.15em;
+            text-align: center;
+            display:block;
+            &[disabled]{
+                color:@gray;   
+            }
+        }
+    }
+}

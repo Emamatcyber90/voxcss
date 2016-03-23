@@ -1,0 +1,222 @@
+@font-face {
+    font-family: "Roboto";
+    src: url("../font/Roboto-Thin.woff2") format("woff2"),
+        url("../font/Roboto-Thin.woff") format("woff"),
+        url("../font/Roboto-Thin.ttf") format("truetype");
+    font-weight: 200;
+}
+@font-face {
+    font-family: "Roboto";
+    src: url("../font/Roboto-Light.woff2") format("woff2"),
+        url("../font/Roboto-Light.woff") format("woff"),
+        url("../font/Roboto-Light.ttf") format("truetype");
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: url("../font/Roboto-Regular.woff2") format("woff2"),
+        url("../font/Roboto-Regular.woff") format("woff"),
+        url("../font/Roboto-Regular.ttf") format("truetype");
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: url("../font/Roboto-Medium.woff2") format("woff2"),
+        url("../font/Roboto-Medium.woff") format("woff"),
+        url("../font/Roboto-Medium.ttf") format("truetype");
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: url("../font/Roboto-Bold.woff2") format("woff2"),
+        url("../font/Roboto-Bold.woff") format("woff"),
+        url("../font/Roboto-Bold.ttf") format("truetype");
+    font-weight: 700;
+}
+
+
+.flow-text{
+    font-size:0.9em;
+}
+
+
+h1,h2,h3,h4,h5,h6{
+    font-weight:300;
+    line-height:initial;
+}
+
+h1{
+    font-size:2.1em;
+    margin:0.5em 0;
+}
+
+h2{
+    font-size:1.8em;
+    margin:0.4em 0;
+}
+h3{
+    font-size:1.4em;
+    margin:0.3em 0;
+}
+h4{
+    font-size:1.1em;
+    margin:0.25em 0;
+}
+h5{
+    font-size:0.9em;
+    margin:0.2em 0;
+}
+h6{
+    font-size:0.7em;
+    margin:0.2em 0;
+}
+
+@media(min-width:@s){
+    
+    .flow-text{
+        font-size:0.92em;
+    }
+    /*
+    h1{
+        font-size:2.7em;
+    }
+    h2{
+        font-size:2.3em;
+    }
+    h3{
+        font-size:2.1em;
+    }
+    h4{
+        font-size:1.9em;
+    }
+    h5{
+        font-size:1.5em;
+    }
+    h6{
+        font-size:0.85em;
+    }
+    */
+}
+
+@media(min-width:@sl){
+    
+    .flow-text{
+        font-size:0.95em;
+    }
+    /*
+    h1{
+        font-size:2.8em;
+    }
+    h2{
+        font-size:2.4em;
+    }
+    h3{
+        font-size:2.2em;
+    }
+    h4{
+        font-size:2em;
+    }
+    h5{
+        font-size:1.55em;
+    }
+    h6{
+        font-size:0.9em;
+    }
+    */
+
+}
+
+@media(min-width:@m){
+    
+    .flow-text{
+        font-size:1em;
+    }
+    /*
+    h1{
+        font-size:2.9em;
+    }
+    h2{
+        font-size:2.45em;
+    }
+    h3{
+        font-size:2.25em;
+    }
+    h4{
+        font-size:2.05em;
+    }
+    h5{
+        font-size:1.6em;
+    }
+    h6{
+        font-size:1em;
+    }
+    */
+
+}
+
+
+@media(min-width:@ml){
+    .flow-text{
+        font-size:1.1em;
+    }
+    
+    /*
+    h1{
+        font-size:3em;
+    }
+    
+    h2{
+        font-size:2.5em;
+    }
+    h3{
+        font-size:2.3em;
+    }
+    h4{
+        font-size:2.1em;
+    }
+    h5{
+        font-size:1.65em;
+    }
+    h6{
+        font-size:1.1em;
+    }
+    */
+}
+
+
+@media(min-width:@l){
+    .flow-text{
+        font-size:1.14em;
+    }
+    /*
+    h1{
+        font-size:3.1em;
+    }
+    h2{
+        font-size:2.55em;
+    }
+    h3{
+        font-size:2.35em;
+    }
+    h4{
+        font-size:2.15em;
+    }
+    h5{
+        font-size:1.7em;
+    }
+    h6{
+        font-size:1.15em;
+    }
+    */
+}
+
+
+.truncate {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

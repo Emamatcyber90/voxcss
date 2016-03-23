@@ -1,0 +1,254 @@
+@import "base.less";
+@import "vars.less";
+
+.pull-left{
+    
+    float:left;
+}
+.pull-right{
+    float:right;
+}
+
+.relative{
+    position:relative;
+}
+
+.inline-block{
+    display:inline-block;
+}
+
+.flex{
+    display:flex;
+}
+
+.text-center{
+    text-align:center;
+}
+
+.text-left{
+    text-align:left;
+}
+
+.text-right{
+    text-align:right;
+}
+.text-justify{
+    text-align:justify;
+}
+
+
+
+/*
+.size-xl .xl-hide, .size-xl .l-hide, .size-xl .ml-hide, .size-xl .m-hide, .size-xl .sl-hide, .size-xl .s-hide, .size-xl .xl-hide-only{
+    display:none;
+}
+*/
+
+
+.clearfix{
+    &:after,&:before{
+        content:" ";
+        display:table;
+        clear:both;
+    }
+}
+
+
+
+.valign-wrapper{
+    .boxdisplay();
+    .flexdisplay();
+    
+    .aligncenter();
+}
+
+.valign{
+    vertical-align:middle;
+    display:block;
+}
+
+.hoverable:hover{
+    transition:box-shadow .2s;
+    box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
+
+.small{
+    font-size:70%;
+}
+
+.large{
+    font-size:120%;
+}
+
+.verylarge{
+    font-size:150%;
+}
+
+.f0-5em{
+    font-size:0.5em;
+}
+.f1em{
+    font-size:1em;
+}
+.f1-5em{
+    font-size:1.5em;
+}
+.f2em{
+    font-size:2em;
+}
+.f2-5em{
+    font-size:2.5em;
+}
+.f3em{
+    font-size:3em;
+}
+.f3-5em{
+    font-size:3.5em;
+}
+.f4em{
+    font-size:4em;
+}
+.f4-5em{
+    font-size:4.5em;
+}
+
+
+
+.flow-height{
+    height:80%;
+    position:absolute;
+}
+
+
+@media all{
+        
+    /* CONTENIDOS OCULTOS DE ACUERDO AL DISPOSITIVO */
+    .hide{
+        display:none ;
+    }
+    
+    .size-sl .s-show-lt
+    {
+        display:none ;
+    }
+    
+    .size-m .s-show-lt,
+    .size-m .sl-show-lt
+    {
+        display:none ;
+    }
+    
+    .size-ml .s-show-lt,
+    .size-ml .sl-show-lt,
+    .size-ml .m-show-lt
+    {
+        display:none ;
+    }
+    
+    .size-l .s-show-lt,
+    .size-l .sl-show-lt,
+    .size-l .m-show-lt,
+    .size-l .ml-show-lt
+    {
+        display:none ;
+    }
+    
+    
+    .size-s .sl-show,
+    .size-s .m-show,
+    .size-s .ml-show,
+    .size-s .l-show
+    {
+        display:none ;
+    }
+    
+    .size-sl .m-show,
+    .size-sl .ml-show,
+    .size-sl .l-show
+    {
+        display:none ;
+    }
+    
+    
+    .size-m .ml-show,
+    .size-m .l-show
+    {
+        display:none ;
+    }
+    
+    .size-ml .l-show
+    {
+        display:none ;
+    }
+    
+    
+    .size-s .s-hide,
+    .size-s .sl-hide,
+    .size-s .m-hide,
+    .size-s .ml-hide,
+    .size-s .l-hide,
+    .size-s .s-hide-only
+    {
+        display:none ;
+    }
+    
+    
+    
+    
+    .size-sl .sl-hide,
+    .size-sl .m-hide,
+    .size-sl .ml-hide,
+    .size-sl .l-hide,
+    .size-sl .sl-hide-only{
+        display:none ;
+    }
+    
+    .size-m .m-hide, 
+    .size-m .ml-hide,
+    .size-m .l-hide,
+    .size-m .m-hide-only{
+        display:none ;
+    }
+    
+    .size-ml .ml-hide,
+    .size-ml .l-hide,
+    .size-ml .ml-hide-only{
+        display:none ;
+    }
+    
+    .size-l .l-hide,
+    .size-l .l-hide-only{
+        display:none ;
+    }
+}
+
+@media(min-width:@sl){
+    .flow-height{
+        height:90%;
+    }
+    
+}
+
+
+@media(min-width:@m){
+    
+    .flow-height{
+        height:100%;
+    }
+
+}
+
+
+@media(min-width:@ml){
+    .flow-height{
+        height:110%;
+    }
+}
+
+
+@media(min-width:@l){
+    .flow-height{
+        height:120%;
+    }
+}
+

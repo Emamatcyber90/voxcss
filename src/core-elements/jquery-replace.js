@@ -1,0 +1,1 @@
+exports=module.exports=core.VW.Web.JQuery

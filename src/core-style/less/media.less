@@ -1,0 +1,32 @@
+
+
+.responsive-img{
+    max-width:100%;
+    height:auto;
+    &.fixed{
+        max-height:100%;
+    }
+}
+
+
+div.responsive-img{
+    background-position:center center;
+    width:100%;
+    background-size:cover !important;
+    &.top{
+        background-position-y:0%;
+    }
+    &.bottom{
+        background-position-y:100%;
+    }
+    &.left{
+        background-position-x:0%;
+    }
+    &.right{
+        background-position-x:100%;
+    }
+}
+
+.circle{
+    border-radius:50%;
+}
