@@ -87,4 +87,6 @@ function init(window) {
             }(this));
         };
     }
+    return Tooltip;
 }
+exports.default = init(w);

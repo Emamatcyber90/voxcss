@@ -76,7 +76,7 @@ var vox = core.VW.Web.Vox;
     };
     Input.prototype.obtainProps = function () {
         var f = this.$;
-        f.inp = obj.find('input');
+        f.inp = f.obj.find('input');
         f.label = f.obj.find('label');
         f.label.addClass('normal');
         f.action = f.obj.find('.action');
@@ -92,6 +92,8 @@ var vox = core.VW.Web.Vox;
     };
     Input.prototype.adjustValue = function () {
         var f = this.$;
+        if (!f.select)
+            return;
         var v = f.select.val();
         f.opw.find('li').removeAttr('selected');
         f.opw.find('li>a').removeAttr('hover-active');
@@ -163,7 +165,7 @@ var vox = core.VW.Web.Vox;
                 f.label.addClass(l);
             };
         }(this);
-        f.on('keyup input', oninput);
+        f.inp.on('keyup input', oninput);
         f.inp.focus(function (ev) {
             if (f.obj.hasClass('error') || f.obj.hasClass('warning') || f.obj.hasClass('ok'))
                 return;

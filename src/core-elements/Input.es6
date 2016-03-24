@@ -91,7 +91,7 @@ class Input extends Element{
 
 	obtainProps(){
 		var f=this.$
-		f.inp= obj.find("input")
+		f.inp= f.obj.find("input")
         f.label= f.obj.find("label")
         f.label.addClass("normal")
         f.action= f.obj.find(".action")
@@ -116,6 +116,8 @@ class Input extends Element{
 		
 	adjustValue(){
 		var f= this.$
+        if(!f.select)
+            return 
 		var v= f.select.val()
         f.opw.find("li").removeAttr("selected")
         f.opw.find("li>a").removeAttr("hover-active")
@@ -202,7 +204,7 @@ class Input extends Element{
             l= "text-"+f.lineClass
             f.label.addClass(l)
         }
-        f.on("keyup input", oninput)
+        f.inp.on("keyup input", oninput)
 
         f.inp.focus(function(ev){
 

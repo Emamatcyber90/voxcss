@@ -103,4 +103,7 @@ function init(window){
     	}
 
     }
+    return Tooltip
 }
+
+export default init(w)

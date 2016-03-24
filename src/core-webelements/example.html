@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	
+	
+	<head>
+		<title>VoxCss Example</title>
+
+		<script type="text/javascript">
+			function init(){
+				console.info(core.VW.Web)
+			}
+		</script>
+		<link rel="stylesheet" type="text/css" href="css/vox.css"/>		
+		<script type="text/javascript" src="js/core-basic.js"></script>
+		<script type="text/javascript" src="js/vox.js"></script>		
+		<link rel="import" href="html/vox-webelements.html" onload="init()" />
+	</head>
+
+
+	<body>
+		<div class='row'>
+			<div class='col s6'>
+				<vox-input data-activecolor='blue'>Nombre</vox-input>
+			</div>
+			<div class='col s6'>
+				<vox-input data-activecolor='blue'>Apellido</vox-input>
+			</div>
+		</div>
+	</body>
+
+</html>
