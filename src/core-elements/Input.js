@@ -131,9 +131,11 @@ var vox = core.VW.Web.Vox;
             f.select.blur(function (ev) {
                 f.inp.blur();
             });
-            f.select.change(function () {
-                f.refreshValue();
-            });
+            f.select.change(function (self$0) {
+                return function () {
+                    self$0.adjustValue();
+                };
+            }(this));
             f.dropdown.on('select', function (ev) {
                 f.select.val(ev.value);
                 f.select.change();
@@ -189,12 +191,14 @@ var vox = core.VW.Web.Vox;
                 f.lineClass = undefined;
             };
         }(this));
-        this.on('change', function () {
-            if (f.select) {
-                f.refreshValue();
-            }
-            return f.r();
-        });
+        this.on('change', function (self$0) {
+            return function () {
+                if (f.select) {
+                    self$0.adjustValue();
+                }
+                return f.r();
+            };
+        }(this));
     };
 }
 exports.default = Input;

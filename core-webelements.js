@@ -23,7 +23,7 @@ module.exports = {
 	        { test: /.*\.(eot|woff|eot|woff2|ttf|svg.*)/, loader: fileloader+"?hash=sha512&digest=ext&size=16&name=fonts/[name].[ext]" }
 	    ]
 	},
-    entry:  Path.normalize(__dirname + "/src/core-webelements/vox-webelements.html"),
+    entry:  Path.normalize(__dirname + "/src/core-webelements/voxcss.html"),
     output: {
         path:  __dirname + "/dist",
         filename: "temp.js"

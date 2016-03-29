@@ -165,10 +165,11 @@ class Input extends Element{
             f.select.blur(function(ev){
                 f.inp.blur()
             })
-            f.select.change(function(){
-                f.refreshValue()
+            f.select.change(()=>{
+                this.adjustValue()
             })
-            
+
+
             f.dropdown.on("select", function(ev){
                 f.select.val(ev.value)
                 f.select.change()
@@ -241,7 +242,7 @@ class Input extends Element{
 
         this.on("change", ()=>{
         	if(f.select){
-                f.refreshValue()
+                this.adjustValue()
             }
             return f.r()
         })

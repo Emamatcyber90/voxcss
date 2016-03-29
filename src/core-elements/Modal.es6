@@ -128,7 +128,7 @@ class Modal extends Element{
         f.container.show()
         f.obj.voxanimate(f.obj.data("ineffect")||"bounceInUp", undefined,()=>{
             
-            modal.checkOpened()
+            Modal.checkOpened()
             var ev= this.createEvent("open",event)
             ev.modal= this
             this.emit(ev)
@@ -160,7 +160,7 @@ class Modal extends Element{
         f.container.hide()
         f.obj.voxanimate(f.obj.data("outeffect")||"bounceOutDown", undefined,()=>{
             
-            modal.checkOpened()
+            Modal.checkOpened()
             var ev= this.createEvent("close",event)
             ev.modal= this
             this.emit(ev)
@@ -207,7 +207,7 @@ class Modal extends Element{
                 ev2.clickEvent= ev
                 return ev2
             },
-            self:self,
+            self:this,
             callback:(ev)=>{
                 !f.obj.data("closeonouterclick-disabled")&&this.close()
             }

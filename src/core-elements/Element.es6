@@ -22,11 +22,13 @@ class Element extends events{
 	
 	emit(ev){
 		var name;
-		if(arguments.length>1)
+		if(arguments.length<2)
 			name= ev.type
-		else
+		else{
 			name=arguments[0]
-		super.emit(name, arguments[1])
+			ev= arguments[1]
+		}
+		super.emit(name, ev)
 	}
 
 }

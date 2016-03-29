@@ -18,11 +18,13 @@ var vox = core.VW.Web.Vox;
     };
     Element.prototype.emit = function (ev) {
         var name;
-        if (arguments.length > 1)
+        if (arguments.length < 2)
             name = ev.type;
-        else
+        else {
             name = arguments[0];
-        Element.$super.emit(name, arguments[1]);
+            ev = arguments[1];
+        }
+        Element.$super.emit.call(this, name, ev);
     };
 }
 exports.default = Element;

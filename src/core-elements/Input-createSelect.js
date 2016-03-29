@@ -1,5 +1,48 @@
 exports.default= function($, f){
 
+
+    var voxselect= f.obj.find("vox-select");
+    if(voxselect.length>0){
+
+        var select= f.obj.find("select");
+        if(select.length==0){
+            select= $("<select>");
+            // select.attr("name", voxselect.attr("name"));
+
+            $.each(voxselect.get(0).attributes, function() {
+                // this.attributes is not a plain object, but an array
+                // of attribute nodes, which contain both the name and value
+                if(this.specified) {
+                    select.attr(this.name, this.value);
+                }
+            });
+
+            var options= voxselect.find("vc-option");
+            options.each(function(){
+                var toption= $(this);
+                var option= $("<option>");
+                option.html(toption.html());
+                // option.val(toption.attr("value"));
+                
+                $.each(this.attributes, function() {
+                    // this.attributes is not a plain object, but an array
+                    // of attribute nodes, which contain both the name and value
+                    if(this.specified) {
+                        option.attr(this.name, this.value);
+                    }
+                });
+
+                option.data("vc-option", toption);
+                select.append(option);
+                f.obj.append(select);
+                voxselect.hide();
+            });
+
+        }
+
+    }
+
+
 	f.voxStyle= f.obj.find("vox-css[vox-func='input-style']")
     if(f.voxStyle.length==0)
         f.voxStyle= $('<vox-css vox-type="class" vox-func="input-style" vox-selector="li>a:not([disabled]>a)">')
@@ -16,10 +59,12 @@ exports.default= function($, f){
     
     
     
-    
+    f.obj.find(".select-wrapper").remove()
     f.select= f.obj.find("select")
+
     f.sw= $("<div>")
     f.sw.addClass("select-wrapper")
+    f.sw.insertBefore(f.select)
     f.opw= $("<ul>")
     f.opw.addClass("text-"+f.obj.data("activecolor"))
     f.opw.addClass("options-wrapper")
@@ -43,7 +88,7 @@ exports.default= function($, f){
         var a= $("<a>")
         a.data("value", vv)
         
-        a.text(e.text())
+        a.html(e.html())
         op.append(a)
         if(e.attr("disabled")!==undefined){
             op.attr("disabled", "disabled")
@@ -77,7 +122,6 @@ exports.default= function($, f){
     f.sw.append(i1)
     f.sw.append(caret)
     f.sw.append(f.opw)
-    f.sw.insertBefore(f.select)
     f.sw.append(f.voxStyle)
     
     

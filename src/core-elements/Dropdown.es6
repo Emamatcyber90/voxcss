@@ -82,12 +82,12 @@ function init(document){
                 if(ev.defaultPrevented)
                     return
                 
-                var ev= vox.platform.createEvent("select")
+                var ev= self.createEvent("select")
                 ev.dropdown= self
                 ev.jTarget= a0
                 ev.value= a0.data("value")
                 
-                self.trigger("select", ev)
+                self.emit(ev)
                 if(ev.defaultPrevented){
                     return
                 }
@@ -96,6 +96,7 @@ function init(document){
 		}
 
 		open(event){
+            var f= this.$
 			var ev= this.createEvent("beforeopen",event)
             ev.dropdown= self
             this.emit(ev)
@@ -107,12 +108,12 @@ function init(document){
             var self= this
             f.lEvent= event?event.type:""
             f.menu.addClass("opened")            
-            f.menu.voxanimate(f.menu.data("ineffect")|| "fadeIn short", null, function(){
+            f.menu.voxanimate(f.menu.data("ineffect")|| "fadeIn short", null, ()=>{
                 
                 f.captureKeyboard= true
                 var ev= self.createEvent("open",event)
                 ev.dropdown= self
-                this.emit(ev)
+                self.emit(ev)
 
             })
             
@@ -122,7 +123,7 @@ function init(document){
 
 
 		close(){
-
+            var f= this.$
             var ev= vox.platform.createEvent("beforeclose")
             ev.dropdown= self
             this.emit(ev)
@@ -143,6 +144,7 @@ function init(document){
 		}
 
 		toggle(){
+            var f= this.$
 			if(f.menu.hasClass("opened"))
                 this.close()
             
@@ -156,6 +158,7 @@ function init(document){
 			vox.mutation.watchAppend(f.menu, (ev)=>{
 	                this.$pEvents(ev.jTarget.find(">a"));
 	        }, "li");
+            this.$pEvents(f.menu.find("li>a"))
 
 			var self=this
 	        $(document).keyup(function(ev){
@@ -185,7 +188,7 @@ function init(document){
                     ev2.dropdown= self
                     ev2.target= ev.target
                     ev2.clickEvent= ev
-                    self.emit(rb)
+                    self.emit(ev)
                     if(ev.defaultPrevented)
                         return
                     

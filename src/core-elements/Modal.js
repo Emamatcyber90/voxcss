@@ -101,7 +101,7 @@ var modals = [];
         f.container.show();
         f.obj.voxanimate(f.obj.data('ineffect') || 'bounceInUp', undefined, function (self$0) {
             return function () {
-                modal.checkOpened();
+                Modal.checkOpened();
                 var ev = self$0.createEvent('open', event);
                 ev.modal = self$0;
                 self$0.emit(ev);
@@ -124,7 +124,7 @@ var modals = [];
         f.container.hide();
         f.obj.voxanimate(f.obj.data('outeffect') || 'bounceOutDown', undefined, function (self$0) {
             return function () {
-                modal.checkOpened();
+                Modal.checkOpened();
                 var ev = self$0.createEvent('close', event);
                 ev.modal = self$0;
                 self$0.emit(ev);
@@ -177,7 +177,7 @@ var modals = [];
                     return ev2;
                 };
             }(this),
-            self: self,
+            self: this,
             callback: function (self$0) {
                 return function (ev) {
                     !f.obj.data('closeonouterclick-disabled') && self$0.close();

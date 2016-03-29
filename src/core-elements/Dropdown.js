@@ -61,11 +61,11 @@ function init(document) {
                 self.emit(ev);
                 if (ev.defaultPrevented)
                     return;
-                var ev = vox.platform.createEvent('select');
+                var ev = self.createEvent('select');
                 ev.dropdown = self;
                 ev.jTarget = a0;
                 ev.value = a0.data('value');
-                self.trigger('select', ev);
+                self.emit(ev);
                 if (ev.defaultPrevented) {
                     return;
                 }
@@ -73,6 +73,7 @@ function init(document) {
             });
         };
         Dropdown.prototype.open = function (event) {
+            var f = this.$;
             var ev = this.createEvent('beforeopen', event);
             ev.dropdown = self;
             this.emit(ev);
@@ -85,10 +86,11 @@ function init(document) {
                 f.captureKeyboard = true;
                 var ev = self.createEvent('open', event);
                 ev.dropdown = self;
-                this.emit(ev);
+                self.emit(ev);
             });
         };
         Dropdown.prototype.close = function () {
+            var f = this.$;
             var ev = vox.platform.createEvent('beforeclose');
             ev.dropdown = self;
             this.emit(ev);
@@ -105,6 +107,7 @@ function init(document) {
             });
         };
         Dropdown.prototype.toggle = function () {
+            var f = this.$;
             if (f.menu.hasClass('opened'))
                 this.close();
             else
@@ -117,6 +120,7 @@ function init(document) {
                     self$0.$pEvents(ev.jTarget.find('>a'));
                 };
             }(this), 'li');
+            this.$pEvents(f.menu.find('li>a'));
             var self = this;
             $(document).keyup(function (ev) {
                 if (f.captureKeyboard) {
@@ -141,7 +145,7 @@ function init(document) {
                     ev2.dropdown = self;
                     ev2.target = ev.target;
                     ev2.clickEvent = ev;
-                    self.emit(rb);
+                    self.emit(ev);
                     if (ev.defaultPrevented)
                         return;
                     self.close();
