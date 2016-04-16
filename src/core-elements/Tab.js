@@ -2,9 +2,9 @@ var Element = require('./Element').default;
 var $ = core.VW.Web.JQuery;
 var vox = core.VW.Web.Vox;
 {
-    function Tab() {
+    var Tab = function Tab() {
         Tab.constructor ? Tab.constructor.apply(this, arguments) : Tab.$super && Tab.$super.constructor.apply(this, arguments);
-    }
+    };
     Tab.prototype = Object.create(Element.prototype);
     Tab.prototype.constructor = Tab;
     Tab.$super = Element.prototype;

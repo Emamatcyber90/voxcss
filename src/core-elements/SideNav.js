@@ -6,9 +6,9 @@ if (typeof window !== 'undefined')
     w = window;
 function init(window) {
     {
-        function SideNav() {
+        var SideNav = function SideNav() {
             SideNav.constructor ? SideNav.constructor.apply(this, arguments) : SideNav.$super && SideNav.$super.constructor.apply(this, arguments);
-        }
+        };
         SideNav.prototype = Object.create(Element.prototype);
         SideNav.prototype.constructor = SideNav;
         SideNav.$super = Element.prototype;

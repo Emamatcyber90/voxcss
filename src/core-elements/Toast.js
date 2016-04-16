@@ -2,9 +2,9 @@ var Element = require('./Element').default;
 var $ = core.VW.Web.JQuery;
 var vox = core.VW.Web.Vox;
 {
-    function Toast() {
+    var Toast = function Toast() {
         Toast.constructor ? Toast.constructor.apply(this, arguments) : Toast.$super && Toast.$super.constructor.apply(this, arguments);
-    }
+    };
     Toast.prototype = Object.create(Element.prototype);
     Toast.prototype.constructor = Toast;
     Toast.$super = Element.prototype;

@@ -7,25 +7,207 @@
 
 		<script type="text/javascript">
 			function init(){
-				console.info(core.VW.Web)
+				window.$= core.VW.Web.JQuery;
+				core.VW.Web.Elements.register()
 			}
+			
 		</script>
 		<link rel="stylesheet" type="text/css" href="css/vox.css"/>		
 		<script type="text/javascript" src="js/core-basic.js"></script>
 		<script type="text/javascript" src="js/vox.js"></script>		
 		<link rel="import" href="html/voxcss.html" onload="init()" />
+
 	</head>
 
 
 	<body>
+		
+
+		<vc-modal class='s8 shadow-3'>
+			<vc-content>
+				<h4>Modal Header</h4>
+	            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+	        </vc-content>
+	        <vc-footer class='text-right'>
+	        	<a href="#!" class="waves-effect teal hover text-white button">Agree</a>
+	              <a href="#!" class="waves-effect gray hover text-white button">Agree</a>
+	        </vc-footer>
+		</vc-modal>
+
+		<div class='modal-container'>
+			<div class='modal s8 shadow-3' data-escape-disabled='true' xxdata-closeonouterclick-disabled='true'>
+	            
+	            <script type='vox' lang='vox' vox-name='vox-outerclick'>
+	                (function(ev){
+	                    console.log(ev);
+	                    ev.modal.close();
+	                })
+	            </script>
+	        
+	            <div class='modal-content'>
+	                <h4>Modal Header</h4>
+	                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+	            </div>
+	            <div class="modal-footer text-right">
+	              <a href="#!" class="waves-effect teal hover text-white button">Agree</a>
+	              <a href="#!" class="waves-effect gray hover text-white button">Agree</a>
+	            </div>
+	        </div>
+	    </div>
+
+
+		
 		<div class='row'>
-			<div class='col s6'>
-				<vox-input data-activecolor='blue'>Nombre</vox-input>
+			<div class='col s12'>
+				<h4>Inputs</h4>
 			</div>
 			<div class='col s6'>
-				<vox-input data-activecolor='blue'>Apellido</vox-input>
+				<vc-input type='textarea' data-activecolor='blue'>Nombre</vc-input>
+			</div>
+			<div class='col s6'>
+				<vc-input data-activecolor='blue'>Nombre</vc-input>
+			</div>
+			<div class='col s6'>
+				<vc-input data-activecolor='blue'>Apellido</vc-input>
+			</div>
+			<div class='col s6'>
+				<vc-select data-activecolor='blue'><label>Escoja</label>
+					<vc-option value='0'><i class='fa fa-file-list'></i> &nbsp;&nbsp;James</vc-option>
+					<vc-option value='1'>James 2</vc-option>
+				</vc-select>
+			</div>
+
+
+			<div class='col s6'>
+				<vc-dropdown id='JAMES' data-color='pink' data-background-color='white' data-hover-background-color='pink' data-hover-color="white" data-options='1:1 One|2:2 Two|3:3 Three||4:4 Four|5:5 Five'>
+
+					<vc-activator>
+						<button class='waves-effect button animated pulse teal hover text-white'  ><i class='fa fa-spinner fa-spin'></i> James</button>
+					</vc-activator>
+				</vc-dropdown>
+
+				<vc-dropdown data-color='pink' data-background-color='white' data-hover-background-color='pink' data-hover-color="white">
+
+					<vc-activator>
+						<button class='waves-effect button animated pulse teal hover text-white'  ><i class='fa fa-spinner fa-spin'></i> James</button>
+					</vc-activator>
+
+					<vc-option>1 One</vc-option>
+					<vc-option>2 Two</vc-option>
+					<vc-option>3 Three</vc-option>
+					<vc-divider></vc-divider>
+					<vc-option>4 Four</vc-option>
+					<vc-option>5 Five</vc-option>
+				</vc-menu>
+				
+			</div>
+
+
+			<div class='col s6'>
+				<div style='position:relative;' class='dropdown' data-hover-activatex='true'>
+		        
+		            <button class='waves-effect button animated pulse teal hover text-white'  ><i class='fa fa-spinner fa-spin'></i> James</button>
+		            
+		            <ul class='dropdown-menu text-pink' data-name='James'>
+		            
+		                
+		                <vox-css vox-type="class" vox-selector="li>a" data-value="pink-hover text-white-hover"></vox-css>
+		             
+		               
+		                
+		                <li><a href='javascript:void(0);'>1 One</a></li>
+		                <li><a href='javascript:void(0);'>2 Two</a></li>
+		                <li class='divider'></li>
+		                <li><a href='javascript:void(0);'>3 Three</a></li>
+		                
+		                
+		               
+		                
+		            </ul>
+		   
+		            
+		        </div>
+			</div>
+
+			<div class='col s6 m4'>
+				<vc-card class='shadow-1' data-image-src='http://bgfons.com/upload/rainbow_texture679.jpg' data-image-height='300px' data-title='Card Title' data-href='#' data-link="This is a link">
+
+					<vc-content>
+						<p>I am a very simple card. I am good at containing small bits of information.
+	                  I am convenient because I require little markup to use effectively.</p>
+					</vc-content>
+
+				</vc-card>
+			</div>
+			<div class='col s6 m4'>
+				<vc-card class='shadow-1'>
+					<vc-img src='http://bgfons.com/upload/rainbow_texture679.jpg' style='height:300px'>
+						<span class="waves-effect waves-light waves-block card-title text-white">Card Title</span>
+					</vc-img>
+					<vc-content>
+						<p>I am a very simple card. I am good at containing small bits of information.
+	                  I am convenient because I require little markup to use effectively.</p>
+					</vc-content>
+					<vc-action>
+						<a href="#">This is a link</a>
+					</vc-action>
+				</vc-card>
+			</div>
+
+
+			<div class='col s6 m4'>
+				<div class="card shadow-1 white">
+	                <div class="card-image">
+	                  <!--<img src="images/sample-1.jpg">-->
+	                  <div style='background-image:url(http://bgfons.com/upload/rainbow_texture679.jpg);height:300px' class='top responsive-img'></div>
+	                  <span class="card-title text-white">Card Title</span>
+	                </div>
+	                <div class="card-content">
+	                  <p>I am a very simple card. I am good at containing small bits of information.
+	                  I am convenient because I require little markup to use effectively.</p>
+	                </div>
+	                <div class="card-action">
+	                  <a href="#">This is a link</a>
+	                </div>
+              	</div>
+			</div>
+			<div class='col s6 m4'>
+				<vc-card class="z-depth-1 white">
+                    <vc-img src="http://bgfons.com/upload/rainbow_texture679.jpg" style='height:300px' class='activator  waves-effect waves-block waves-light'></vc-img>
+
+                    
+                    <vc-content>
+                      <span class="card-title activator grey-text text-darken-4">Card Title<i class="material-icons pull-right">more_vert</i>
+                      </span>
+
+                      <p><a class='text-blue' href="#">This is a link</a></p>
+                    </vc-content>
+
+                    <vc-reveal class="white transitioned short">
+                      <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons pull-right">close</i></span>
+                      <p>Here is some more information about this product that is only revealed once clicked on.</p>
+                    </vc-reveal>
+
+               	</vc-card>
+			</div>
+
+			<div class='col s6 m4'>
+				<div class="card z-depth-1 white">
+                    <div class="card-image">
+                      <div style='background-image:url(http://bgfons.com/upload/rainbow_texture679.jpg);height:300px' class='activator top responsive-img'></div>
+                    </div>
+                    <div class="card-content">
+                      <span class="card-title activator grey-text text-darken-4">Card Title<i class="material-icons pull-right">more_vert</i></span>
+                      <p><a class='text-blue' href="#">This is a link</a></p>
+                    </div>
+                    <div class="card-reveal white transitioned short">
+                      <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons pull-right">close</i></span>
+                      <p>Here is some more information about this product that is only revealed once clicked on.</p>
+                    </div>
+                  </div>
 			</div>
 		</div>
+
 	</body>
 
 </html>

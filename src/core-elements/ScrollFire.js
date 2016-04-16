@@ -2,9 +2,9 @@ var Element = require('./Element').default;
 var $ = core.VW.Web.JQuery;
 var vox = core.VW.Web.Vox;
 {
-    function ScrollFire() {
+    var ScrollFire = function ScrollFire() {
         ScrollFire.constructor ? ScrollFire.constructor.apply(this, arguments) : ScrollFire.$super && ScrollFire.$super.constructor.apply(this, arguments);
-    }
+    };
     ScrollFire.prototype = Object.create(Element.prototype);
     ScrollFire.prototype.constructor = ScrollFire;
     ScrollFire.$super = Element.prototype;

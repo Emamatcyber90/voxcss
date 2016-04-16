@@ -7,9 +7,9 @@ if (typeof document !== 'undefined') {
 }
 function init(document) {
     {
-        function Tabs() {
+        var Tabs = function Tabs() {
             Tabs.constructor ? Tabs.constructor.apply(this, arguments) : Tabs.$super && Tabs.$super.constructor.apply(this, arguments);
-        }
+        };
         Tabs.prototype = Object.create(Element.prototype);
         Tabs.prototype.constructor = Tabs;
         Tabs.$super = Element.prototype;

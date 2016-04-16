@@ -6,9 +6,9 @@ if (typeof window !== 'undefined')
     w = window;
 function init(window) {
     {
-        function Tooltip() {
+        var Tooltip = function Tooltip() {
             Tooltip.constructor ? Tooltip.constructor.apply(this, arguments) : Tooltip.$super && Tooltip.$super.constructor.apply(this, arguments);
-        }
+        };
         Tooltip.prototype = Object.create(Element.prototype);
         Tooltip.prototype.constructor = Tooltip;
         Tooltip.$super = Element.prototype;

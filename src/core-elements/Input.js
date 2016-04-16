@@ -6,9 +6,9 @@ var vox = core.VW.Web.Vox;
     exports.mask = mask;
 }
 {
-    function Input() {
+    var Input = function Input() {
         Input.constructor ? Input.constructor.apply(this, arguments) : Input.$super && Input.$super.constructor.apply(this, arguments);
-    }
+    };
     Input.prototype = Object.create(Element.prototype);
     Input.prototype.constructor = Input;
     Input.$super = Element.prototype;

@@ -3,9 +3,9 @@ var $ = core.VW.Web.JQuery;
 var vox = core.VW.Web.Vox;
 var modals = [];
 {
-    function Modal() {
+    var Modal = function Modal() {
         Modal.constructor ? Modal.constructor.apply(this, arguments) : Modal.$super && Modal.$super.constructor.apply(this, arguments);
-    }
+    };
     Modal.prototype = Object.create(Element.prototype);
     Modal.prototype.constructor = Modal;
     Modal.$super = Element.prototype;

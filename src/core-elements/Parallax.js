@@ -9,9 +9,9 @@ function init(window) {
         Parallax.objects = [];
     };
     {
-        function Parallax() {
+        var Parallax = function Parallax() {
             Parallax.constructor ? Parallax.constructor.apply(this, arguments) : Parallax.$super && Parallax.$super.constructor.apply(this, arguments);
-        }
+        };
         Parallax.prototype = Object.create(Element.prototype);
         Parallax.prototype.constructor = Parallax;
         Parallax.$super = Element.prototype;

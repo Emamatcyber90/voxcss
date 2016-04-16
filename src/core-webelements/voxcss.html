@@ -1,6 +1,6 @@
 
 <script type="text/javascript" src="../js/vox-elements.js"></script>
-<vw-template name='vox-input'>
+<vw-template name='vc-input'>
 	<template>
 		<div class='input-field'>
 			<importdata></importdata>
@@ -10,15 +10,274 @@
 			<div class='line'></div>
 		</div>
 	</template>
+	<script type="text/javascript" lang='vox' vox-name='created'>
+	(function(ev){
+		var h= $(ev.template)
+		var c= $(ev.current)
+
+		var type=c.attr("type")
+		if(type!==undefined){
+			if(type=="textarea"){
+				var t= $("<textarea>")
+				t.addClass("vox-textarea")
+				h.find("input").replaceWith(t)
+			}
+			else{
+				h.find("input").attr("type",type)
+			}
+		}
+	})
+	</script>
+
 </vw-template>
-<vw-template name='vox-select'>
+<vw-template name='vc-select'>
 	<template>
 		<div class='input-field select'>
 			<importdata></importdata>
 			<importattributes></importattributes>
-			<label ><content></content></label>
-			<input type='text'>
+			<label ><content sel='label'></content></label>
+			<vox-select>
+				<content sel='vc-option'></content>
+			</vox-select>
 			<div class='line'></div>
+		</div>
+	</template>
+</vw-template>
+
+<vw-template name='vc-dropdown'>
+	
+	<template>
+		<div style='position:relative;' class='dropdown'>
+			<importdata></importdata>
+			<importattributes></importattributes>
+			<content sel='vc-activator'></content>
+			<vox-css vox-type="class" vox-selector="li>a"></vox-css>
+
+
+			<ul class='dropdown-menu'>
+				<importdata sel='vc-menu-data'></importdata>
+				<importattributes sel='vc-menu-data'></importattributes>
+			</ul>
+		</div>
+	</template>
+	<script type="text/javascript" lang='vox' vox-name='created'>
+	(function(ev){
+		var h= $(ev.template)
+		var c= $(ev.current)
+		var menu=h.find(".dropdown-menu")
+		var css= h.find("vox-css")
+
+
+		var color='';
+		if(c.data("color")){
+			menu.addClass("text-"+c.data("color"))
+		}
+		if(c.data("background-color")){
+			menu.addClass(c.data("background-color"))
+		}
+
+		
+		if(c.data("hover-color")){
+			color+= "text-" +c.data("hover-color") + "-hover "
+		}
+		if(c.data("hover-background-color")){
+			color+= c.data("hover-background-color") + "-hover "
+		}
+		if(color)
+			css.data("value", color)
+
+		var options= c.data("options")
+		if(options!=undefined){
+			options= options.split("|")
+			for(var i=0;i< options.length;i++){
+				var option= options[i];
+				var vcoption;
+				if(!option){
+					vcoption=$("<vc-divider>") 
+				}else{
+					var y= option.indexOf(":")
+					var val='',text=option;
+					if(y>=0){
+						val= option.substring(0,y)
+						text= option.substring(y+1)
+					}
+
+					vcoption= $("<vc-option>")
+					vcoption.val(val)
+					vcoption.text(text)
+				}
+				c.append(vcoption)
+			}
+		}
+
+		c.find("vc-option,vc-divider").each(function(){
+			var a= $(this)
+			if(a.is("vc-divider")){
+				var div= $("<li>")
+				div.addClass("divider")
+				menu.append(div)
+			}
+			else{
+				var li=$("<li>")
+				var a1= $("<a>")
+				a1.attr("href", "javascript:void(0)")
+				var ia= $("<importattributes>")
+				var id= $("<importdata>")
+				li.append(ia)
+				li.append(id)
+				ev.self.importattributes(a, ia)
+				ev.self.importdata(a, id)
+				li.append(a1)
+				a1.html(a.html())
+				menu.append(li)
+			}
+		})
+	})
+	</script>
+
+
+</vw-template>
+
+<vw-template name='vc-card'>
+	<template>
+		<div class='card'>
+			<importdata></importdata>
+			<importattributes></importattributes>
+			<div class='card-image'>
+				<div class='top responsive-img'>
+					<importattributes sel='>vc-img'></importattributes>
+				</div>
+				<content sel=">vc-img>*"></content>
+			</div>
+			<div class='card-content'>
+				<importattributes sel='>vc-content'></importattributes>
+				<content sel=">vc-content>*"></content>
+			</div>
+			<div class='card-reveal'>
+				<importattributes sel='>vc-reveal'></importattributes>
+				<content sel=">vc-reveal>*"></content>
+			</div>
+			<div class='card-action'>
+				<importattributes sel='>vc-action'></importattributes>
+				<content sel=">vc-action>*"></content>
+			</div>
+		</div>
+	</template>
+
+	<script type="text/javascript" lang='vox' vox-name='created'>
+		(function(ev){
+			var h= $(ev.template)
+			var c= $(ev.current)
+			var tit
+
+			var content= c.find("vc-content")
+			if(content.length==0){
+				content= $("<vc-content>")
+				c.append(content)
+				c.find("vc-img").insertBefore(content)
+				c.find("vc-action").insertAfter(content)
+			}
+
+			if(c.data("image-src")){
+				var src=c.data("image-src")
+				var vcimage= $("<vc-img>")
+				vcimage.attr("src", src)
+
+				var height= c.data("image-height")
+				var style= c.data("image-style")
+				if(height===undefined)
+					height="300px"
+				h.find(".responsive-img").css("height",height)
+				
+				if(style!==undefined){
+					vcimage.attr("style", style)
+				}
+				
+				vcimage.css("height", height)
+				vcimage.insertBefore(content)
+			}
+
+			if(c.data("title")){
+				var title= c.data("title")
+				var class1= c.data("title-class")
+
+				var vcimage= c.find("vc-img")
+				
+				var vctitle= $("<span>")
+				vctitle.addClass("card-title")
+				vctitle.text(title)
+				if(vcimage.length>0){
+					if(!class1)
+						class1='text-white'
+					vctitle.addClass(class1)
+
+					vcimage.append(vctitle)
+				}
+				else{
+					if(class1)	
+						vctitle.addClass(class1)
+
+					vctitle.insertBefore(content.find(">*:eq(0)"))
+				}
+			}
+			if(c.data("href")){
+				var link= c.data("link")
+				var a=$("<a>");
+				a.attr("href", c.data("href"))
+				a.text(link)
+				var vcaction= c.find("vc-action")
+				vcaction.remove()
+				vcaction= $("<vc-action>")
+				vcaction.append(a)
+				vcaction.insertAfter(content)
+			}
+			if(c.find(">vc-action").length==0){
+				h.find(".card-action").remove()
+			}
+			if(c.find(">vc-reveal").length==0){
+				h.find(".card-reveal").remove()
+			}
+
+			var img= c.find("vc-img")
+			if(img.length<1){
+				h.find(".card-image").remove()
+			}
+			else{
+				h.find(".card-image>.top").css("background-image", "url(" + img.attr("src") + ")")	
+			}
+		})
+	</script>
+</vw-template>
+
+
+<vw-template name='vc-modal'>
+	<template>
+		<div class='modal-container'>
+			<div class='modal'>
+				<importattributes></importattributes>
+				<importdata></importdata>
+
+				<div class='modal-content'>
+					<content sel='vc-content>*'></content>
+					<importattributes sel='vc-content'></importattributes>
+					<importdata sel='vc-content'></importdata>
+				</div>
+				<div class='modal-footer'>
+					<content sel='vc-footer>*' remove-empty></content>
+					<importattributes sel='vc-footer'></importattributes>
+					<importdata sel='vc-footer'></importdata>
+				</div>
+			</div>
+		</div>
+	</template>
+</vw-template>
+
+<vw-template name='vc-row'>
+	<template>
+		<div class='row'>
+			<importattributes></importattributes>
+			<importdata></importdata>
+			<content sel='>.col'></content>
 		</div>
 	</template>
 </vw-template>

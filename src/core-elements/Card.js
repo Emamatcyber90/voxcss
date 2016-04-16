@@ -2,9 +2,9 @@ var Element = require('./Element').default;
 var $ = core.VW.Web.JQuery;
 var vox = core.VW.Web.Vox;
 {
-    function Card() {
+    var Card = function Card() {
         Card.constructor ? Card.constructor.apply(this, arguments) : Card.$super && Card.$super.constructor.apply(this, arguments);
-    }
+    };
     Card.prototype = Object.create(Element.prototype);
     Card.prototype.constructor = Card;
     Card.$super = Element.prototype;

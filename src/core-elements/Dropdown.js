@@ -3,9 +3,9 @@ var $ = core.VW.Web.JQuery;
 var vox = core.VW.Web.Vox;
 function init(document) {
     {
-        function Dropdown() {
+        var Dropdown = function Dropdown() {
             Dropdown.constructor ? Dropdown.constructor.apply(this, arguments) : Dropdown.$super && Dropdown.$super.constructor.apply(this, arguments);
-        }
+        };
         Dropdown.prototype = Object.create(Element.prototype);
         Dropdown.prototype.constructor = Dropdown;
         Dropdown.$super = Element.prototype;
