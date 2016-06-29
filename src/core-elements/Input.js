@@ -1,13 +1,11 @@
 var Element = require('./Element').default;
 var $ = core.VW.Web.JQuery;
 var vox = core.VW.Web.Vox;
-{
-    var mask = require('./jquery-mask');
-    exports.mask = mask;
-}
+var mask = require('./jquery-mask');
+exports.mask = mask;
 {
     var Input = function Input() {
-        Input.constructor ? Input.constructor.apply(this, arguments) : Input.$super && Input.$super.constructor.apply(this, arguments);
+        Input.$constructor ? Input.$constructor.apply(this, arguments) : Input.$super && Input.$super.constructor.apply(this, arguments);
     };
     Input.prototype = Object.create(Element.prototype);
     Input.prototype.constructor = Input;
@@ -57,7 +55,7 @@ var vox = core.VW.Web.Vox;
             return result;
         };
     };
-    Input.constructor = function (obj) {
+    Input.$constructor = function (obj) {
         Input.$super.constructor.call(this);
         obj = $(obj);
         var f = this.$ = {};
@@ -76,7 +74,7 @@ var vox = core.VW.Web.Vox;
     };
     Input.prototype.obtainProps = function () {
         var f = this.$;
-        f.inp = f.obj.find('input');
+        f.inp = f.obj.find('input,textarea');
         f.label = f.obj.find('label');
         f.label.addClass('normal');
         f.action = f.obj.find('.action');
@@ -149,7 +147,7 @@ var vox = core.VW.Web.Vox;
             f.obj.addClass('active');
         };
         var oninput = function (self$0) {
-            return function () {
+            return function (ev) {
                 f.obj.removeClass('error warning ok');
                 self$0.emit('focus', ev);
                 if (ev.defaultPrevented)

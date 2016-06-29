@@ -79,7 +79,7 @@ class Toast extends Element{
 	init(){
         var f= this.$
         f.obj.removeClass("toast")
-        toast.container.append(f.obj)
+        Toast.container.append(f.obj)
         f.obj.addClass("toast")
 		this.events()
 	}

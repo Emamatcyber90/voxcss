@@ -91,7 +91,7 @@ class Input extends Element{
 
 	obtainProps(){
 		var f=this.$
-		f.inp= f.obj.find("input")
+		f.inp= f.obj.find("input,textarea")
         f.label= f.obj.find("label")
         f.label.addClass("normal")
         f.action= f.obj.find(".action")
@@ -185,7 +185,7 @@ class Input extends Element{
         }
 
 
-        var oninput= ()=>{
+        var oninput= (ev)=>{
         	f.obj.removeClass("error warning ok");
             this.emit("focus", ev) // No estoy seguro si debe ir 
             if(ev.defaultPrevented)

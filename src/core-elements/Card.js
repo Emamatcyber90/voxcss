@@ -3,7 +3,7 @@ var $ = core.VW.Web.JQuery;
 var vox = core.VW.Web.Vox;
 {
     var Card = function Card() {
-        Card.constructor ? Card.constructor.apply(this, arguments) : Card.$super && Card.$super.constructor.apply(this, arguments);
+        Card.$constructor ? Card.$constructor.apply(this, arguments) : Card.$super && Card.$super.constructor.apply(this, arguments);
     };
     Card.prototype = Object.create(Element.prototype);
     Card.prototype.constructor = Card;
@@ -29,7 +29,7 @@ var vox = core.VW.Web.Vox;
             $('.card').voxcard();
         });
     };
-    Card.constructor = function (obj) {
+    Card.$constructor = function (obj) {
         Card.$super.constructor.call(this);
         obj = $(obj);
         var f = this.$ = {};

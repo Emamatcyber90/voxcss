@@ -3,7 +3,7 @@ var $ = core.VW.Web.JQuery;
 var vox = core.VW.Web.Vox;
 {
     var Pinned = function Pinned() {
-        Pinned.constructor ? Pinned.constructor.apply(this, arguments) : Pinned.$super && Pinned.$super.constructor.apply(this, arguments);
+        Pinned.$constructor ? Pinned.$constructor.apply(this, arguments) : Pinned.$super && Pinned.$super.constructor.apply(this, arguments);
     };
     Pinned.prototype = Object.create(Element.prototype);
     Pinned.prototype.constructor = Pinned;
@@ -29,7 +29,7 @@ var vox = core.VW.Web.Vox;
             $('.pinned').voxpinned();
         });
     };
-    Pinned.constructor = function (obj) {
+    Pinned.$constructor = function (obj) {
         Pinned.$super.constructor.call(this);
         obj = $(obj);
         var f = this.$ = {};

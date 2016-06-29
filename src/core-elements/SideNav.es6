@@ -97,6 +97,7 @@ function init(window){
 		}
 
 		close(event){
+			var f= this.$
 			SideNav.overlay.css("opacity", 0);
             setTimeout(function(){
                 SideNav.overlay.hide()
@@ -106,6 +107,10 @@ function init(window){
             var ev= this.createEvent("close",event);
             ev.sidenav= this
             this.emit(ev)
+            setTimeout(()=>{
+            	this.G()
+            }, 500)
+            
 		}
 
 		toggle(){
@@ -116,6 +121,9 @@ function init(window){
 		}
 
 		$r(){
+			if(SideNav.overlay.is(":visible"))
+				return
+
 			var f= this.$
 			var po= f.obj.position()
 	        var v=true
@@ -141,7 +149,7 @@ function init(window){
 	            })  
 	        }
 
-	        var g= ()=>{
+	        var g= this.G= ()=>{
 	            if(f.i){
 	                clearTimeout(f.i)
 	                f.i= undefined

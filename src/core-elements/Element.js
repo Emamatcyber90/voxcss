@@ -2,12 +2,12 @@ var events = require('events').EventEmitter;
 var vox = core.VW.Web.Vox;
 {
     var Element = function Element() {
-        Element.constructor ? Element.constructor.apply(this, arguments) : Element.$super && Element.$super.constructor.apply(this, arguments);
+        Element.$constructor ? Element.$constructor.apply(this, arguments) : Element.$super && Element.$super.constructor.apply(this, arguments);
     };
     Element.prototype = Object.create(events.prototype);
     Element.prototype.constructor = Element;
     Element.$super = events.prototype;
-    Element.constructor = function () {
+    Element.$constructor = function () {
         Element.$super.constructor.call(this);
     };
     Element.prototype.createEvent = function (eventName, originalEvent) {

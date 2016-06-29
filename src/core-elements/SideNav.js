@@ -7,7 +7,7 @@ if (typeof window !== 'undefined')
 function init(window) {
     {
         var SideNav = function SideNav() {
-            SideNav.constructor ? SideNav.constructor.apply(this, arguments) : SideNav.$super && SideNav.$super.constructor.apply(this, arguments);
+            SideNav.$constructor ? SideNav.$constructor.apply(this, arguments) : SideNav.$super && SideNav.$super.constructor.apply(this, arguments);
         };
         SideNav.prototype = Object.create(Element.prototype);
         SideNav.prototype.constructor = SideNav;
@@ -52,7 +52,7 @@ function init(window) {
                 $('.side-nav').voxsidenav();
             });
         };
-        SideNav.constructor = function (obj) {
+        SideNav.$constructor = function (obj) {
             SideNav.$super.constructor.call(this);
             obj = $(obj);
             var f = this.$ = {};
@@ -87,6 +87,7 @@ function init(window) {
             this.emit(ev);
         };
         SideNav.prototype.close = function (event) {
+            var f = this.$;
             SideNav.overlay.css('opacity', 0);
             setTimeout(function () {
                 SideNav.overlay.hide();
@@ -96,6 +97,11 @@ function init(window) {
             var ev = this.createEvent('close', event);
             ev.sidenav = this;
             this.emit(ev);
+            setTimeout(function (self$0) {
+                return function () {
+                    self$0.G();
+                };
+            }(this), 500);
         };
         SideNav.prototype.toggle = function () {
             if (this.isOpened())
@@ -104,6 +110,8 @@ function init(window) {
                 this.open();
         };
         SideNav.prototype.$r = function () {
+            if (SideNav.overlay.is(':visible'))
+                return;
             var f = this.$;
             var po = f.obj.position();
             var v = true;
@@ -123,7 +131,7 @@ function init(window) {
                     };
                 }(this));
             }
-            var g = function (self$0) {
+            var g = this.G = function (self$0) {
                 return function () {
                     if (f.i) {
                         clearTimeout(f.i);

@@ -4,7 +4,7 @@ var vox = core.VW.Web.Vox;
 var modals = [];
 {
     var Modal = function Modal() {
-        Modal.constructor ? Modal.constructor.apply(this, arguments) : Modal.$super && Modal.$super.constructor.apply(this, arguments);
+        Modal.$constructor ? Modal.$constructor.apply(this, arguments) : Modal.$super && Modal.$super.constructor.apply(this, arguments);
     };
     Modal.prototype = Object.create(Element.prototype);
     Modal.prototype.constructor = Modal;
@@ -65,7 +65,7 @@ var modals = [];
             });
         });
     };
-    Modal.constructor = function (obj) {
+    Modal.$constructor = function (obj) {
         Modal.$super.constructor.call(this);
         obj = $(obj);
         var f = this.$ = {};

@@ -10,7 +10,7 @@ function init(window) {
     };
     {
         var Parallax = function Parallax() {
-            Parallax.constructor ? Parallax.constructor.apply(this, arguments) : Parallax.$super && Parallax.$super.constructor.apply(this, arguments);
+            Parallax.$constructor ? Parallax.$constructor.apply(this, arguments) : Parallax.$super && Parallax.$super.constructor.apply(this, arguments);
         };
         Parallax.prototype = Object.create(Element.prototype);
         Parallax.prototype.constructor = Parallax;
@@ -40,7 +40,7 @@ function init(window) {
                 $('.parallax').voxparallax();
             });
         };
-        Parallax.constructor = function (obj) {
+        Parallax.$constructor = function (obj) {
             Parallax.$super.constructor.call(this);
             Parallax.objects.push(this);
             obj = $(obj);

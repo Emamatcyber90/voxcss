@@ -3,7 +3,7 @@ var $ = core.VW.Web.JQuery;
 var vox = core.VW.Web.Vox;
 {
     var Toast = function Toast() {
-        Toast.constructor ? Toast.constructor.apply(this, arguments) : Toast.$super && Toast.$super.constructor.apply(this, arguments);
+        Toast.$constructor ? Toast.$constructor.apply(this, arguments) : Toast.$super && Toast.$super.constructor.apply(this, arguments);
     };
     Toast.prototype = Object.create(Element.prototype);
     Toast.prototype.constructor = Toast;
@@ -52,7 +52,7 @@ var vox = core.VW.Web.Vox;
             });
         });
     };
-    Toast.constructor = function (obj) {
+    Toast.$constructor = function (obj) {
         Toast.$super.constructor.call(this);
         obj = $(obj);
         var f = this.$ = {};
@@ -65,7 +65,7 @@ var vox = core.VW.Web.Vox;
     Toast.prototype.init = function () {
         var f = this.$;
         f.obj.removeClass('toast');
-        toast.container.append(f.obj);
+        Toast.container.append(f.obj);
         f.obj.addClass('toast');
         this.events();
     };

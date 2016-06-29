@@ -7,7 +7,7 @@ if (typeof window !== 'undefined')
 function init(window) {
     {
         var Tooltip = function Tooltip() {
-            Tooltip.constructor ? Tooltip.constructor.apply(this, arguments) : Tooltip.$super && Tooltip.$super.constructor.apply(this, arguments);
+            Tooltip.$constructor ? Tooltip.$constructor.apply(this, arguments) : Tooltip.$super && Tooltip.$super.constructor.apply(this, arguments);
         };
         Tooltip.prototype = Object.create(Element.prototype);
         Tooltip.prototype.constructor = Tooltip;
@@ -40,7 +40,7 @@ function init(window) {
             }, '[data-hover=tooltip]');
             $('[data-hover=tooltip]').voxhastooltip();
         };
-        Tooltip.constructor = function (obj) {
+        Tooltip.$constructor = function (obj) {
             Tooltip.$super.constructor.call(this);
             obj = $(obj);
             var f = this.$ = {};

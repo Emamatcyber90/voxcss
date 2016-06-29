@@ -3,7 +3,7 @@ var $ = core.VW.Web.JQuery;
 var vox = core.VW.Web.Vox;
 {
     var ScrollFire = function ScrollFire() {
-        ScrollFire.constructor ? ScrollFire.constructor.apply(this, arguments) : ScrollFire.$super && ScrollFire.$super.constructor.apply(this, arguments);
+        ScrollFire.$constructor ? ScrollFire.$constructor.apply(this, arguments) : ScrollFire.$super && ScrollFire.$super.constructor.apply(this, arguments);
     };
     ScrollFire.prototype = Object.create(Element.prototype);
     ScrollFire.prototype.constructor = ScrollFire;
@@ -29,7 +29,7 @@ var vox = core.VW.Web.Vox;
             $('.scroll-fire').voxscrollfire();
         });
     };
-    ScrollFire.constructor = function (obj) {
+    ScrollFire.$constructor = function (obj) {
         ScrollFire.$super.constructor.call(this);
         obj = $(obj);
         var f = this.$ = {};
