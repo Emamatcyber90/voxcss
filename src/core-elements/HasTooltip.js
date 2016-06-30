@@ -28,7 +28,7 @@ function init(window) {
                     var o = $(this);
                     var t = undefined;
                     if (!(t = o.data('vox-hastooltip'))) {
-                        t = new HasTooltip(o);
+                        t = new Tooltip(o);
                         o.data('vox-hastooltip', t);
                     }
                     dp.push(t);
@@ -54,14 +54,11 @@ function init(window) {
             if (s)
                 f.tip = $(s);
             else
-                f.tip = HasTooltip.createTooltip(f.obj);
+                f.tip = Tooltip.createTooltip(f.obj);
             f.tip = f.tip.voxtooltip()[0];
         };
         Tooltip.prototype.init = function () {
             var f = this.$;
-            f.obj.removeClass('toast');
-            toast.container.append(f.obj);
-            f.obj.addClass('toast');
             this.events();
         };
         Tooltip.prototype.__defineGetter__('tooltip', function () {

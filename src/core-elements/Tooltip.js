@@ -55,9 +55,6 @@ function init(window) {
         };
         Tooltip.prototype.init = function () {
             var f = this.$;
-            f.obj.removeClass('toast');
-            toast.container.append(f.obj);
-            f.obj.addClass('toast');
             this.events();
         };
         Tooltip.prototype.isOpened = function () {
@@ -163,16 +160,18 @@ function init(window) {
                             f.delay = undefined;
                         }
                         context$1$0.next = 12;
-                        return regeneratorRuntime.awrap(f.acomode());
+                        return regeneratorRuntime.awrap(this.acomode());
                     case 12:
                         f.lEvent = event ? event.type : '';
                         effect = f.obj.data('ineffect') || 'fadeIn short';
                         f.obj.addClass('opened');
-                        f.obj.voxanimate(effect, undefined, function () {
-                            var ev = this.createEvent('open', event);
-                            ev.tooltip = this;
-                            this.emit(ev);
-                        });
+                        f.obj.voxanimate(effect, undefined, function (self$0) {
+                            return function () {
+                                var ev = self$0.createEvent('open', event);
+                                ev.tooltip = self$0;
+                                self$0.emit(ev);
+                            };
+                        }(this));
                     case 16:
                     case 'end':
                         return context$1$0.stop();
@@ -191,11 +190,13 @@ function init(window) {
             f.lEvent = undefined;
             f.obj.removeClass('opened');
             var effect = f.obj.data('outeffect') || 'fadeOut short';
-            f.obj.voxanimate(effect, undefined, function () {
-                var ev = this.createEvent('close');
-                ev.tooltip = this;
-                this.emit(ev);
-            });
+            f.obj.voxanimate(effect, undefined, function (self$0) {
+                return function () {
+                    var ev = self$0.createEvent('close');
+                    ev.tooltip = self$0;
+                    self$0.emit(ev);
+                };
+            }(this));
         };
         Tooltip.prototype.toggle = function () {
             this.isOpened() ? this.close() : this.open();
@@ -226,7 +227,7 @@ function init(window) {
                     if (ev.type == 'mouseenter')
                         self$0.activate();
                     else if (ev.type = 'mouseleave')
-                        self.activateClose();
+                        self$0.activateClose();
                 };
             }(this));
             vox.platform.attachOuterClick(f.obj, {

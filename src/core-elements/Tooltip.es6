@@ -70,9 +70,9 @@ function init(window){
 
     	init(){
             var f= this.$
-            f.obj.removeClass("toast")
-            toast.container.append(f.obj)
-            f.obj.addClass("toast")
+            //f.obj.removeClass("toast")
+            //toast.container.append(f.obj)
+            //f.obj.addClass("toast")
     		this.events()
     	}
 
@@ -192,11 +192,11 @@ function init(window){
                 f.delay=undefined
             }
             
-            await f.acomode()
+            await this.acomode()
             f.lEvent= event?event.type:""
             var effect= f.obj.data("ineffect") || "fadeIn short"
             f.obj.addClass("opened")
-            f.obj.voxanimate(effect, undefined,function(){
+            f.obj.voxanimate(effect, undefined,()=>{
                 var ev= this.createEvent("open",event)
                 ev.tooltip= this            
                 this.emit(ev)
@@ -223,7 +223,7 @@ function init(window){
             f.obj.removeClass("opened")
             
             var effect= f.obj.data("outeffect") || "fadeOut short"
-            f.obj.voxanimate(effect, undefined, function(){
+            f.obj.voxanimate(effect, undefined, ()=>{
                 var ev= this.createEvent("close")
                 ev.tooltip= this
                 this.emit(ev)
@@ -261,7 +261,7 @@ function init(window){
                     this.activate()
                 
                 else if(ev.type="mouseleave")
-                    self.activateClose()
+                    this.activateClose()
             })
 
             vox.platform.attachOuterClick(f.obj, {
