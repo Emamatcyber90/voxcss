@@ -3,13 +3,14 @@ var $ = core.VW.Web.JQuery;
 var vox = core.VW.Web.Vox;
 {
     var Tab = function Tab() {
-        Tab.$constructor ? Tab.$constructor.apply(this, arguments) : Tab.$super && Tab.$super.constructor.apply(this, arguments);
+        Tab.$constructor ? Tab.$constructor.apply(this, arguments) : Tab.$superClass && Tab.$superClass.apply(this, arguments);
     };
     Tab.prototype = Object.create(Element.prototype);
     Tab.prototype.constructor = Tab;
     Tab.$super = Element.prototype;
+    Tab.$superClass = Element;
     Tab.$constructor = function (obj) {
-        Tab.$super.constructor.call(this);
+        Tab.$superClass.call(this);
         obj = $(obj);
         var f = this.$ = {};
         f.obj = obj;

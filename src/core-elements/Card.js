@@ -3,11 +3,12 @@ var $ = core.VW.Web.JQuery;
 var vox = core.VW.Web.Vox;
 {
     var Card = function Card() {
-        Card.$constructor ? Card.$constructor.apply(this, arguments) : Card.$super && Card.$super.constructor.apply(this, arguments);
+        Card.$constructor ? Card.$constructor.apply(this, arguments) : Card.$superClass && Card.$superClass.apply(this, arguments);
     };
     Card.prototype = Object.create(Element.prototype);
     Card.prototype.constructor = Card;
     Card.$super = Element.prototype;
+    Card.$superClass = Element;
     Card.register = function () {
         $.fn.voxcard = function () {
             var dp = [];
@@ -30,7 +31,7 @@ var vox = core.VW.Web.Vox;
         });
     };
     Card.$constructor = function (obj) {
-        Card.$super.constructor.call(this);
+        Card.$superClass.call(this);
         obj = $(obj);
         var f = this.$ = {};
         f.obj = obj;

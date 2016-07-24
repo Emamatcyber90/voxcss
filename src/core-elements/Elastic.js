@@ -2,7 +2,7 @@ var $ = core.VW.Web.JQuery;
 var vox = core.VW.Web.Vox;
 {
     var Elastic = function Elastic() {
-        Elastic.$constructor ? Elastic.$constructor.apply(this, arguments) : Elastic.$super && Elastic.$super.constructor.apply(this, arguments);
+        Elastic.$constructor ? Elastic.$constructor.apply(this, arguments) : Elastic.$superClass && Elastic.$superClass.apply(this, arguments);
     };
     Elastic.getStyleObject = function () {
         var dom = this.get(0);

@@ -10,11 +10,12 @@ function init(window) {
     };
     {
         var Parallax = function Parallax() {
-            Parallax.$constructor ? Parallax.$constructor.apply(this, arguments) : Parallax.$super && Parallax.$super.constructor.apply(this, arguments);
+            Parallax.$constructor ? Parallax.$constructor.apply(this, arguments) : Parallax.$superClass && Parallax.$superClass.apply(this, arguments);
         };
         Parallax.prototype = Object.create(Element.prototype);
         Parallax.prototype.constructor = Parallax;
         Parallax.$super = Element.prototype;
+        Parallax.$superClass = Element;
         Parallax.__defineGetter__('uid', function () {
             Parallax.id = Parallax.id | 0;
             return Parallax.id++;
@@ -41,7 +42,7 @@ function init(window) {
             });
         };
         Parallax.$constructor = function (obj) {
-            Parallax.$super.constructor.call(this);
+            Parallax.$superClass.call(this);
             Parallax.objects.push(this);
             obj = $(obj);
             var f = this.$ = {};

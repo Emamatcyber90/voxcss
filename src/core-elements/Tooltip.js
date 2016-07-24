@@ -7,11 +7,12 @@ if (typeof window !== 'undefined')
 function init(window) {
     {
         var Tooltip = function Tooltip() {
-            Tooltip.$constructor ? Tooltip.$constructor.apply(this, arguments) : Tooltip.$super && Tooltip.$super.constructor.apply(this, arguments);
+            Tooltip.$constructor ? Tooltip.$constructor.apply(this, arguments) : Tooltip.$superClass && Tooltip.$superClass.apply(this, arguments);
         };
         Tooltip.prototype = Object.create(Element.prototype);
         Tooltip.prototype.constructor = Tooltip;
         Tooltip.$super = Element.prototype;
+        Tooltip.$superClass = Element;
         Tooltip.register = function () {
             $.fn.voxtooltip = function () {
                 var dp = [];
@@ -32,7 +33,7 @@ function init(window) {
             $('.tooltip').voxtooltip();
         };
         Tooltip.$constructor = function (obj) {
-            Tooltip.$super.constructor.call(this);
+            Tooltip.$superClass.call(this);
             obj = $(obj);
             var f = this.$ = {};
             f.obj = obj;

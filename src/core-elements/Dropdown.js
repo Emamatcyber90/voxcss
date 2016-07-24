@@ -4,11 +4,12 @@ var vox = core.VW.Web.Vox;
 function init(document) {
     {
         var Dropdown = function Dropdown() {
-            Dropdown.$constructor ? Dropdown.$constructor.apply(this, arguments) : Dropdown.$super && Dropdown.$super.constructor.apply(this, arguments);
+            Dropdown.$constructor ? Dropdown.$constructor.apply(this, arguments) : Dropdown.$superClass && Dropdown.$superClass.apply(this, arguments);
         };
         Dropdown.prototype = Object.create(Element.prototype);
         Dropdown.prototype.constructor = Dropdown;
         Dropdown.$super = Element.prototype;
+        Dropdown.$superClass = Element;
         Dropdown.register = function () {
             $.fn.voxdropdown = function () {
                 var dp = [];
@@ -31,7 +32,7 @@ function init(document) {
             });
         };
         Dropdown.$constructor = function (obj) {
-            Dropdown.$super.constructor.call(this);
+            Dropdown.$superClass.call(this);
             obj = $(obj);
             var f = this.$ = {};
             f.obj = obj;

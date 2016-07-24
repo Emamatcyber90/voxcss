@@ -8,11 +8,12 @@ if (typeof document !== 'undefined') {
 function init(document) {
     {
         var Tabs = function Tabs() {
-            Tabs.$constructor ? Tabs.$constructor.apply(this, arguments) : Tabs.$super && Tabs.$super.constructor.apply(this, arguments);
+            Tabs.$constructor ? Tabs.$constructor.apply(this, arguments) : Tabs.$superClass && Tabs.$superClass.apply(this, arguments);
         };
         Tabs.prototype = Object.create(Element.prototype);
         Tabs.prototype.constructor = Tabs;
         Tabs.$super = Element.prototype;
+        Tabs.$superClass = Element;
         Tabs.register = function () {
             $.fn.voxtabgroup = function () {
                 var dp = [];
@@ -35,7 +36,7 @@ function init(document) {
             });
         };
         Tabs.$constructor = function (obj) {
-            Tabs.$super.constructor.call(this);
+            Tabs.$superClass.call(this);
             obj = $(obj);
             var f = this.$ = {};
             f.obj = obj;

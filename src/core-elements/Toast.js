@@ -3,11 +3,12 @@ var $ = core.VW.Web.JQuery;
 var vox = core.VW.Web.Vox;
 {
     var Toast = function Toast() {
-        Toast.$constructor ? Toast.$constructor.apply(this, arguments) : Toast.$super && Toast.$super.constructor.apply(this, arguments);
+        Toast.$constructor ? Toast.$constructor.apply(this, arguments) : Toast.$superClass && Toast.$superClass.apply(this, arguments);
     };
     Toast.prototype = Object.create(Element.prototype);
     Toast.prototype.constructor = Toast;
     Toast.$super = Element.prototype;
+    Toast.$superClass = Element;
     Toast.init = function () {
         if (!Toast.container) {
             Toast.container = $('.toast-container');
@@ -53,7 +54,7 @@ var vox = core.VW.Web.Vox;
         });
     };
     Toast.$constructor = function (obj) {
-        Toast.$super.constructor.call(this);
+        Toast.$superClass.call(this);
         obj = $(obj);
         var f = this.$ = {};
         f.obj = obj;

@@ -4,11 +4,12 @@ var vox = core.VW.Web.Vox;
 var modals = [];
 {
     var Modal = function Modal() {
-        Modal.$constructor ? Modal.$constructor.apply(this, arguments) : Modal.$super && Modal.$super.constructor.apply(this, arguments);
+        Modal.$constructor ? Modal.$constructor.apply(this, arguments) : Modal.$superClass && Modal.$superClass.apply(this, arguments);
     };
     Modal.prototype = Object.create(Element.prototype);
     Modal.prototype.constructor = Modal;
     Modal.$super = Element.prototype;
+    Modal.$superClass = Element;
     Modal.checkOpened = function () {
         var open;
         for (var i = 0; i < modals.length; i++) {
@@ -66,7 +67,7 @@ var modals = [];
         });
     };
     Modal.$constructor = function (obj) {
-        Modal.$super.constructor.call(this);
+        Modal.$superClass.call(this);
         obj = $(obj);
         var f = this.$ = {};
         f.obj = obj;

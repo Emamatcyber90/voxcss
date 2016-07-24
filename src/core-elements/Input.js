@@ -5,11 +5,12 @@ var mask = require('./jquery-mask');
 exports.mask = mask;
 {
     var Input = function Input() {
-        Input.$constructor ? Input.$constructor.apply(this, arguments) : Input.$super && Input.$super.constructor.apply(this, arguments);
+        Input.$constructor ? Input.$constructor.apply(this, arguments) : Input.$superClass && Input.$superClass.apply(this, arguments);
     };
     Input.prototype = Object.create(Element.prototype);
     Input.prototype.constructor = Input;
     Input.$super = Element.prototype;
+    Input.$superClass = Element;
     Input.register = function () {
         $.fn.voxinput = function () {
             var dp = [];
@@ -56,7 +57,7 @@ exports.mask = mask;
         };
     };
     Input.$constructor = function (obj) {
-        Input.$super.constructor.call(this);
+        Input.$superClass.call(this);
         obj = $(obj);
         var f = this.$ = {};
         f.obj = obj;

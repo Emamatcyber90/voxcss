@@ -7,11 +7,12 @@ if (typeof window !== 'undefined')
 function init(window) {
     {
         var SideNav = function SideNav() {
-            SideNav.$constructor ? SideNav.$constructor.apply(this, arguments) : SideNav.$super && SideNav.$super.constructor.apply(this, arguments);
+            SideNav.$constructor ? SideNav.$constructor.apply(this, arguments) : SideNav.$superClass && SideNav.$superClass.apply(this, arguments);
         };
         SideNav.prototype = Object.create(Element.prototype);
         SideNav.prototype.constructor = SideNav;
         SideNav.$super = Element.prototype;
+        SideNav.$superClass = Element;
         SideNav.init = function () {
             if (!SideNav.overlay) {
                 SideNav.overlay = $('#sidenav-overlay');
@@ -53,7 +54,7 @@ function init(window) {
             });
         };
         SideNav.$constructor = function (obj) {
-            SideNav.$super.constructor.call(this);
+            SideNav.$superClass.call(this);
             obj = $(obj);
             var f = this.$ = {};
             f.obj = obj;
