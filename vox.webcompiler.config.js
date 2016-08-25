@@ -21,7 +21,13 @@ padd(arr, core.VW.Web.Compiler.Compiler.coreBasic.config)
 padd(arr, core.VW.Web.Compiler.Compiler.core.config)
 
 arr.push(require("./example.js"))
-arr.push(require("./core-webelements.js"))
+
+
+// Ya no se expondrá el archivo core-webelements
+// si se quieren añadir templates se añadirán
+// directamente desde los archivos de código
+// arr.push(require("./core-webelements.js"))
+
 arr.push(require("./core-elements.js"))
 arr.push(require("./core-style.js"))
 arr.push(require("./dynvox.js"))

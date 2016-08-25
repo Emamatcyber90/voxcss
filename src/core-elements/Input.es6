@@ -45,18 +45,24 @@ class Input extends Element{
 	    	try{
 	    		this.each(function(){
 	    			var o= $(this)
-                    if(o.attr("vox-input")!==undefined){
+
+                    //if(o.attr("vox-input")!==undefined){
                         var p= o.parents(".input-field").eq(0)
-                        var t= p.data("vox-input")
-                        if(t){
-                            t.adjustValue()
+                        if(p.length>0){
+                            var t= p.data("vox-input")
+                            if(t){
+                                t.adjustValue()
+                                t.$.r()
+                            }
                         }
-                    }
+                    //}
 	    		})
 	    	}
 	    	catch(e){
-	    		er=e;
+	    		er=e
+                
 	    	}
+
 
 	    	$.fn.val= replaceval
 
@@ -80,7 +86,18 @@ class Input extends Element{
 
 	init(){
 
-		var f= this.$
+		var scope, f= this.$
+        // dynvox observable list ..
+        f.observable= f.obj.data("list")
+        if(f.observable){
+            scope= f.obj.parents("[voxs-scope]").eq(0).attr("voxs-scope")
+            scope= core.dynvox.Scope.get(scope)
+            if(scope){
+                f.scope= scope
+            }
+        }
+
+
 		if(f.obj.is(".select")){
             require("./Input-createSelect").default($,f)
             f.select.attr("vox-input", "vox-input")
@@ -135,6 +152,8 @@ class Input extends Element{
             }
         })
 	}
+
+
 
 
 

@@ -60,7 +60,7 @@ class Tab extends Element{
         
         this.href().hide();
         if(f.parent){
-            f.parent.removeindicator();
+            f.parent.removeIndicator();
         }
         
         this.emit(ev)
@@ -69,6 +69,8 @@ class Tab extends Element{
 	}
 
 	select(){
+
+        console.info("TAB HERE -----")
 		var f=this.$
 		var a0= f.a
         var ev= this.createEvent("beforeselect")
@@ -90,14 +92,15 @@ class Tab extends Element{
         }
         this.href().show()
         if(f.parent)
-            f.parent.addindicator(this)
+            f.parent.addIndicator(this)
         
         this.emit(ev)
 	}
 
 	events(){
 		var f= this.$
-		f.a.click(function(ev){
+        console.info("AQUI BABE...")
+		f.a.click((ev)=>{
             if(f.obj.attr("disabled")===undefined && f.a.attr("disabled")===undefined){
                 ev.preventDefault()
                 this.select()

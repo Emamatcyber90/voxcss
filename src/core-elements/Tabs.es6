@@ -9,6 +9,7 @@
 var Element= require("./Element").default
 var $=core.VW.Web.JQuery
 var vox= core.VW.Web.Vox
+var Tab= core.VW.Web.Elements.Tab
 var doc={};
 if(typeof document !== "undefined"){
     doc=document;
@@ -60,8 +61,10 @@ function init(document){
     	}
 
     	init(){
-    		this.tabs=[]
+    		this.$.tabs=[]
+            this.tabs()
     		this.events()
+
     	}
 
         removeIndicator(){
@@ -72,9 +75,14 @@ function init(document){
             return true
         }
 
+        getTabs(){
+            return this.$.tabs
+        }
+
         tabs(){
             var f=this.$
             var utab= f.obj.find(".tab")
+            console.info("OTABS",utab)
             var i=0
             var self= this
             utab.each(function(){
@@ -83,7 +91,7 @@ function init(document){
                     jtab.append(f.indicator)
                 }
                 
-                var otab= new tab(jtab)
+                var otab= new Tab(jtab)
                 jtab.attr("vox-index",i)
                 otab.$.index=i
                 otab.$.parent = self
@@ -93,7 +101,7 @@ function init(document){
             })
         }
 
-        addIndicator(){
+        addIndicator(tab){
             var f= this.$
             var o= f.lastTab
             f.selectedTab= tab
@@ -127,6 +135,7 @@ function init(document){
         }
 
         unselect(){
+            var f= this.$
             if(f.selectedTab){
                 if(f.selectedTab.unselect()!== false){
                     f.selectedTab=undefined
@@ -151,7 +160,7 @@ function init(document){
                     if(ev.defaultPrevented)
                         return
 
-                    this.close()
+                   // this.close()
                 }
             })
     	}

@@ -79,41 +79,117 @@ exports.default= function($, f){
     f.select.css("top", "80px")
     var val=''
     f.selectDVal= ' '
-    f.select.find("option").each(function(){
+
+
+
+
+    f.appendOption= function(e){
         var op= $("<li>")
-        var e= $(this)
-        var vv= e.val()||""
+        var vv= e.value||""
         op.attr("value", vv)
         
         var a= $("<a>")
         a.data("value", vv)
         
-        a.html(e.html())
+        if(e.html)
+            a.html(e.html)
+        else
+            a.text(e.text)
+
+
         op.append(a)
-        if(e.attr("disabled")!==undefined){
+        if(e.disabled!==undefined){
             op.attr("disabled", "disabled")
         }
         if(vv==""){
-           f.selectDVal= e.text()
+           f.selectDVal= e.text
         }
         
         if(!av){
-            if(e.attr("selected")!==undefined && e.attr("disabled")===undefined){
+            if(e.selected!==undefined && e.disabled===undefined){
                 op.attr("selected", "selected")
-                i1.val(e.text())
+                i1.val(e.text)
                 val=vv
             }
         }
         else{
             if(vv==av){
                 op.attr("selected", "selected")
-                i1.val(e.text())
-                val=vv
+                i1.val(e.text)
+                val=v
             }
         }
         f.opw.append(op)
+
+        return a
+    }
+
+
+
+    f.select.find("option").each(function(){
+        var e=$(this)
+        f.appendOption({
+            html: e.html(),
+            text: e.text(), 
+            disabled: e.attr("disabled"),
+            selected: e.attr("selected"),
+            value: e.val()
+        })
     })
     
+
+    if(f.scope && f.observable){
+        console.info("List ", f.scope, f.observable)
+        var args= {
+            "name": f.observable,
+            "array": true,
+            "onpush": function(ev){
+
+                console.info("PUSHED: ", ev)
+                var observable= ev.observable
+                var value= observable.value
+                var t, item= f.appendOption(value)
+                if(!value.text){
+                    t= $("<div>")
+                    t.html(value.html)
+                    value.text= t.text()
+                }
+
+                var option= $("<option>")
+                option.text(value.text)
+                option.val(value.value)
+                if(value.selected)
+                    option.attr("selected","selected")
+                if(value.disabled)
+                    option.attr("disabled","disabled")
+
+
+                f.select.append(option)
+                if(value.selected){
+                    f.select.val(value.value)
+                    f.r()
+                }
+
+                observable.on("remove", function(){
+                    item.remove()
+                    option.remove()
+                })
+
+                observable.on("change", function(e){
+                    if(e.value.html)
+                        item.html(e.value.html)
+                    else if(e.value.text)
+                        item.text(e.value.text)
+
+                    option.val(e.value.value)
+                    item.val(e.value.value)
+
+                })
+            }
+        }
+        f.scope.observer.observe(args)
+    }
+
     
     if(!val)
         i1.val(f.selectDVal)

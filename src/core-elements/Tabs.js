@@ -1,6 +1,7 @@
 var Element = require('./Element').default;
 var $ = core.VW.Web.JQuery;
 var vox = core.VW.Web.Vox;
+var Tab = core.VW.Web.Elements.Tab;
 var doc = {};
 if (typeof document !== 'undefined') {
     doc = document;
@@ -54,7 +55,8 @@ function init(document) {
             f.indicator.hide();
         };
         Tabs.prototype.init = function () {
-            this.tabs = [];
+            this.$.tabs = [];
+            this.tabs();
             this.events();
         };
         Tabs.prototype.removeIndicator = function () {
@@ -63,9 +65,13 @@ function init(document) {
         Tabs.prototype.isOpened = function () {
             return true;
         };
+        Tabs.prototype.getTabs = function () {
+            return this.$.tabs;
+        };
         Tabs.prototype.tabs = function () {
             var f = this.$;
             var utab = f.obj.find('.tab');
+            console.info('OTABS', utab);
             var i = 0;
             var self = this;
             utab.each(function () {
@@ -73,7 +79,7 @@ function init(document) {
                 if (i == 0) {
                     jtab.append(f.indicator);
                 }
-                var otab = new tab(jtab);
+                var otab = new Tab(jtab);
                 jtab.attr('vox-index', i);
                 otab.$.index = i;
                 otab.$.parent = self;
@@ -81,7 +87,7 @@ function init(document) {
                 f.tabs.push(otab);
             });
         };
-        Tabs.prototype.addIndicator = function () {
+        Tabs.prototype.addIndicator = function (tab) {
             var f = this.$;
             var o = f.lastTab;
             f.selectedTab = tab;
@@ -105,6 +111,7 @@ function init(document) {
             });
         };
         Tabs.prototype.unselect = function () {
+            var f = this.$;
             if (f.selectedTab) {
                 if (f.selectedTab.unselect() !== false) {
                     f.selectedTab = undefined;
@@ -134,7 +141,6 @@ function init(document) {
                         self$0.emit(ev);
                         if (ev.defaultPrevented)
                             return;
-                        self$0.close();
                     };
                 }(this)
             });

@@ -14,7 +14,7 @@ Clase encargada de parsear el DOM y asignar los scopes y variables automáticame
 	<li voxs-name='libro.nombre' vox-text></li>
 </ul>
 
-- ifScope
+- ifScopex
 <div class='xxx' voxs-if='boolean1'>
 	<span>Contenido</span>
 </div>
@@ -139,9 +139,11 @@ class DomParser{
 		obj.attr("voxs-ya", "voxs-ya")
 		var Observable= scope, vr, last
 		var varname= options.varname
+
+		/*
 		if(varname.length==1){
 			if(!scope.getObservable(varname[0])){
-				scope.createVariable(varname[0])
+				scope.createVariable(varname[0], scope[varname[0]])
 			}
 		}
 
@@ -166,9 +168,10 @@ class DomParser{
 					Observable= Observable.value= new ObservableList()
 			}
 			*/
+			
 			this.createEventFunction(scope, obj, Observable, options)
 			return true
-		}
+		//}
 
 	}
 
@@ -199,38 +202,57 @@ class DomParser{
 
 
 	paso3(jObject, scope){
-		var attrs,attr,val, val2, i, y, html, varname
+		var attrs,attr,val, val2, i, y, html, varname, event
 		if(jObject.attr("voxs-repeat")!==undefined){
 			this.withScopeList(scope, jObject)
 		}
-		else if(jObject.attr("voxs-if")!==undefined){
+		if(jObject.attr("voxs-if")!==undefined){
 			this.ifScope(scope, jObject)
 		}
-		else if(jObject.attr("voxs")!==undefined){
+		if(jObject.attr("voxs")!==undefined){
 			attrs= jObject.get(0).attributes
 			for(var z=0;z<attrs.length;z++){
+				event=undefined
 				attr= attrs[z]
-				val= attr.value
-				val2= val
-				i= val.indexOf("#{")
-				if(i>=0){
-					html= val[i-1]=="#"
-					val= val.substring(i+2)
-					y= val.indexOf("}")
-					if(y>=0){
-						varname= val.substring(0, y)
-						val= val.substring(y+1)
-					}
 
-					console.info(varname)
-					attr.value= attr.value.substring(0, i) + val
+				if(attr.name.substring(0, 5)=="event"){
+					event= attr.name.split("-").slice(1).join("-")
+				}
+
+				if(event){
+
 					this.withScopeVar2(scope, jObject, {
-						name: varname, 
-						attr: attr.name,
-						format: val2
+						name:  attr.value,
+						event: event
 					})
+
+
+				}
+				else{
+					val= attr.value
+					val2= val
+					i= val.indexOf("#{")
+					if(i>=0){
+						html= val[i-1]=="#"
+						val= val.substring(i+2)
+						y= val.indexOf("}")
+						if(y>=0){
+							varname= val.substring(0, y)
+							val= val.substring(y+1)
+						}
+
+						//console.info(varname)
+						attr.value= attr.value.substring(0, i) + val
+						this.withScopeVar2(scope, jObject, {
+							name: varname, 
+							attr: attr.name,
+							format: val2
+						})
+					}
 				}
 			}
+
+
 			val= jObject.html()
 			if(val.indexOf("<")<0){
 				val= jObject.text()
@@ -246,12 +268,12 @@ class DomParser{
 					}
 					
 					jObject.html(jObject.html().substring(0, i-(html?1:0))  + val)
-					console.info({
+					/*console.info({
 						name: varname,
 						format: val2,
 						html,
 						text: !html
-					})
+					})*/
 					this.withScopeVar2(scope, jObject, {
 						name: varname,
 						format: val2,
@@ -278,9 +300,9 @@ class DomParser{
 	}
 
 	init(){
-		$(()=>{
+		//$(()=>{
 			this.paso1($("html"))
-		})
+		//})
 	}
 	
 

@@ -35,7 +35,7 @@ var data = {
     entry:  path,
     output: {
         path:  __dirname + "/dist",
-        filename: minimal?"js/vox-elements.min.js":"js/vox-elements.js",
+        filename: minimal?"js/voxcss.min.js":"js/voxcss.js",
         libraryTarget: "umd"
     }
 }

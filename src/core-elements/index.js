@@ -49,8 +49,13 @@ e.get_HasTooltip = function () {
 e.get_Elastic = function () {
     return require('./Elastic').default;
 };
+e.get_Theme = function () {
+    return require('./Theme').default;
+};
 core.VW.Util.createProperties(e);
 e.register = function () {
+    if (!e.Theme.current)
+        e.Theme.default();
     e.Card.register();
     e.Dropdown.register();
     e.Input.register();

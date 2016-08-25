@@ -1,5 +1,7 @@
 import Observable from './Observable'
 import ObservableValue from './ObservableValue'
+import ScopeObserver from './ScopeObserver'
+
 class Scope extends Observable{
 	static get(name){
 		return Scope.v[name]|| Scope.create(name)
@@ -11,6 +13,13 @@ class Scope extends Observable{
 	append(scope){
 		this.scopes.push(scope)
 		scope.parent= this
+	}
+
+	get observer(){
+		if(!this.$observer)
+			this.$observer= new ScopeObserver(this)
+
+		return this.$observer
 	}
 
 	createVariable(name, value){

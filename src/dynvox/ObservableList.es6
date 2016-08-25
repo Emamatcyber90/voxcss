@@ -16,6 +16,9 @@ class ObservableList extends Observable{
 	}
 
 
+	toArray(){
+		return Array.prototype.slice.call(this, 0, this.length)
+	}
 
 
 	get name(){
@@ -123,7 +126,9 @@ class ObservableList extends Observable{
 		}
 
 		Array.prototype.splice.call(0, this.length)
+		this.length=0
 		this.emit('removeall', ev)
+
 	}
 
 

@@ -49,13 +49,14 @@ var vox = core.VW.Web.Vox;
         ev.jTarget = a0;
         this.href().hide();
         if (f.parent) {
-            f.parent.removeindicator();
+            f.parent.removeIndicator();
         }
         this.emit(ev);
         if (ev.defaultPrevented)
             return;
     };
     Tab.prototype.select = function () {
+        console.info('TAB HERE -----');
         var f = this.$;
         var a0 = f.a;
         var ev = this.createEvent('beforeselect');
@@ -74,17 +75,20 @@ var vox = core.VW.Web.Vox;
         }
         this.href().show();
         if (f.parent)
-            f.parent.addindicator(this);
+            f.parent.addIndicator(this);
         this.emit(ev);
     };
     Tab.prototype.events = function () {
         var f = this.$;
-        f.a.click(function (ev) {
-            if (f.obj.attr('disabled') === undefined && f.a.attr('disabled') === undefined) {
-                ev.preventDefault();
-                this.select();
-            }
-        });
+        console.info('AQUI BABE...');
+        f.a.click(function (self$0) {
+            return function (ev) {
+                if (f.obj.attr('disabled') === undefined && f.a.attr('disabled') === undefined) {
+                    ev.preventDefault();
+                    self$0.select();
+                }
+            };
+        }(this));
     };
 }
 exports.default = Tab;
