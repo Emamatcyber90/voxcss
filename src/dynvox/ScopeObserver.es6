@@ -340,11 +340,14 @@ class ScopeObserver extends EventEmitter{
 							obj= current.getObservable(props[i])
 						}
 
-						if(args.array && !(obj.value instanceof core.dynvox.ObservableList)){
-							v= obj.value
-							obj.value= new core.dynvox.ObservableList(props[i])
-							if(v)
-								obj.value.value= v
+						if(obj && i==props.length-1){
+
+							if(args.array && !(obj.value instanceof core.dynvox.ObservableList)){
+								v= obj.value
+								obj.value= new core.dynvox.ObservableList(props[i])
+								if(v)
+									obj.value.value= v
+							}
 						}
 						current=obj
 					}
@@ -410,16 +413,28 @@ class ScopeObserver extends EventEmitter{
 					FnRemoveAll(e)
 
 
-				for(var i=0;i<value.length;i++){
-					var e= {
-						"object": current,
-						"observable": value.getObservable(i.toString())
-					}
+				if(!value){
+					console.error("Error al iterar array ", props)
+				}
+				else{
+					for(var i=0;i<value.length;i++){
 
-					if(Funcs)
-						Funcs.onpush&&Funcs.onpush(e)
-					else
-						FnPush(e)
+						if(!value.getObservable){
+							ev.observable= new core.dynvox.ObservableValue()
+							ev.observable.value= value[i]
+						}
+
+
+						var e= {
+							"object": current,
+							"observable": value.getObservable?value.getObservable(i.toString()):ev.observable
+						}
+
+						if(Funcs)
+							Funcs.onpush&&Funcs.onpush(e)
+						else
+							FnPush(e)
+					}
 				}
 			}
 			else{
