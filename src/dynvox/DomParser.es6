@@ -203,6 +203,7 @@ class DomParser{
 
 	paso3(jObject, scope){
 		var attrs,attr,val, val2, i, y, html, varname, event
+		jObject.get(0)._voxscope= scope
 		if(jObject.attr("voxs-repeat")!==undefined){
 			this.withScopeList(scope, jObject)
 		}
@@ -319,4 +320,14 @@ class DomParser{
 
 }
 DomParser.q= "[voxs-name], [voxs-if], [voxs]"
+
+$.fn.voxscope= function(){
+	var e= this.get(0)
+	var scname, sc=e._voxscope
+	if(!sc){
+		scname= this.parents("[voxs-scope]")||"default"
+		sc= core.dynvox.Scope.get(scname)
+	}
+	return sc
+}
 export default DomParser
