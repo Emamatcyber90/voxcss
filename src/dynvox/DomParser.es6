@@ -39,9 +39,9 @@ class DomParser{
 	createEventFunction(scope, DOM, Observable, options){
 
 		var dom= DOM.get(0),v
-		if(!dom.VoxSEvents){
+		//if(!dom.VoxSEvents){
 			dom.VoxSEvents= new DomEvents(DOM, this)
-		}
+		//}
 		v= dom.VoxSEvents
 		v.setArguments(scope, Observable, options)
 		v.createEventFunction()
@@ -291,7 +291,7 @@ class DomParser{
 
 	paso1(Window){
 		var k,j=Window.find("[voxs-scope]"), s
-		for(var i=0;i<j.length;i++){
+		for(var i=j.length-1;i>=0;i--){
 			k= j.eq(i)
 			s= k.attr("voxs-scope")
 			if(s){

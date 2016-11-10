@@ -7,6 +7,7 @@ function init(document) {
             Dropdown.$constructor ? Dropdown.$constructor.apply(this, arguments) : Dropdown.$superClass && Dropdown.$superClass.apply(this, arguments);
         };
         Dropdown.prototype = Object.create(Element.prototype);
+        Object.setPrototypeOf ? Object.setPrototypeOf(Dropdown, Element) : Dropdown.__proto__ = Element;
         Dropdown.prototype.constructor = Dropdown;
         Dropdown.$super = Element.prototype;
         Dropdown.$superClass = Element;

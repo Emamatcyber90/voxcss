@@ -138,14 +138,14 @@ class Input extends Element{
 		var v= f.select.val()
         f.opw.find("li").removeAttr("selected")
         f.opw.find("li>a").removeAttr("hover-active")
-        if(!v){
+        /*if(!v){
             f.inp.val(f.selectDVal)
             return
-        }
+        }*/
 
         f.opw.find("li").each(function(){
             var l= $(this)
-            if(l.attr("value")==v){
+            if(l.attr("value")==v || (!l.attr("value") && !v)){
                 l.attr("selected", "selected")
                 l.find("a").attr("hover-active","hover-active")
                 f.inp.val(l.text())

@@ -45,7 +45,6 @@ class DomEvents{
 					var scope2, b= self.Body.clone(true)
 					var dq= $("<div>")
 					dq.append(b)
-					
 					dq.find(DomParser.q).removeAttr("voxs-ya")
 
 					scope2= args.scope.clone()
@@ -65,7 +64,7 @@ class DomEvents{
 				}
 
 				args.options.onremoveall= function(){
-					// No es necesario ...
+					self.DOM.html("")
 				}
 				args.options.array= true
 
@@ -82,7 +81,7 @@ class DomEvents{
 
 			else if(args.options.ifcondition){
 
-				console.info(args.options)
+				//console.info(args.options)
 				var equal= args.options.name.split("==")
 				var verifExpression= undefined, verificarExp= false
 				if(equal.length>1){
@@ -183,7 +182,7 @@ class DomEvents{
 						else 
 							args.options.value= this.value
 
-						console.info("CHANGING", args)
+						//console.info("CHANGING", args)
 						scopeObserver.assignValue(args.options)
 					})
 				}

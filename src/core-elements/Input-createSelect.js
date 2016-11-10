@@ -21,6 +21,7 @@ exports.default= function($, f){
             options.each(function(){
                 var toption= $(this);
                 var option= $("<option>");
+
                 option.html(toption.html());
                 // option.val(toption.attr("value"));
                 
@@ -69,6 +70,7 @@ exports.default= function($, f){
     f.opw.addClass("text-"+f.obj.data("activecolor"))
     f.opw.addClass("options-wrapper")
     var i1= $("<input>")
+    i1.attr("voxs", "voxs")
     i1.attr("type","text")
     i1.attr("readonly","readonly")
     f.inp= i1
@@ -89,6 +91,7 @@ exports.default= function($, f){
         op.attr("value", vv)
         
         var a= $("<a>")
+        a.attr("voxs","voxs")
         a.data("value", vv)
         
         if(e.html)

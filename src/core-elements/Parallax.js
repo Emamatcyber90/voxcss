@@ -13,6 +13,7 @@ function init(window) {
             Parallax.$constructor ? Parallax.$constructor.apply(this, arguments) : Parallax.$superClass && Parallax.$superClass.apply(this, arguments);
         };
         Parallax.prototype = Object.create(Element.prototype);
+        Object.setPrototypeOf ? Object.setPrototypeOf(Parallax, Element) : Parallax.__proto__ = Element;
         Parallax.prototype.constructor = Parallax;
         Parallax.$super = Element.prototype;
         Parallax.$superClass = Element;

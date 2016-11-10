@@ -6,6 +6,7 @@ var vox = core.VW.Web.Vox;
         Tab.$constructor ? Tab.$constructor.apply(this, arguments) : Tab.$superClass && Tab.$superClass.apply(this, arguments);
     };
     Tab.prototype = Object.create(Element.prototype);
+    Object.setPrototypeOf ? Object.setPrototypeOf(Tab, Element) : Tab.__proto__ = Element;
     Tab.prototype.constructor = Tab;
     Tab.$super = Element.prototype;
     Tab.$superClass = Element;

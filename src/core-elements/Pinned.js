@@ -6,6 +6,7 @@ var vox = core.VW.Web.Vox;
         Pinned.$constructor ? Pinned.$constructor.apply(this, arguments) : Pinned.$superClass && Pinned.$superClass.apply(this, arguments);
     };
     Pinned.prototype = Object.create(Element.prototype);
+    Object.setPrototypeOf ? Object.setPrototypeOf(Pinned, Element) : Pinned.__proto__ = Element;
     Pinned.prototype.constructor = Pinned;
     Pinned.$super = Element.prototype;
     Pinned.$superClass = Element;

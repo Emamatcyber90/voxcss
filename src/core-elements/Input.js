@@ -8,6 +8,7 @@ exports.mask = mask;
         Input.$constructor ? Input.$constructor.apply(this, arguments) : Input.$superClass && Input.$superClass.apply(this, arguments);
     };
     Input.prototype = Object.create(Element.prototype);
+    Object.setPrototypeOf ? Object.setPrototypeOf(Input, Element) : Input.__proto__ = Element;
     Input.prototype.constructor = Input;
     Input.$super = Element.prototype;
     Input.$superClass = Element;
@@ -105,13 +106,9 @@ exports.mask = mask;
         var v = f.select.val();
         f.opw.find('li').removeAttr('selected');
         f.opw.find('li>a').removeAttr('hover-active');
-        if (!v) {
-            f.inp.val(f.selectDVal);
-            return;
-        }
         f.opw.find('li').each(function () {
             var l = $(this);
-            if (l.attr('value') == v) {
+            if (l.attr('value') == v || !l.attr('value') && !v) {
                 l.attr('selected', 'selected');
                 l.find('a').attr('hover-active', 'hover-active');
                 f.inp.val(l.text());

@@ -21,6 +21,11 @@ class VoxScope{
 		return require("./Scope").default
 	}
 
+	static get Router(){
+		return require("./Router").default
+	}
+
+
 	static get Convert(){
 		return require("./Convert").default
 	}

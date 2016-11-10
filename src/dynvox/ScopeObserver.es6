@@ -9,6 +9,7 @@ class ScopeObserver extends EventEmitter{
 		this.events={}
 		this.assign={}
 		this.gets={}
+		this.setMaxListeners(1000)
 	}
 
 
@@ -85,8 +86,27 @@ class ScopeObserver extends EventEmitter{
 			"name":prop
 		})
 		var propStr= props.join("->")
+		/*var posibles= [props[0]]
+		if(props.length>1){
+			for(var i=1;i<props.length;i++){
+				posibles.push(props.slice(0,i+1).join("->"))
+			}
+		}
+
+		console.info("Observing: ", propStr)
+		*/
+
+
+		if(!this.events[propStr]){
+			//console.info("Not observed: ", prop)
+			this.observe({
+				"name": prop
+			})
+		}
+
 		return this.on("change", (e)=>{
-			if(e.prop == propStr){
+			//console.info("PROP:", e)
+			if(e.prop==propStr){
 				if(func)
 					return func(e)
 			}
@@ -195,7 +215,7 @@ class ScopeObserver extends EventEmitter{
 			}
 
 			//lastObservable.value=lastObservable.value
-			console.info("EMITTING CHANGE", propStr)
+			//console.info("EMITTING CHANGE", propStr)
 			this.emit("change", {
 				"observable": lastObservable, 
 				"prop": propStr,
@@ -250,6 +270,17 @@ class ScopeObserver extends EventEmitter{
 	_observe(ev, args){
 
 		var self= this
+		var props= this._getparts(ev)
+		var id= Date.now().toString(32)
+
+		var FnChangeG= (e)=>{
+
+			e.prop= props.join("->")
+			//console.info("PROP:", e.prop, e)
+			e.timestamp= id
+			this.emit("change", e)
+		}
+
 		var FnChange= function(e){
 			// when chage ...
 			var o
@@ -322,13 +353,14 @@ class ScopeObserver extends EventEmitter{
 
 
 		var current= this.scope
-		var props= this._getparts(ev)
+		
 
 
 		//console.info("PROPS: ", props)
 		var createChangeFN= function(obs, y, props){
 				
 			return function(){
+				
 
 				var obj, current=obs, v
 				for(var i=y;i<props.length;i++){
@@ -358,9 +390,20 @@ class ScopeObserver extends EventEmitter{
 							current.___observableChange={}
 
 						if(i==props.length-1){
+
+							/*
+							if(!current._fnChange){
+								//current.on("change", FnChangeG)
+								current._fnChange= FnChangeG
+							}*/
+
+
 							if(!current.___observableChange[ev.id]){
-								current.___observableChange[ev.id]= FnChange
-								current.on("change", FnChange)
+								
+								current.___observableChange[ev.id]= FnChangeG
+								current.on("change", FnChangeG)
+								//console.info("Listening:", current._listeners)
+								//current._fnChange= FnChangeG
 
 								// Eventos de array ...
 								//console.info("FNPUSH .... ASIGN", current)
@@ -402,7 +445,7 @@ class ScopeObserver extends EventEmitter{
 				if(value)
 					value= value[props[i]]
 			}
-			// EMITCHANGE ...
+
 			if(args.array){
 				e= {
 					"object": current
@@ -446,7 +489,7 @@ class ScopeObserver extends EventEmitter{
 				if(Funcs)
 					Funcs.onchange&& Funcs.onchange(e)
 				else
-					FnChange(e)
+					FnChangeG(e)
 			}
 		}
 

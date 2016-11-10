@@ -6,6 +6,7 @@ var vox = core.VW.Web.Vox;
         Toast.$constructor ? Toast.$constructor.apply(this, arguments) : Toast.$superClass && Toast.$superClass.apply(this, arguments);
     };
     Toast.prototype = Object.create(Element.prototype);
+    Object.setPrototypeOf ? Object.setPrototypeOf(Toast, Element) : Toast.__proto__ = Element;
     Toast.prototype.constructor = Toast;
     Toast.$super = Element.prototype;
     Toast.$superClass = Element;

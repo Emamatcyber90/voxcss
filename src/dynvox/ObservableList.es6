@@ -15,7 +15,6 @@ class ObservableList extends Observable{
 			this.value= value
 	}
 
-
 	toArray(){
 		return Array.prototype.slice.call(this, 0, this.length)
 	}
@@ -25,6 +24,9 @@ class ObservableList extends Observable{
 		return this.m.name
 	}
 
+
+	/*
+
 	get parent(){
 		return this.m.parent
 	}
@@ -32,6 +34,7 @@ class ObservableList extends Observable{
 	set parent(parent){
 		this.m.parent= parent
 	}
+	*/
 
 
 	set value(value){
@@ -58,7 +61,7 @@ class ObservableList extends Observable{
 		//this.length= this.length|0
 		var v1= new ObservableValue(this.length.toString())
 		v1.value= value
-		v1.parent= this
+		//v1.parent= this
 		this.add(v1)
 	 	Array.prototype.push.call(this, value)
 		this.emit("push", {
@@ -78,21 +81,14 @@ class ObservableList extends Observable{
 
 
 	pop(){
-		var o= this.v[this.length-1]
-		if(o&& o.remove){
-			o.remove()
-		}
-		Array.prototype.pop.call(this)
+		if(this.length>0)
+			this.removeIndex(this.length-1)
 	}
 
 
 	shift(){
-		var o= this[0]
-		if(o&& o.remove){
-			o.remove()
-		}
-
-		Array.prototype.shift.call(this)
+		if(this.length>0)
+			this.removeIndex(0)
 	}
 
 	/*
@@ -101,18 +97,37 @@ class ObservableList extends Observable{
 			arguments[0]= arguments[0].value
 			return Fn.apply(this, arguments)
 		}
+	}*/
+	
+
+	/*
+	sort(){
+		Array.prototype.sort.apply(this, arguments)
+		return this
 	}
 	*/
 
-	removeIndex(index){
-		if(this.v[index] && this.v[index].remove)
-			this.v[index].remove()
 
-		this.v[index]= null
+
+
+	removeIndex(index){
+		var current= this.v[index]
+		if(current && current.remove)
+			current._triggerRemove()
+		this._removeIndex(index)
+	}
+	_removeIndex(index){
 		for(var i=index;i<this.length;i++){
-			this.v[i]= this[i+1]
+			this.v[i]= this.v[i+1]
 		}
 		Array.prototype.pop.call(this)
+	}
+
+	_removeValue(value){
+		for(var i=0;i<this.length;i++){
+			if(this.v[i]== value)
+				return this._removeIndex(i)
+		}
 	}
 
 

@@ -10,6 +10,7 @@ function init(window) {
             SideNav.$constructor ? SideNav.$constructor.apply(this, arguments) : SideNav.$superClass && SideNav.$superClass.apply(this, arguments);
         };
         SideNav.prototype = Object.create(Element.prototype);
+        Object.setPrototypeOf ? Object.setPrototypeOf(SideNav, Element) : SideNav.__proto__ = Element;
         SideNav.prototype.constructor = SideNav;
         SideNav.$super = Element.prototype;
         SideNav.$superClass = Element;

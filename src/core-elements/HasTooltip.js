@@ -10,6 +10,7 @@ function init(window) {
             Tooltip.$constructor ? Tooltip.$constructor.apply(this, arguments) : Tooltip.$superClass && Tooltip.$superClass.apply(this, arguments);
         };
         Tooltip.prototype = Object.create(Element.prototype);
+        Object.setPrototypeOf ? Object.setPrototypeOf(Tooltip, Element) : Tooltip.__proto__ = Element;
         Tooltip.prototype.constructor = Tooltip;
         Tooltip.$super = Element.prototype;
         Tooltip.$superClass = Element;

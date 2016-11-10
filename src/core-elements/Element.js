@@ -5,6 +5,7 @@ var vox = core.VW.Web.Vox;
         Element.$constructor ? Element.$constructor.apply(this, arguments) : Element.$superClass && Element.$superClass.apply(this, arguments);
     };
     Element.prototype = Object.create(events.prototype);
+    Object.setPrototypeOf ? Object.setPrototypeOf(Element, events) : Element.__proto__ = events;
     Element.prototype.constructor = Element;
     Element.$super = events.prototype;
     Element.$superClass = events;

@@ -7,6 +7,7 @@ var modals = [];
         Modal.$constructor ? Modal.$constructor.apply(this, arguments) : Modal.$superClass && Modal.$superClass.apply(this, arguments);
     };
     Modal.prototype = Object.create(Element.prototype);
+    Object.setPrototypeOf ? Object.setPrototypeOf(Modal, Element) : Modal.__proto__ = Element;
     Modal.prototype.constructor = Modal;
     Modal.$super = Element.prototype;
     Modal.$superClass = Element;

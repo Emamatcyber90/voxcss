@@ -6,6 +6,7 @@ var vox = core.VW.Web.Vox;
         Card.$constructor ? Card.$constructor.apply(this, arguments) : Card.$superClass && Card.$superClass.apply(this, arguments);
     };
     Card.prototype = Object.create(Element.prototype);
+    Object.setPrototypeOf ? Object.setPrototypeOf(Card, Element) : Card.__proto__ = Element;
     Card.prototype.constructor = Card;
     Card.$super = Element.prototype;
     Card.$superClass = Element;

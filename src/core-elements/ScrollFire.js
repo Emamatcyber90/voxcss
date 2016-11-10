@@ -6,6 +6,7 @@ var vox = core.VW.Web.Vox;
         ScrollFire.$constructor ? ScrollFire.$constructor.apply(this, arguments) : ScrollFire.$superClass && ScrollFire.$superClass.apply(this, arguments);
     };
     ScrollFire.prototype = Object.create(Element.prototype);
+    Object.setPrototypeOf ? Object.setPrototypeOf(ScrollFire, Element) : ScrollFire.__proto__ = Element;
     ScrollFire.prototype.constructor = ScrollFire;
     ScrollFire.$super = Element.prototype;
     ScrollFire.$superClass = Element;

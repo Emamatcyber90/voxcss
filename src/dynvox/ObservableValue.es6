@@ -25,11 +25,23 @@ class ObservableValue extends Observable{
 	}
 
 
+	get oldValue(){
+		return this.m.old
+	}
+
+
 	set value(value){
 		if(this.m.value instanceof core.dynvox.ObservableList && value instanceof Array)
 			return this.m.value.value= value
 
+		this.m.old= this.m.value
 		this.m.value= value
+		
+		/*
+		if(this.m.old== this.m.value)
+			return 
+		*/
+
 		var ev= {
 			value: value,
 			object: this

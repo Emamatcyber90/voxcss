@@ -358,40 +358,48 @@ Id = 0;
                 'hue-1': 'teal:lighten2',
                 'hue-2': 'teal:darken3',
                 'hue-3': 'teal:accent1',
+                'hue-4': 'teal:accent2',
                 'text': 'white:default',
                 'text-2': 'teal:darken-4',
                 'text-1': 'white:default',
-                'text-3': 'white:default'
+                'text-3': 'white:default',
+                'text-4': 'white:default'
             },
             'accentPalette': {
                 'default': 'pink:default',
                 'hue-1': 'pink:lighten2',
                 'hue-2': 'pink:darken3',
                 'hue-3': 'pink:accent1',
+                'hue-4': 'pink:accent2',
                 'text': 'white:default',
                 'text-1': 'red:default',
                 'text-2': 'white:default',
+                'text-3': 'white:default',
                 'text-4': 'white:default'
             },
             'warnPalette': {
-                'default': 'deeporange:default',
-                'hue-1': 'deeporange:lighten2',
+                'default': 'red:default',
+                'hue-1': 'red:lighten2',
                 'hue-2': 'deeporange:darken3',
-                'hue-3': 'deeporange:accent1',
+                'hue-3': 'red:accent1',
+                'hue-4': 'red:accent2',
                 'text': 'white:default',
-                'text-2': 'deeporange:darken-4',
+                'text-2': 'red:darken-4',
                 'text-1': 'white:default',
-                'text-3': 'white:default'
+                'text-3': 'white:default',
+                'text-4': 'white:default'
             },
             'backgroundPalette': {
                 'default': 'gray:lighten2',
                 'hue-1': 'white:default',
                 'hue-2': 'gray:darken2',
                 'hue-3': 'gray:darken3',
+                'hue-4': 'gray:darken3',
                 'text': 'black:default',
                 'text-1': 'gray:darken-3',
                 'text-2': 'white:default',
-                'text-3': 'white:default'
+                'text-3': 'white:default',
+                'text-4': 'white:default'
             }
         };
     });

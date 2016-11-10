@@ -12,6 +12,7 @@ function init(document) {
             Tabs.$constructor ? Tabs.$constructor.apply(this, arguments) : Tabs.$superClass && Tabs.$superClass.apply(this, arguments);
         };
         Tabs.prototype = Object.create(Element.prototype);
+        Object.setPrototypeOf ? Object.setPrototypeOf(Tabs, Element) : Tabs.__proto__ = Element;
         Tabs.prototype.constructor = Tabs;
         Tabs.$super = Element.prototype;
         Tabs.$superClass = Element;

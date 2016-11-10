@@ -22,6 +22,24 @@ class Scope extends Observable{
 		return this.$observer
 	}
 
+	static reset(){
+		delete this.v
+		this.v= {}
+	}
+
+
+	reset(){
+		if(this.scopes){
+			for(var i=0;i<this.scopes.length;i++){
+				this.scopes[i].reset()
+			}
+		}
+		delete this.$observer
+		super.reset()
+	}
+
+
+
 	createVariable(name, value){
 		this.add(new ObservableValue(name))
 		this[name]= value
