@@ -100,13 +100,12 @@ class ObservableList extends Observable{
 	}*/
 	
 
-	/*
+	
 	sort(){
 		Array.prototype.sort.apply(this, arguments)
 		return this
 	}
-	*/
-
+	
 
 
 
@@ -116,6 +115,12 @@ class ObservableList extends Observable{
 			current._triggerRemove()
 		this._removeIndex(index)
 	}
+
+
+	
+
+
+
 	_removeIndex(index){
 		for(var i=index;i<this.length;i++){
 			this.v[i]= this.v[i+1]
@@ -127,6 +132,14 @@ class ObservableList extends Observable{
 		for(var i=0;i<this.length;i++){
 			if(this.v[i]== value)
 				return this._removeIndex(i)
+		}
+	}
+
+
+	removeValue(value){
+		for(var i=0;i<this.length;i++){
+			if(this[i]== value)
+				return this.removeIndex(i)
 		}
 	}
 

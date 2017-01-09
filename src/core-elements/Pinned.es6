@@ -55,10 +55,33 @@ class Pinned extends Element{
 	}
 
 	$scroll(ev){
+
+		//console.info("Scrolled")
 		var f= this.$,j= f.obj, j2= f.parent, h=j.outerHeight(),
 			h2=j2.outerHeight()
 
-        if(h>$(window).height()){
+		//console.info(h2, ev.offset, h)
+		var wh= $(window).outerHeight()
+		var pt= j2.attr("pinned-top")|0
+		wh-= pt
+
+		var applyPinned= true, pos, lastpos= undefined
+		var pinnedItems= j2.find(".pinned")
+		for(var i=0;i<pinnedItems.length;i++){
+			pos= pinnedItems.eq(i).position().top
+			if(lastpos!==undefined && lastpos!= pos){
+				applyPinned= false
+				break
+			}
+			lastpos= pos
+		}
+
+		if(!applyPinned){
+			pinnedItems.css("margin-top", 0)
+			return 
+		}
+
+        if(h>wh){
             if(ev.offset>=h){
                 if(ev.offset>h2){
                     ev.offset= h2
@@ -71,8 +94,8 @@ class Pinned extends Element{
             }    
         }
         else{
-            if(ev.offset>$(window).height()){
-                let a=ev.offset-$(window).height()
+            if(ev.offset>wh){
+                let a=ev.offset-wh
                 if(a+h>= h2){
                     a= h2-h
                 }

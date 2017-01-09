@@ -16,6 +16,9 @@ e.get_Input = function () {
 e.get_mask = function () {
     return Input.mask;
 };
+e.get_Anchor = function () {
+    return require('./Anchor').default;
+};
 e.get_Modal = function () {
     return require('./Modal').default;
 };
@@ -69,4 +72,5 @@ e.register = function () {
     e.Tooltip.register();
     e.HasTooltip.register();
     e.Elastic.register();
+    e.Anchor.register();
 };

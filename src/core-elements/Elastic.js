@@ -75,6 +75,13 @@ var vox = core.VW.Web.Vox;
         f.obj = obj;
         this.adjust(obj);
     };
+    Elastic.prototype.refresh = function () {
+        var f = this.$;
+        var sxl = f.obj.get(0).sxl;
+        var refrescar = sxl.elastic ? sxl.elastic : null;
+        if (refrescar)
+            refrescar();
+    };
     Elastic.prototype.adjust = function (obj) {
         var elastic = this;
         obj.each(function () {

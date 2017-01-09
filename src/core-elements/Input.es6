@@ -10,7 +10,7 @@ var Element= require("./Element").default
 var $=core.VW.Web.JQuery
 var vox= core.VW.Web.Vox
 export var mask= require("./jquery-mask")
-
+var fnVal= $.fn.val
 
 class Input extends Element{
 
@@ -37,7 +37,7 @@ class Input extends Element{
 	        $(".input-field").voxinput()
 	    })
 
-	    var value= $.fn.val;
+	    var value= fnVal
 	    var replaceval= $.fn.val= function(){
 	    	var er, result = value.apply(this,arguments)
 	    	$.fn.val= value
@@ -53,6 +53,7 @@ class Input extends Element{
                             if(t){
                                 t.adjustValue()
                                 t.$.r()
+                                t.$.elasticr()
                             }
                         }
                     //}
@@ -166,9 +167,17 @@ class Input extends Element{
                 f.label.addClass("active")
             else
                 f.label.removeClass("active")
+
+            
+            
+            
             
         }
 
+        f.elasticr= ()=>{
+            if(f.inp.hasClass("vox-textarea") || f.inp.hasClass("vox-elastic"))
+                f.inp.voxelastic()[0] && f.inp.voxelastic()[0].refresh()
+        }
 
         f.line= f.obj.find(".line")
         if(f.line.length==0){

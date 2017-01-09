@@ -49,7 +49,24 @@ var vox = core.VW.Web.Vox;
     };
     Pinned.prototype.$scroll = function (ev) {
         var f = this.$, j = f.obj, j2 = f.parent, h = j.outerHeight(), h2 = j2.outerHeight();
-        if (h > $(window).height()) {
+        var wh = $(window).outerHeight();
+        var pt = j2.attr('pinned-top') | 0;
+        wh -= pt;
+        var applyPinned = true, pos, lastpos = undefined;
+        var pinnedItems = j2.find('.pinned');
+        for (var i = 0; i < pinnedItems.length; i++) {
+            pos = pinnedItems.eq(i).position().top;
+            if (lastpos !== undefined && lastpos != pos) {
+                applyPinned = false;
+                break;
+            }
+            lastpos = pos;
+        }
+        if (!applyPinned) {
+            pinnedItems.css('margin-top', 0);
+            return;
+        }
+        if (h > wh) {
             if (ev.offset >= h) {
                 if (ev.offset > h2) {
                     ev.offset = h2;
@@ -60,8 +77,8 @@ var vox = core.VW.Web.Vox;
                 j.css('margin-top', '0');
             }
         } else {
-            if (ev.offset > $(window).height()) {
-                var a$2 = ev.offset - $(window).height();
+            if (ev.offset > wh) {
+                var a$2 = ev.offset - wh;
                 if (a$2 + h >= h2) {
                     a$2 = h2 - h;
                 }

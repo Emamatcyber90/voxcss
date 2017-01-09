@@ -77,6 +77,7 @@ function init(window) {
             f.img.css('transform', 'translate3d(0, ' + translate.toString() + 'px, 0)');
         };
         Parallax.prototype.events = function () {
+            var f = this.$;
             f.scrollfire.on('scroll', function (self$0) {
                 return function (ev) {
                     return self$0.$scroll(ev);

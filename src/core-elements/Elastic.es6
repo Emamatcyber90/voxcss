@@ -77,6 +77,17 @@ class Elastic{
 	}
 
 
+    refresh(){
+         
+
+        var f= this.$
+        var sxl=f.obj.get(0).sxl
+        var refrescar= sxl.elastic ? sxl.elastic : null
+        if(refrescar)
+            refrescar()
+    }
+
+
 	adjust(obj){
 		var elastic= this
 		obj.each(function(){
@@ -117,7 +128,7 @@ class Elastic{
             e.css("overflow", "hidden")
             var self= this
             if(!this.sxl.elastic){
-                this.sxl.elastic= function(){
+               this.sxl.elastic= function(){
                     if(self.sxl.elastic.i){
                         clearTimeout(self.sxl.elastic.i)
                         self.sxl.elastic.i=undefined

@@ -17,8 +17,21 @@ class VoxScope{
 		return require("./ObservableObject").default
 	}
 
+	static get EscapeHtml(){
+		return require("./EscapeHtml")
+	}
+
 	static get Scope(){
 		return require("./Scope").default
+	}
+
+	static get ScopeObserver(){
+		return require("./ScopeObserver").default
+	}
+
+
+	static get ScopeBestObserver(){
+		return require("./ScopeBestObserver").default
 	}
 
 	static get Router(){

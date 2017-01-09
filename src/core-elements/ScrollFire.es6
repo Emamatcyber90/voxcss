@@ -52,7 +52,7 @@ class ScrollFire extends Element{
 
 
 	init(){
-        this.off=[]
+        this.$.off=[]
 		this.events()
 	}
 
@@ -60,11 +60,11 @@ class ScrollFire extends Element{
 
 	bindOnOffset(offset, callback){
 		var f= this.$	
-        f.off= {
+        f.off.push({
             offset, 
             callback,
             scroll:-1
-        }
+        })
     }
 
 
@@ -92,7 +92,7 @@ class ScrollFire extends Element{
            
             var offset= windowScroll-top
             if(ev.resize || (windowScroll>=top && sTop <= top + he)){
-                ev.scrollfire= self
+                ev.scrollfire= this
                 ev.offset= windowScroll-top
                 ev.type= "scroll"
                 //self.trigger("scroll", ev)
@@ -130,14 +130,15 @@ class ScrollFire extends Element{
         w.bind("scroll", h)
         
         f.h=h
-        w.resize(function(){
+        var r1= this.refresh.bind(this)
+        w.resize(()=>{
             if(f.r){
                 clearTimeout(f.r)
                 f.r=undefined
             }
-            f.r= setTimeout(()=>this.refresh(), 100)
+            f.r= setTimeout(r1, 100)
         })
-        setTimeout(()=>this.refresh(), 100)
+        setTimeout(r1, 100)
 	}
 }
 

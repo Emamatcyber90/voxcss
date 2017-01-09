@@ -67,6 +67,10 @@ class Router{
 		url= href.substring(0,z)
 
 
+		// Significa que es la misma url
+		var ret= (this.$.location && this.$.location.pathname==url)
+
+
 		this.$.location= {
 			pathname: url,
 			href,
@@ -74,14 +78,16 @@ class Router{
 			hash
 		}
 
+		if(ret)
+			return 
 
 		var parts= url.split("/"), part1, part2, correcto, params={}
 		index= index |0
-		console.info(parts)
+		//console.info(parts)
 		for(var i=index;i<this.$.routes.length;i++){
 			var routeA= this.$.routes[i]
 			var route= routeA.def
-			console.info("route: ",route)
+			//console.info("route: ",route)
 			if(route==-1)
 				correcto= true
 			else if(route.length== parts.length){

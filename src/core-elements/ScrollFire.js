@@ -39,16 +39,16 @@ var vox = core.VW.Web.Vox;
         this.init();
     };
     ScrollFire.prototype.init = function () {
-        this.off = [];
+        this.$.off = [];
         this.events();
     };
     ScrollFire.prototype.bindOnOffset = function (offset, callback) {
         var f = this.$;
-        f.off = {
+        f.off.push({
             offset: offset,
             callback: callback,
             scroll: -1
-        };
+        });
     };
     ScrollFire.prototype.refresh = function () {
         var f = this.$;
@@ -70,7 +70,7 @@ var vox = core.VW.Web.Vox;
                 var elementOffset = f.obj.get(0).getBoundingClientRect().top + document.body.scrollTop;
                 var offset = windowScroll - top;
                 if (ev.resize || windowScroll >= top && sTop <= top + he) {
-                    ev.scrollfire = self;
+                    ev.scrollfire = self$0;
                     ev.offset = windowScroll - top;
                     ev.type = 'scroll';
                     self$0.emit(ev);
@@ -105,22 +105,15 @@ var vox = core.VW.Web.Vox;
         };
         w.bind('scroll', h);
         f.h = h;
+        var r1 = this.refresh.bind(this);
         w.resize(function () {
             if (f.r) {
                 clearTimeout(f.r);
                 f.r = undefined;
             }
-            f.r = setTimeout(function (self$0) {
-                return function () {
-                    return self$0.refresh();
-                };
-            }(this), 100);
+            f.r = setTimeout(r1, 100);
         });
-        setTimeout(function (self$0) {
-            return function () {
-                return self$0.refresh();
-            };
-        }(this), 100);
+        setTimeout(r1, 100);
     };
 }
 exports.default = ScrollFire;

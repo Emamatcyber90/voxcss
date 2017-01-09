@@ -3,6 +3,7 @@ var $ = core.VW.Web.JQuery;
 var vox = core.VW.Web.Vox;
 var mask = require('./jquery-mask');
 exports.mask = mask;
+var fnVal = $.fn.val;
 {
     var Input = function Input() {
         Input.$constructor ? Input.$constructor.apply(this, arguments) : Input.$superClass && Input.$superClass.apply(this, arguments);
@@ -32,7 +33,7 @@ exports.mask = mask;
             }, '.input-field');
             $('.input-field').voxinput();
         });
-        var value = $.fn.val;
+        var value = fnVal;
         var replaceval = $.fn.val = function () {
             var er, result = value.apply(this, arguments);
             $.fn.val = value;
@@ -45,6 +46,7 @@ exports.mask = mask;
                         if (t) {
                             t.adjustValue();
                             t.$.r();
+                            t.$.elasticr();
                         }
                     }
                 });
@@ -122,6 +124,10 @@ exports.mask = mask;
                 f.label.addClass('active');
             else
                 f.label.removeClass('active');
+        };
+        f.elasticr = function () {
+            if (f.inp.hasClass('vox-textarea') || f.inp.hasClass('vox-elastic'))
+                f.inp.voxelastic()[0] && f.inp.voxelastic()[0].refresh();
         };
         f.line = f.obj.find('.line');
         if (f.line.length == 0) {

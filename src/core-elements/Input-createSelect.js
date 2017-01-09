@@ -143,15 +143,25 @@ exports.default= function($, f){
 
     if(f.scope && f.observable){
         console.info("List ", f.scope, f.observable)
+
+        var options=[], items=[]
+
+      
+
         var args= {
             "name": f.observable,
             "array": true,
+            "onremoveall": function(){
+               options.forEach((f)=>{f&&f.remove()})
+               items.forEach((f)=>{f&&f.remove()})
+            },
             "onpush": function(ev){
 
                 console.info("PUSHED: ", ev)
                 var observable= ev.observable
                 var value= observable.value
                 var t, item= f.appendOption(value)
+                items.push(item)
                 if(!value.text){
                     t= $("<div>")
                     t.html(value.html)
@@ -159,6 +169,7 @@ exports.default= function($, f){
                 }
 
                 var option= $("<option>")
+                options.push(option)
                 option.text(value.text)
                 option.val(value.value)
                 if(value.selected)
@@ -177,6 +188,8 @@ exports.default= function($, f){
                     item.remove()
                     option.remove()
                 })
+
+
 
                 observable.on("change", function(e){
                     if(e.value.html)

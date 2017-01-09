@@ -91,6 +91,7 @@ function init(window){
 		}
 
 		events(){
+			var f= this.$
 			f.scrollfire.on("scroll", (ev)=>this.$scroll(ev));    
 	        f.scrollfire.refresh()
 	        $(window).resize()

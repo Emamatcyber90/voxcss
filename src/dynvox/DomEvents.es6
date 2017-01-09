@@ -52,7 +52,17 @@ class DomEvents{
 					scope2.add(ev.observable, args.options.vname)
 					
 					self.DomParser.paso2(dq, scope2)
-					self.DOM.append(b)
+					if(self.DOM.attr("voxs-reverse")!==undefined){
+						var temp=self.DOM.find(">*:eq(0)")
+						if(temp.length==0)
+							self.DOM.append(b)
+						else
+							b.insertBefore(temp)
+					}
+					else{
+						self.DOM.append(b)
+					}
+
 
 					ev.observable.on("remove", function(){
 						b.remove()
@@ -136,6 +146,7 @@ class DomEvents{
 				args.options.onchange= function(ev){
 
 					var value= ev.value
+					var isUndefined= value===undefined || value===null
 
 
 					if(self.noTrigger){
@@ -154,23 +165,39 @@ class DomEvents{
 						args.options.fnEvent1= value
 					}
 
+
 					if(args.options.format){
 						// Convertir el contenido ...
-						value= args.scope.observer.format(args.options.format)
+						if(args.options.text)
+							value= args.scope.observer.format(args.options.format, true)
+						else
+							value= args.scope.observer.format(args.options.format)
+
 					}
 
+
+					value= value ? value.toString() : null
 					if(args.options.html)
 						self.DOM.html(value)
-					else if(args.options.text)
-						self.DOM.text(value)
+					else if(args.options.text){
+						//self.DOM.text(value)
+						//var valo= core.dynvox.EscapeHtml(value)
+						//valo= valo.replace(/\r?\n|\r/ig, "<br/>")
+						self.DOM.html(value)
+					}
 					else if(args.options.attr=="value"){
 						if(self.DOM.is("input[type=checkbox]"))
 							self.DOM.get(0).checked= !!value
 						else
 							self.DOM.val(value)
 					}
-					else if(args.options.attr)
-						self.DOM.attr(args.options.attr, value)
+					else if(args.options.attr){
+						//console.info("Arg: ", args.options.attr,  "Value: ", value,  isUndefined, value===undefined || value===null, value==="")
+						if(!value && isUndefined)
+							self.DOM.removeAttr(args.options.attr)
+						else
+							self.DOM.attr(args.options.attr, value)
+					}
 
 
 				}

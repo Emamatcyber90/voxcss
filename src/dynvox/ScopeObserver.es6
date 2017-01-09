@@ -114,7 +114,7 @@ class ScopeObserver extends EventEmitter{
 	}
 
 
-	format(format){
+	format(format, escape){
 		var cached= {}
 		var cached2= {}
 		var z, i, y, value, str, name,procesar, val
@@ -142,6 +142,11 @@ class ScopeObserver extends EventEmitter{
 							cached2[name]= true
 						}
 						val= cached[name]
+						if(escape && val){
+							val= core.dynvox.EscapeHtml(val)
+							val= val.replace(/\r?\n|\r/ig, "<br/>")
+						}
+
 						if(val)
 							str+=val.toString()
 
