@@ -87,6 +87,10 @@ exports.default= function($, f){
 
     f.appendOption= function(e){
         var op= $("<li>")
+        if(e.jOption){
+            e.jOption.get(0).__optionwrapper= op
+        }
+
         var vv= e.value||""
         op.attr("value", vv)
         
@@ -124,7 +128,7 @@ exports.default= function($, f){
         }
         f.opw.append(op)
 
-        return a
+        return op
     }
 
 
@@ -136,7 +140,8 @@ exports.default= function($, f){
             text: e.text(), 
             disabled: e.attr("disabled"),
             selected: e.attr("selected"),
-            value: e.val()
+            value: e.val(),
+            jOption: e
         })
     })
     
@@ -145,21 +150,38 @@ exports.default= function($, f){
         console.info("List ", f.scope, f.observable)
 
         var options=[], items=[]
-
+        var values= {}
       
 
         var args= {
             "name": f.observable,
             "array": true,
             "onremoveall": function(){
-               options.forEach((f)=>{f&&f.remove()})
-               items.forEach((f)=>{f&&f.remove()})
+                //alert("REMOVING ALL")
+                //alert(items.length)
+               options.forEach((f)=>{
+                    f&&f.remove()
+                    /*&& (f.get(0).__optionwrapper&&f.get(0).__optionwrapper.remove())*/
+
+                    values[f.val()]= false
+                })
+               items.forEach((f)=>{
+                    console.info("REMOVING: ", f)
+                    f&&f.remove()
+                })
             },
             "onpush": function(ev){
 
-                console.info("PUSHED: ", ev)
+                console.info("PUSHED .....", ev)
+               //alert("PUSHED")
+                //console.info("PUSHED: ", ev)
                 var observable= ev.observable
                 var value= observable.value
+                var option= $("<option>")
+                if(values[value.value])
+                    return 
+                values[value.value]= true
+                value.jOption= option 
                 var t, item= f.appendOption(value)
                 items.push(item)
                 if(!value.text){
@@ -168,7 +190,7 @@ exports.default= function($, f){
                     value.text= t.text()
                 }
 
-                var option= $("<option>")
+                
                 options.push(option)
                 option.text(value.text)
                 option.val(value.value)
@@ -201,6 +223,11 @@ exports.default= function($, f){
                     item.val(e.value.value)
 
                 })
+                
+                setTimeout(function(){
+                    f.adjustValue() 
+                },100)
+                
             }
         }
         f.scope.observer.observe(args)

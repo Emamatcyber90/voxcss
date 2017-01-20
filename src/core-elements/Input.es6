@@ -12,6 +12,14 @@ var vox= core.VW.Web.Vox
 export var mask= require("./jquery-mask")
 var fnVal= $.fn.val
 
+/*
+vox.mutation.watchAppend($("body"), function(ev){
+    ev.jTarget.each(function(){
+        var a= $(this)
+        a.mask(a.data("mask").toString())
+    })
+}, "[data-mask]")
+*/
 class Input extends Element{
 
 
@@ -82,6 +90,7 @@ class Input extends Element{
 		f.obj=obj
 		this.obtainProps()
 		this.init()
+
 	}
 
 
@@ -98,18 +107,26 @@ class Input extends Element{
             }
         }
 
-
+        f.r= this.r.bind(this)
+        f.adjustValue= this.adjustValue.bind(this)
 		if(f.obj.is(".select")){
             require("./Input-createSelect").default($,f)
             f.select.attr("vox-input", "vox-input")
         }
-		this.events()
+        this.events()		
 		f.r()
 	}
 
 	obtainProps(){
 		var f=this.$
 		f.inp= f.obj.find("input,textarea")
+        
+        f.inp.each(function(){
+            //alert($(this).data("mask"))
+            if($(this).data("mask")!==undefined)
+              $(this).mask($(this).data("mask").toString())
+        })
+        
         f.label= f.obj.find("label")
         f.label.addClass("normal")
         f.action= f.obj.find(".action")
@@ -137,6 +154,12 @@ class Input extends Element{
         if(!f.select)
             return 
 		var v= f.select.val()
+        if(f.select.attr("data-value")){
+            v= f.select.attr("data-value")
+        }
+        else if(f.select.data("value")){
+            v= f.select.data("value")
+        }
         f.opw.find("li").removeAttr("selected")
         f.opw.find("li>a").removeAttr("hover-active")
         /*if(!v){
@@ -157,22 +180,21 @@ class Input extends Element{
 
 
 
+    r(){
 
+        var f= this.$ 
+        if((f.inp.val() && f.inp.val().length>0 && f.inp.attr("type")!="search") || f.inp.attr("type")=="date")
+            f.label.addClass("active")
+        else
+            f.label.removeClass("active")
+
+        
+     
+    }
 
 	events(){
 		var f= this.$;
-		f.r= ()=>{
-            
-            if((f.inp.val() && f.inp.val().length>0 && f.inp.attr("type")!="search") || f.inp.attr("type")=="date")
-                f.label.addClass("active")
-            else
-                f.label.removeClass("active")
-
-            
-            
-            
-            
-        }
+		
 
         f.elasticr= ()=>{
             if(f.inp.hasClass("vox-textarea") || f.inp.hasClass("vox-elastic"))

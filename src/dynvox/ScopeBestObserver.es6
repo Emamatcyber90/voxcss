@@ -1,5 +1,6 @@
 
 var id=0
+var cons= 0
 import {EventEmitter} from 'events'
 
 var NullValue= function(){}
@@ -22,6 +23,7 @@ class ScopeBestObserver extends EventEmitter{
 		this.gets={}
 		this.setMaxListeners(10000)
 		this.propEvents= {}
+		this.id= Date.now().toString(32) + (cons++).toString()
 	}
 
 	observe(args){
@@ -81,17 +83,15 @@ class ScopeBestObserver extends EventEmitter{
 			if(obj){
 				ev.value= NullValue
 				for(var id in obj){
-
 					if(str=="tiposervicioActual")
 						console.info("ID Debug: ",id)
-					if(id!="_F" && id!="_Array"){
+					if(id!="_F" && id!="_G" && id!="_Array"){
 						//console.warn("Changing: ", str + "->" + id)
 						this._set(str+"->" + id, ev, obj[id])
 
 						if(typeof obj[id] == "object")
 							procesarObjeto(obj[id], str+"->" + id)
 					}
-
 				}
 			}
 		}
@@ -175,8 +175,8 @@ class ScopeBestObserver extends EventEmitter{
 	revisarArray(str, value){
 		var ev
 		if(value ){
-
-			if(value instanceof core.dynvox.ObservableList && !value._F){
+			value._G= value._G ||{}
+			if(value instanceof core.dynvox.ObservableList && !value._G[this.id]){
 
 				value.on("push", (ev)=>{
 					this._push(str, ev)
@@ -216,6 +216,8 @@ class ScopeBestObserver extends EventEmitter{
 
 			}
 			value._F= true
+			if(value._G)
+				value._G[this.id]= true
 
 		}
 	}
@@ -349,7 +351,7 @@ class ScopeBestObserver extends EventEmitter{
 
 		//console.warn("Changing: ", str + "->" + id)
 		if(events.onchange && events.onchange.length){
-			for(var i=0;i<events.onchange.length;i++){
+			for(var i=this._onlyLast? events.onchange.length-1: 0;i<events.onchange.length;i++){
 				if(events.onchange[i]){
 					try{
 						events.onchange[i](ev)
@@ -369,7 +371,7 @@ class ScopeBestObserver extends EventEmitter{
 	_push(str, ev){
 		var events= this.propEvents[str]
 		if(events && events.onpush && events.onpush.length){
-			for(var i=0;i<events.onpush.length;i++){
+			for(var i=this._onlyLast? events.onpush.length-1: 0;i<events.onpush.length;i++){
 				if(events.onpush[i]){
 					try{
 						events.onpush[i](ev)
@@ -381,6 +383,11 @@ class ScopeBestObserver extends EventEmitter{
 				}
 			}
 		}
+
+		// Los scopes heredan los observables, así que se hace
+		// aquí la respectiva asignación: 
+
+
 	}
 
 	_remove(str, ev){
@@ -448,10 +455,38 @@ class ScopeBestObserver extends EventEmitter{
 		} 
 
 
-		
+		this._onlyLast= true
 		this._set(str, {
 			value: NullValue
 		})
+		this._onlyLast= false
+
+
+		//  Se modifica porque se detectó problemas de repetición 
+		//  de datos. Hay que verificar que todo siga funcionando 
+		/*
+		var ev, value= this.__getValue(str)
+		args.onchange && args.onchange({value})
+		if(args.array){
+			if(value && value.length){
+
+				for(var i=0;i<value.length;i++){
+					ev= {
+						value:value[i],
+						"observable": value&&value.getObservable? value.getObservable(i): null
+					}
+
+					if(!ev.observable){
+						ev.observable= new core.dynvox.ObservableValue()
+						ev.observable.value= ev.value
+					}
+					//this._push(str, ev)
+					args.onpush && args.onpush(ev)
+				}
+
+			}
+		}*/
+
 
 		/*
 		if(args.array){
@@ -477,7 +512,6 @@ class ScopeBestObserver extends EventEmitter{
 			}
 			
 		}*/
-
 		
 
 		if(obj._F)

@@ -42,7 +42,12 @@ class DomEvents{
 				args.options.onpush= function(ev){
 
 
-					var scope2, b= self.Body.clone(true)
+					var scope2
+
+					// Mirar si se tiene que borrar los option y select-wrapper
+					self.Body.find(".input-field .select-wrapper,.input-field select option").remove()
+					var b= self.Body.clone(true)
+
 					var dq= $("<div>")
 					dq.append(b)
 					dq.find(DomParser.q).removeAttr("voxs-ya")

@@ -78,6 +78,8 @@ var fnVal = $.fn.val;
                 f.scope = scope;
             }
         }
+        f.r = this.r.bind(this);
+        f.adjustValue = this.adjustValue.bind(this);
         if (f.obj.is('.select')) {
             require('./Input-createSelect').default($, f);
             f.select.attr('vox-input', 'vox-input');
@@ -88,6 +90,10 @@ var fnVal = $.fn.val;
     Input.prototype.obtainProps = function () {
         var f = this.$;
         f.inp = f.obj.find('input,textarea');
+        f.inp.each(function () {
+            if ($(this).data('mask') !== undefined)
+                $(this).mask($(this).data('mask').toString());
+        });
         f.label = f.obj.find('label');
         f.label.addClass('normal');
         f.action = f.obj.find('.action');
@@ -106,6 +112,11 @@ var fnVal = $.fn.val;
         if (!f.select)
             return;
         var v = f.select.val();
+        if (f.select.attr('data-value')) {
+            v = f.select.attr('data-value');
+        } else if (f.select.data('value')) {
+            v = f.select.data('value');
+        }
         f.opw.find('li').removeAttr('selected');
         f.opw.find('li>a').removeAttr('hover-active');
         f.opw.find('li').each(function () {
@@ -117,14 +128,15 @@ var fnVal = $.fn.val;
             }
         });
     };
+    Input.prototype.r = function () {
+        var f = this.$;
+        if (f.inp.val() && f.inp.val().length > 0 && f.inp.attr('type') != 'search' || f.inp.attr('type') == 'date')
+            f.label.addClass('active');
+        else
+            f.label.removeClass('active');
+    };
     Input.prototype.events = function () {
         var f = this.$;
-        f.r = function () {
-            if (f.inp.val() && f.inp.val().length > 0 && f.inp.attr('type') != 'search' || f.inp.attr('type') == 'date')
-                f.label.addClass('active');
-            else
-                f.label.removeClass('active');
-        };
         f.elasticr = function () {
             if (f.inp.hasClass('vox-textarea') || f.inp.hasClass('vox-elastic'))
                 f.inp.voxelastic()[0] && f.inp.voxelastic()[0].refresh();

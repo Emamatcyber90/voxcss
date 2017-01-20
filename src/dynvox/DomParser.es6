@@ -323,11 +323,18 @@ DomParser.q= "[voxs-name], [voxs-if], [voxs]"
 
 $.fn.voxscope= function(){
 	var e= this.get(0)
-	var scname, sc=e._voxscope
+	var scname, sc=e._voxscope, p
 	if(!sc){
-		scname= this.parents("[voxs-scope]")||"default"
-		sc= core.dynvox.Scope.get(scname)
+		p= this.parents("[voxs]")
+		if(p.length>0){
+			return p.voxscope()
+		}
+		else{
+			scname= this.parents("[voxs-scope").attr("voxs-scope")||"default"
+			sc= core.dynvox.Scope.get(scname)
+		}
 	}
+
 	return sc
 }
 export default DomParser
