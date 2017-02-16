@@ -91,8 +91,10 @@ var fnVal = $.fn.val;
         var f = this.$;
         f.inp = f.obj.find('input,textarea');
         f.inp.each(function () {
-            if ($(this).data('mask') !== undefined)
-                $(this).mask($(this).data('mask').toString());
+            var d = $(this).data('imask');
+            if (typeof d != 'object' && d !== undefined) {
+                $(this).mask(d.toString());
+            }
         });
         f.label = f.obj.find('label');
         f.label.addClass('normal');

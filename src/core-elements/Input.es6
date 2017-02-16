@@ -123,8 +123,11 @@ class Input extends Element{
         
         f.inp.each(function(){
             //alert($(this).data("mask"))
-            if($(this).data("mask")!==undefined)
-              $(this).mask($(this).data("mask").toString())
+            var d=$(this).data("imask")
+            if((typeof d!="object") &&  d!==undefined){
+              $(this).mask(d.toString())
+              //$(this).data("imask", undefined)
+            }
         })
         
         f.label= f.obj.find("label")
