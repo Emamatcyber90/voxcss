@@ -50,14 +50,14 @@ class ScopeBestObserver extends EventEmitter{
 
 		if(obj2){
 			current.value= args.value
-			return 
+			return
 		}
 
 
 		if(!obj2){
 			current= this.scope
 			for(var i=0;i<parts.length;i++){
-				
+
 				if(i==parts.length-1){
 					//console.info("setting val", parts, args.value)
 					current[parts[i]]= args.value
@@ -105,12 +105,12 @@ class ScopeBestObserver extends EventEmitter{
 			obj= obj[parts[i]]
 			if(!obj)
 				break
-			
+
 		}
 		if(obj)
 			procesarObjeto(obj, str)
 
-		
+
 
 
 	}
@@ -122,7 +122,7 @@ class ScopeBestObserver extends EventEmitter{
 		var z, i, y, value, str, name,procesar, val
 
 		str=''
-		while(format){	
+		while(format){
 			procesar=true
 			i= format.indexOf("#")
 			if(i>=0){
@@ -195,7 +195,7 @@ class ScopeBestObserver extends EventEmitter{
 
 
 			if(value instanceof Array || value instanceof core.dynvox.ObservableList){
-				
+
 
 				if(value.length>0 && !(value instanceof core.dynvox.ObservableList))
 					this._removeall(str,ev)
@@ -229,7 +229,7 @@ class ScopeBestObserver extends EventEmitter{
 		var str= parts.join("->")
 		this.observableEvents= this.observableEvents || {}
 		if(this.observableEvents[str])
-			return 
+			return
 
 
 
@@ -240,7 +240,7 @@ class ScopeBestObserver extends EventEmitter{
 
 		observable.on("change", (ev)=>{
 
-			// Marcar el cambio 
+			// Marcar el cambio
 			this._set(str, ev)
 
 
@@ -248,10 +248,8 @@ class ScopeBestObserver extends EventEmitter{
 				if(obj){
 					ev.value= NullValue
 					for(var id in obj){
-						if(str=="tiposervicioActual")
-							console.info("ID Debug: ",id)
 						if(id!="_F" && id!="_Array"){
-							
+
 							this._set(str+"->" + id, ev, obj[id])
 							if(typeof obj[id] == "object")
 								procesarObjeto(obj[id], str+"->" + id)
@@ -272,7 +270,7 @@ class ScopeBestObserver extends EventEmitter{
 				obj= obj[parts[i]]
 				if(!obj)
 					break
-				
+
 			}
 			if(obj)
 				procesarObjeto(obj, str)
@@ -306,7 +304,7 @@ class ScopeBestObserver extends EventEmitter{
 
 		var str= this._getStr(name)
 		var args={
-			name, 
+			name,
 			onchange: func
 		}
 		this._observe(args, str)
@@ -351,15 +349,21 @@ class ScopeBestObserver extends EventEmitter{
 
 		//console.warn("Changing: ", str + "->" + id)
 		if(events.onchange && events.onchange.length){
-			for(var i=this._onlyLast? events.onchange.length-1: 0;i<events.onchange.length;i++){
-				if(events.onchange[i]){
-					try{
-						events.onchange[i](ev)
-					}
-					catch(e){
-						console.error("Error en change event: ", str, e)
-					}
 
+			if(this._onlyLast){
+				this._onlyLast.onchange&&this._onlyLast.onchange(ev)
+			}
+			else{
+				for(var i=0;i<events.onchange.length;i++){
+					if(events.onchange[i]){
+						try{
+							events.onchange[i](ev)
+						}
+						catch(e){
+							console.error("Error en change event: ", str, e)
+						}
+
+					}
 				}
 			}
 		}
@@ -371,21 +375,26 @@ class ScopeBestObserver extends EventEmitter{
 	_push(str, ev){
 		var events= this.propEvents[str]
 		if(events && events.onpush && events.onpush.length){
-			for(var i=this._onlyLast? events.onpush.length-1: 0;i<events.onpush.length;i++){
-				if(events.onpush[i]){
-					try{
-						events.onpush[i](ev)
-					}
-					catch(e){
-						console.error("Error en push event: ", str, e)
-					}
 
+			if(this._onlyLast){
+				this._onlyLast.onpush && this._onlyLast.onpush(ev)
+			}
+			else{
+				for(var i= 0;i<events.onpush.length;i++){
+					if(events.onpush[i]){
+						try{
+							events.onpush[i](ev)
+						}
+						catch(e){
+							console.error("Error en push event: ", str, e)
+						}
+					}
 				}
 			}
 		}
 
 		// Los scopes heredan los observables, así que se hace
-		// aquí la respectiva asignación: 
+		// aquí la respectiva asignación:
 
 
 	}
@@ -411,15 +420,19 @@ class ScopeBestObserver extends EventEmitter{
 	_removeall(str, ev){
 		var events= this.propEvents[str]
 		if(events && events.onremoveall && events.onremoveall.length){
-			for(var i=0;i<events.onremoveall.length;i++){
-				if(events.onremoveall[i]){
-					try{
-						events.onremoveall[i](ev)
-					}
-					catch(e){
-						console.error("Error en removeall event: ", str, e)
-					}
+			if(this._onlyLast){
+				this._onlyLast.onremoveall&& this._onlyLast.onremoveall(ev)
+			}else{
+				for(var i=0;i<events.onremoveall.length;i++){
+					if(events.onremoveall[i]){
+						try{
+							events.onremoveall[i](ev)
+						}
+						catch(e){
+							console.error("Error en removeall event: ", str, e)
+						}
 
+					}
 				}
 			}
 		}
@@ -433,7 +446,7 @@ class ScopeBestObserver extends EventEmitter{
 		obj= this.propEventsObject= this.propEventsObject||{}
 		for(var i=0;i<parts.length;i++){
 			obj= obj[parts[i]]= obj[parts[i]]||{}
-		}	
+		}
 
 		this.propEvents=this.propEvents||{}
 
@@ -452,18 +465,18 @@ class ScopeBestObserver extends EventEmitter{
 
 			obj2.onremoveall=obj2.onremoveall||[]
 			obj2.onremoveall.push(args.onremoveall)
-		} 
+		}
 
 
-		this._onlyLast= true
+		this._onlyLast= args
 		this._set(str, {
 			value: NullValue
 		})
 		this._onlyLast= false
 
 
-		//  Se modifica porque se detectó problemas de repetición 
-		//  de datos. Hay que verificar que todo siga funcionando 
+		//  Se modifica porque se detectó problemas de repetición
+		//  de datos. Hay que verificar que todo siga funcionando
 		/*
 		var ev, value= this.__getValue(str)
 		args.onchange && args.onchange({value})
@@ -495,7 +508,7 @@ class ScopeBestObserver extends EventEmitter{
 
 			console.info("Value from initial: ", value, str)
 			if(value && value instanceof Array){
-				
+
 
 				for(var i=0;i<value.length;i++){
 					ev= {
@@ -510,19 +523,20 @@ class ScopeBestObserver extends EventEmitter{
 					this._push(str, ev)
 				}
 			}
-			
+
 		}*/
-		
+
 
 		if(obj._F)
 			return
 
 		obj._Array= args.array
-		obj._F= true		
+		obj._F= true
 		//if(parts.length==1){
 			// Crear el observable si es necesario ...
 			obs= this.scope.getObservable(parts[0])
 			if(!obs){
+				console.info("SCOPE",parts[0], this.scope)
 				this.scope.createVariable(parts[0], this.scope[parts[0]])
 				obs= this.scope.getObservable(parts[0])
 			}

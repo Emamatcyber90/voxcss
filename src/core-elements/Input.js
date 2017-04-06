@@ -72,8 +72,7 @@ var fnVal = $.fn.val;
         var scope, f = this.$;
         f.observable = f.obj.data('list');
         if (f.observable) {
-            scope = f.obj.parents('[voxs-scope]').eq(0).attr('voxs-scope');
-            scope = core.dynvox.Scope.get(scope);
+            scope = f.obj.voxscope();
             if (scope) {
                 f.scope = scope;
             }
@@ -113,12 +112,16 @@ var fnVal = $.fn.val;
         var f = this.$;
         if (!f.select)
             return;
-        var v = f.select.val();
-        if (f.select.attr('data-value')) {
+        var va = v = f.select.val();
+        if (!v && f.select.attr('data-value')) {
             v = f.select.attr('data-value');
-        } else if (f.select.data('value')) {
+            f.select.data('value', v);
+            f.select.attr('data-value', '');
+        } else if (!v && f.select.data('value')) {
             v = f.select.data('value');
         }
+        if (va)
+            f.select.data('value', '');
         f.opw.find('li').removeAttr('selected');
         f.opw.find('li>a').removeAttr('hover-active');
         f.opw.find('li').each(function () {
@@ -158,6 +161,7 @@ var fnVal = $.fn.val;
             });
             f.select.change(function (self$0) {
                 return function () {
+                    f.select.data('value', f.select.val());
                     self$0.adjustValue();
                 };
             }(this));

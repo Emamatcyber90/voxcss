@@ -17,7 +17,7 @@ class Scope extends Observable{
 
 	get observer(){
 		if(!this.$observer)
-			this.$observer= new core.dynvox.ScopeBestObserver(this)
+			this.$observer= new core.dynvox.ScopeBestObserver2(this)
 
 		return this.$observer
 	}

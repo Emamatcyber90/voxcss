@@ -52,6 +52,9 @@ e.get_HasTooltip = function () {
 e.get_Elastic = function () {
     return require('./Elastic').default;
 };
+e.get_Slider = function () {
+    return require('./Slider').default;
+};
 e.get_Theme = function () {
     return require('./Theme').default;
 };
@@ -67,6 +70,7 @@ e.register = function () {
     e.Parallax.register();
     e.Pinned.register();
     e.SideNav.register();
+    e.Slider.register();
     e.TabGroup.register();
     e.Toast.register();
     e.Tooltip.register();

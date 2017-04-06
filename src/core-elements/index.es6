@@ -22,15 +22,15 @@ e.get_Input= function(){
 	return Input.default
 }
 e.get_mask= function(){
-	return Input.mask	
+	return Input.mask
 }
 
 e.get_Anchor= function(){
-	return require("./Anchor").default	
+	return require("./Anchor").default
 }
 
 e.get_Modal= function(){
-	return require("./Modal").default	
+	return require("./Modal").default
 }
 e.get_ScrollFire= function(){
 	return require("./ScrollFire").default
@@ -65,6 +65,10 @@ e.get_Elastic= function(){
 	return require("./Elastic").default
 }
 
+e.get_Slider= function(){
+	return require("./Slider").default
+}
+
 e.get_Theme= function(){
 	return require("./Theme").default
 }
@@ -73,7 +77,7 @@ core.VW.Util.createProperties(e)
 e.register= function(){
 	if(!e.Theme.current)
 		e.Theme.default()
-		
+
 	e.Card.register()
 	e.Dropdown.register()
 	e.Input.register()
@@ -82,6 +86,7 @@ e.register= function(){
 	e.Parallax.register()
 	e.Pinned.register()
 	e.SideNav.register()
+	e.Slider.register()
 	e.TabGroup.register()
 	e.Toast.register()
 	e.Tooltip.register()

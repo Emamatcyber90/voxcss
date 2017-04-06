@@ -27,7 +27,7 @@ class DomEvents{
 
 		var args= {
 			"options": this.options,
-			"scope": this.scope, 
+			"scope": this.scope,
 			"observable": this.observable
 		}
 
@@ -45,18 +45,25 @@ class DomEvents{
 					var scope2
 
 					// Mirar si se tiene que borrar los option y select-wrapper
-					self.Body.find(".input-field .select-wrapper,.input-field select option").remove()
-					var b= self.Body.clone(true)
+					//self.Body.find(".input-field .select-wrapper,.input-field select option").remove()
+					var b= self.Body //.clone(false)
 
 					var dq= $("<div>")
-					dq.append(b)
-					dq.find(DomParser.q).removeAttr("voxs-ya")
+					//dq.append(b)
+					dq.html(b)
+					b= dq.find(">*")
+					//console.info(b.html())
+					//dq.html(dq.html())
+					//dq.find(DomParser.q).removeAttr("voxs-ya")
+
+					//console.info("Cloned objet", b.html())
 
 					scope2= args.scope.clone()
-					args.scope.append(scope2)
 					scope2.add(ev.observable, args.options.vname)
-					
-					self.DomParser.paso2(dq, scope2)
+					args.scope.append(scope2)
+
+
+					self.DomParser.parse(dq, scope2)
 					if(self.DOM.attr("voxs-reverse")!==undefined){
 						var temp=self.DOM.find(">*:eq(0)")
 						if(temp.length==0)
@@ -69,29 +76,32 @@ class DomEvents{
 					}
 
 
+					b.each(function(){
+						this._voxscope= scope2
+					})
+
+
 					ev.observable.on("remove", function(){
 						b.remove()
 					})
 					ev.observable.on("change", function(){
-						self.DomParser.paso2(self.DOM, scope2)
+						//self.DomParser.parse(self.DOM, scope2)
 					})
 
 				}
 
 				args.options.onremoveall= function(){
+					console.info("REMOVE ALL", args.options)
 					self.DOM.html("")
 				}
 				args.options.array= true
 
 				if(!self.Body){
-					self.Body= self.DOM.find(">*")
-					self.Body.remove()
+					self.Body= self.DOM.html() //find(">*")
+					self.DOM.find(">*").remove()
+					//self.Body.remove()
 				}
-
-				
 				scopeObserver.observe(args.options)
-
-
 			}
 
 			else if(args.options.ifcondition){
@@ -125,11 +135,23 @@ class DomEvents{
 
 
 					//console.info("VALUE FINAL:: ", ok)
-					if(ok)
+					if(ok){
 						self.DOM.show()
-					else
-						self.DOM.hide()
+						if(!self.DOM.data("voxs-i0r")){
+							//console.info("Placing here")
+							self.DOM.data("voxs-i0r",1)
+							try{
+								self.DomParser.parse(self.DOM, self.DOM.voxscope())
+							}catch(e){
+								console.error("Error in if-condition: ",e)
+							}
 
+
+						}
+					}
+					else{
+						self.DOM.hide()
+					}
 
 				}
 
@@ -152,13 +174,16 @@ class DomEvents{
 
 					var value= ev.value
 					var isUndefined= value===undefined || value===null
+					//args.options.attr=="name"&&console.info("CHANGE: ", args, ev)
 
 
 					if(self.noTrigger){
 						self.noTrigger= false
-						return 
+						return
 					}
 
+
+					/*
 					if(args.options.event){
 						if(!args.options.fnEvent){
 							args.options.fnEvent= function(){
@@ -169,7 +194,7 @@ class DomEvents{
 						}
 						args.options.fnEvent1= value
 					}
-
+					*/
 
 					if(args.options.format){
 						// Convertir el contenido ...
@@ -182,8 +207,14 @@ class DomEvents{
 
 
 					value= value ? value.toString() : null
-					if(args.options.html)
+					if(args.options.html){
+
 						self.DOM.html(value)
+						if(self.DOM.attr("dynvox-code")!==undefined){
+							self.DomParser.parse(self.DOM, self.DOM.voxscope())
+						}
+
+					}
 					else if(args.options.text){
 						//self.DOM.text(value)
 						//var valo= core.dynvox.EscapeHtml(value)
@@ -211,7 +242,7 @@ class DomEvents{
 						self.noTrigger= true
 						if($(this).is("input[type=checkbox]"))
 							args.options.value= this.checked
-						else 
+						else
 							args.options.value= this.value
 
 						//console.info("CHANGING", args)
@@ -248,11 +279,11 @@ class DomEvents{
 								for(var i=0;i<l;i++){
 									v= v[args.options.prop[i]]
 								}
-							}	
+							}
 						}
 						catch(e){
 							console.error(e)
-						}			
+						}
 
 						if(! (v instanceof ObservableList)){
 							saved= v
@@ -289,8 +320,8 @@ class DomEvents{
 						return Observable
 					}
 
-					
-					
+
+
 
 					Observable.on("change", function(){
 						if(observable2 instanceof ObservableList)
@@ -303,18 +334,18 @@ class DomEvents{
 
 					procesar= function(){
 
-						
-						
+
+
 						observable2= getObservable(Observable)
 						id= observable2.id + DomEvents.optionsToString(args.options)
 						if(self.events[id])
-							return 
+							return
 						//console.info("HERE ----", observable2)
 						if(!self.Body){
 							self.Body= self.DOM.find(">*")
 							self.Body.remove()
 						}
-						
+
 						Fn= function(ev){
 
 							//console.warn("PUSHED", ev)
@@ -327,7 +358,7 @@ class DomEvents{
 							scope2= args.scope.clone()
 							args.scope.append(scope2)
 							scope2.add(ev.observable, args.options.vname)
-							
+
 							self.DomParser.paso2(dq, scope2)
 							self.DOM.append(b)
 							ev.observable.on("remove", function(){
@@ -485,7 +516,7 @@ class DomEvents{
 
 		Exe()
 
-		**/ 
+		**/
 	}
 }
 DomEvents.dq= $("<div>")

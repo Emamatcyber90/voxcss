@@ -71,18 +71,18 @@ var vox = core.VW.Web.Vox;
                 if (ev.offset > h2) {
                     ev.offset = h2;
                 }
-                var a$2 = ev.offset - h;
-                j.css('margin-top', a$2 + 'px');
+                var a$1 = ev.offset - h;
+                j.css('margin-top', a$1 + 'px');
             } else {
                 j.css('margin-top', '0');
             }
         } else {
             if (ev.offset > wh) {
-                var a$3 = ev.offset - wh;
-                if (a$3 + h >= h2) {
-                    a$3 = h2 - h;
+                var a$2 = ev.offset - wh;
+                if (a$2 + h >= h2) {
+                    a$2 = h2 - h;
                 }
-                j.css('margin-top', a$3 + 'px');
+                j.css('margin-top', a$2 + 'px');
             } else {
                 j.css('margin-top', '0');
             }

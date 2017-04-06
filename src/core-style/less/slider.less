@@ -1,0 +1,252 @@
+
+.transform(@tr){
+  -webkit-transform: @tr;
+  -moz-transform: @tr;
+  -o-transform: @tr;
+  -ms-transform: @tr;
+  transform: @tr;
+}
+
+.slider{
+
+  position: relative;
+  padding: 1.5em;
+  margin-top: 3em;
+  display: inline-block;
+  width:100%;
+  &.vertical{
+    margin-top: 0;
+    margin-left: 3em;
+  }
+
+
+  .step{
+    width: 3px;
+    height:3px;
+    background-color: black;
+    background-color: rgba(0,0,0,0.4);
+    position: absolute;
+    margin: -1.5px;
+    top:0;
+    left:0;
+    display: none;
+  }
+
+
+
+  .ball.first{
+    border-radius: 50%;
+    padding: 0.45em;
+    position: absolute;
+    top:0;
+    margin:-0.45em;
+
+    outline: none;
+    cursor:default;
+    //transition-property: all;
+    transition-duration: 0.2s;
+
+    span{
+      //transition-property: all;
+      transition-duration: 0.2s;
+      display: none;
+      opacity: 0;
+
+      position: absolute;
+      width: 100%;
+      top: 0;
+      left: 0;
+      text-align: center;
+      line-height: 2.5em;
+      font-size: 0.76em;
+      z-index: 10;
+      font-weight: bold;
+    }
+
+    &.highlight{
+      opacity: 0.2;
+      padding:1.05em;
+      margin: -1.05em;
+      display: none;
+    }
+  }
+
+  &{
+
+    /*
+    .ball.first:after{
+      content: "";
+      top: 1em;
+      border-radius: 100%;
+      position: absolute;
+      margin-left: -1.08em;
+
+      border-left: 1.12em solid transparent;
+      border-right: 1.12em solid transparent;
+      border-top-width: 1.25em;
+      border-top-style: solid;
+      opacity: 0;
+      //-webkit-transform: translate3d(0, -8px, 0) scale(0);
+      .transform( translate3d(0, -8px, 0) scale(0));
+      -webkit-transition: all 0.2s cubic-bezier(0.35, 0, 0.25, 1);
+      transition: all 0.2s cubic-bezier(0.35, 0, 0.25, 1);
+    }
+
+    &.vertical{
+      .ball.first:after{
+        content: "";
+        left: 1em;
+        border-radius: 100%;
+        position: absolute;
+        margin-bottom: -1.08em;
+
+        border:none;
+        border-top: 1.12em solid transparent;
+        border-bottom: 1.12em solid transparent;
+        border-left-width: 1.25em;
+        border-left-style: solid;
+        opacity: 0;
+
+        .transform(translate3d(0, -8px, 0) scale(0));
+        -webkit-transition: all 0.2s cubic-bezier(0.35, 0, 0.25, 1);
+        transition: all 0.2s cubic-bezier(0.35, 0, 0.25, 1);
+      }
+    }*/
+
+
+  }
+
+
+  &.discrete.focus,&.discrete[readonly]{
+    .ball.highlight{
+      display: none;
+    }
+    .ball.first{
+
+      padding: 0.9em;
+      margin-top: -2.5em;
+      margin-left: -0.92em;
+      margin-right: -0.92em;
+
+
+      border-radius: 50% 50% 50% 0;
+      .transform( rotate(-45deg) );
+
+
+      span{
+        display: block;
+        opacity: 1;
+        .transform( rotate(45deg) );
+
+      }
+
+      /*
+      &:after{
+        opacity: 1;
+        //-webkit-transform: translate3d(0, 0, 0) scale(1);
+        .transform( translate3d(0, 0, 0) scale(1));
+      }*/
+
+    }
+
+
+    &.vertical{
+      &.discrete.focus{
+        .ball.first{
+          .transform(rotate(-135deg));
+          span{
+            .transform(rotate(135deg));
+          }
+        }
+      }
+      .ball.first{
+        margin:0;
+        margin-left:-2.5em;
+        margin-top: -0.92em;
+        margin-bottom: -0.92em;
+      }
+    }
+  }
+
+
+
+  &.focus{
+    .step{
+      display: block;
+    }
+    .ball{
+      &.highlight{
+        display: block;
+      }
+    }
+  }
+
+  .line{
+    transition-duration: 0.2s;
+    height:3px;
+    width:100%;
+    position: absolute;
+    left:0;
+    top:0;
+    margin-top: -1.5px;
+    &.progress{
+      width:0;
+    }
+    &.default{
+      background-color: rgb(168,168,168);
+    }
+  }
+
+  &.vertical{
+    height:100%;
+    width:auto;
+    .line{
+      width:3px;
+      height:100%;
+      margin-left: -1.5px;
+      &.progress{
+        height: 0;
+      }
+    }
+
+    .step{
+      top:initial;
+    }
+
+    .ball{
+      top:initial;
+      left:0;
+    }
+
+  }
+
+  &[disabled],&[readonly]{
+    opacity: 0.8;
+    .ball,.line{
+      background-color: rgb(120,120,120);
+      color:rgb(120,120,120);
+    }
+    &.discrete{
+      .ball{
+        background-color: rgb(170,170,170);
+        color:rgb(170,170,170);
+      }
+    }
+  }
+  &[disabled]{
+    .ball{
+      .transform(scale(0.7));
+    }
+  }
+
+  &.clic{
+    .ball{
+      padding: 0.6em;
+      margin:-0.6em;
+    }
+    .ball.highlight{
+      display: none;
+    }
+  }
+
+}

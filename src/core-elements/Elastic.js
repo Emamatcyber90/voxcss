@@ -44,9 +44,11 @@ var vox = core.VW.Web.Vox;
         };
     });
     Elastic.escapeHtml = function (html) {
-        return String(html).replace(/[&<>"'\/]/g, function (s) {
-            return this.entities[s];
-        });
+        return String(html).replace(/[&<>"'\/]/g, function (self$0) {
+            return function (s) {
+                return self$0.entities[s];
+            };
+        }(this));
     };
     Elastic.register = function () {
         $.fn.voxelastic = function () {
@@ -64,7 +66,7 @@ var vox = core.VW.Web.Vox;
         };
         $(function () {
             vox.mutation.watchAppend($('body'), function (ev) {
-                ev.jTarget.voxinput();
+                ev.jTarget.voxelastic();
             }, '.vox-textarea, .vox-elastic');
             $('.vox-textarea, .vox-elastic').voxelastic();
         });
@@ -81,6 +83,8 @@ var vox = core.VW.Web.Vox;
         var refrescar = sxl.elastic ? sxl.elastic : null;
         if (refrescar)
             refrescar();
+        else
+            this.adjust(f.obj);
     };
     Elastic.prototype.adjust = function (obj) {
         var elastic = this;
@@ -99,9 +103,11 @@ var vox = core.VW.Web.Vox;
                 div = Elastic.adjustDiv;
             }
             div.css(Elastic.getStyleObject.call(e));
+            div.css('word-wrap', 'break-word');
             div.css('height', 'auto');
             div.css('position', 'fixed');
-            div.css('top', '-100%');
+            div.css('top', '1000%');
+            div.css('left', '1000%');
             div.css('bottom', 'auto');
             div.show();
             if (!this.value) {
@@ -125,9 +131,9 @@ var vox = core.VW.Web.Vox;
                     }
                     self.sxl.elastic.i = setTimeout(function () {
                         elastic.adjust($(self));
-                    }, 100);
+                    }, 200);
                 };
-                e.bind('change input cut paste keyup resize', this.sxl.elastic);
+                e.bind('change click input cut paste keydown resize', this.sxl.elastic);
                 $(window).resize(this.sxl.elastic);
             }
         });

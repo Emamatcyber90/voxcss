@@ -97,11 +97,11 @@ function init(document) {
             var left = obj.position().left;
             f.indicator.show();
             if (f.tabs[0]) {
-                var nl$4 = 0;
+                var nl$3 = 0;
                 if (o)
-                    nl$4 = o.$.obj.position().left;
-                nl$4 = nl$4.toString() + 'px';
-                f.indicator.css('left', nl$4);
+                    nl$3 = o.$.obj.position().left;
+                nl$3 = nl$3.toString() + 'px';
+                f.indicator.css('left', nl$3);
                 f.tabs[0].$.obj.append(f.indicator);
             }
             f.indicator.css('width', obj.outerWidth());

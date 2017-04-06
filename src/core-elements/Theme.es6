@@ -21,7 +21,7 @@ var colors= {
 		"accent2"    : "#ff5252",
 		"accent3"    : "#ff1744",
 		"accent4"    : "#d50000"
-	}, 
+	},
 	"pink": {
 		"default"    : "#E91E63",
 		"lighten1"   : "#ec407a",
@@ -161,10 +161,10 @@ var colors= {
 	"green":{
 		"default"	 : "#4caf50",
 		"lighten1"   : "#66bb6a",
-		"lighten2"   : "#81c784", 
+		"lighten2"   : "#81c784",
 		"lighten3"   : "#a5d6a7",
-		"lighten4"   : "#c8e6c9", 
-		"lighten5"   : "#e8f5e9", 
+		"lighten4"   : "#c8e6c9",
+		"lighten5"   : "#e8f5e9",
 		"darken1"    : "#43a047",
 		"darken2"    : "#388e3c",
 		"darken3"    : "#2e7d32",
@@ -289,7 +289,7 @@ var colors= {
 		"darken2"    : "#5d4037",
 		"darken3"    : "#4e342e",
 		"darken4"    : "#3e2723"
-	}, 
+	},
 
 	"gray": {
 		"default"    : "#9e9e9e",
@@ -325,6 +325,9 @@ class Theme{
 		Theme.current= this
 	}
 
+	static get colors(){
+		return colors
+	}
 
 
 	static createClassFromColor(options){
@@ -340,22 +343,28 @@ class Theme{
 
 		str.push(`${prefix}${className}-active.active${sufix}, ${prefix}.${className}${sufix}, ${prefix}.${className}-hover${sufix}:not([disabled]):hover, ${prefix}.${className}-hover[hover-active]${sufix}:not([disabled])`)
 		str.push("{")
-		str.push((!options.text ? "background-": "") + "color: "+  color + ";")	
+		str.push((!options.text ? "background-": "") + "color: "+  color + ";")
 		str.push("}")
 		if(!options.text){
 			className="text-"+className
 			str.push(`${prefix}${className}-active.active${sufix}, ${prefix}.${className}${sufix}, ${prefix}.${className}-hover${sufix}:not([disabled]):hover, ${prefix}.${className}-hover[hover-active]${sufix}:not([disabled])`)
 			str.push("{")
-			str.push("color: "+  color + ";")	
+			str.push("color: "+  color + ";")
 			str.push("}")
 		}
 		var style= $("<style>")
 		style.html(str.join("\n"))
+		style.addClass("voxcss-theme")
 		style.attr("id","vox-color-themed-"+ (++Id))
 		$("head").append(style)
-		
+
 	}
 
+
+	static clear(){
+		$(".voxcss-theme").remove()
+		return this
+	}
 
 	static definePalette(color){
 		var c={},names= ["default", "lighten5","lighten4", "lighten3", "lighten2", "lighten1", "darken4", "darken3", "darken2", "darken1"]
@@ -378,7 +387,7 @@ class Theme{
 		return new Theme()
 	}
 
-	
+
 
 	static get defaultOptions(){
 
@@ -386,20 +395,20 @@ class Theme{
 
 			"primaryPalette": {
 				"default": "teal:default",
-				"hue-1": "teal:lighten2", 
+				"hue-1": "teal:lighten2",
 				"hue-2": "teal:darken3",
 				"hue-3": "teal:accent1",
 				"hue-4": "teal:accent2",
-				"text": "white:default", 
+				"text": "white:default",
 				"text-2": "teal:darken-4",
-				"text-1": "white:default", 
+				"text-1": "white:default",
 				"text-3": "white:default",
 				"text-4": "white:default"
 			},
 
 			"accentPalette": {
 				"default": "pink:default",
-				"hue-1": "pink:lighten2", 
+				"hue-1": "pink:lighten2",
 				"hue-2": "pink:darken3",
 				"hue-3": "pink:accent1",
 				"hue-4": "pink:accent2",
@@ -413,26 +422,26 @@ class Theme{
 
 			"warnPalette": {
 				"default": "red:default",
-				"hue-1": "red:lighten2", 
+				"hue-1": "red:lighten2",
 				"hue-2": "deeporange:darken3",
-				"hue-3": "red:accent1", 
-				"hue-4": "red:accent2", 
-				"text": "white:default", 
+				"hue-3": "red:accent1",
+				"hue-4": "red:accent2",
+				"text": "white:default",
 				"text-2": "red:darken-4",
-				"text-1": "white:default", 
+				"text-1": "white:default",
 				"text-3": "white:default",
 				"text-4": "white:default"
 			},
 
 			"backgroundPalette": {
 				"default": "gray:lighten2",
-				"hue-1": "white:default", 
+				"hue-1": "white:default",
 				"hue-2": "gray:darken2",
 				"hue-3": "gray:darken3",
-				"hue-4": "gray:darken3", 
-				"text": "black:default", 
+				"hue-4": "gray:darken3",
+				"text": "black:default",
 				"text-1": "gray:darken-3",
-				"text-2": "white:default", 
+				"text-2": "white:default",
 				"text-3": "white:default",
 				"text-4": "white:default"
 			}
@@ -454,18 +463,18 @@ class Theme{
 
 		for(var id in defaultOptions.primaryPalette){
 
-		
+
 			if(id!="color"){
-				
+
 				if(!options[id])
 					options[id]= defaultOptions.primaryPalette[id]
- 
+
 
 				op= options[id].split(":")
 				Theme.createClassFromColor({
 					"className": "color-" +id,
 					"intention": op[1],
-					"color": op[0], 
+					"color": op[0],
 					"text": id.startsWith("text")
 				})
 			}
@@ -481,9 +490,9 @@ class Theme{
 
 		for(var id in defaultOptions.accentPalette){
 
-		
+
 			if(id!="color"){
-				
+
 				if(!options[id])
 					options[id]= defaultOptions.accentPalette[id]
 
@@ -491,7 +500,7 @@ class Theme{
 				Theme.createClassFromColor({
 					"className": "color-accent-" +id,
 					"intention": op[1],
-					"color": op[0], 
+					"color": op[0],
 					"text": id.startsWith("text")
 				})
 			}
@@ -507,9 +516,9 @@ class Theme{
 
 		for(var id in defaultOptions.warnPalette){
 
-		
+
 			if(id!="color"){
-				
+
 				if(!options[id])
 					options[id]= defaultOptions.warnPalette[id]
 
@@ -517,7 +526,7 @@ class Theme{
 				Theme.createClassFromColor({
 					"className": "color-warning-" +id,
 					"intention": op[1],
-					"color": op[0], 
+					"color": op[0],
 					"text": id.startsWith("text")
 				})
 			}
@@ -534,9 +543,9 @@ class Theme{
 
 		for(var id in defaultOptions.backgroundPalette){
 
-		
+
 			if(id!="color"){
-				
+
 				if(!options[id])
 					options[id]= defaultOptions.backgroundPalette[id]
 
@@ -544,7 +553,7 @@ class Theme{
 				Theme.createClassFromColor({
 					"className": "color-back-" +id,
 					"intention": op[1],
-					"color": op[0], 
+					"color": op[0],
 					"text": id.startsWith("text")
 				})
 			}

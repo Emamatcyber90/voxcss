@@ -33,6 +33,9 @@ class VoxScope{
 	static get ScopeBestObserver(){
 		return require("./ScopeBestObserver").default
 	}
+	static get ScopeBestObserver2(){
+		return require("./ScopeBestObserver2").default
+	}
 
 	static get Router(){
 		return require("./Router").default

@@ -24,7 +24,7 @@ exports.default= function($, f){
 
                 option.html(toption.html());
                 // option.val(toption.attr("value"));
-                
+
                 $.each(this.attributes, function() {
                     // this.attributes is not a plain object, but an array
                     // of attribute nodes, which contain both the name and value
@@ -47,19 +47,19 @@ exports.default= function($, f){
 	f.voxStyle= f.obj.find("vox-css[vox-func='input-style']")
     if(f.voxStyle.length==0)
         f.voxStyle= $('<vox-css vox-type="class" vox-func="input-style" vox-selector="li>a:not([disabled]>a)">')
-    
+
     var cl=[f.obj.data("activecolor")  + "-hover"]
     if(f.obj.data("activecolortext"))
         cl.push("text" + f.obj.data("select-activecolortext")  + "-hover")
     else
         cl.push("text-white-hover")
-    
+
 
 
     f.voxStyle.data("value", cl.join(" "))
-    
-    
-    
+
+
+
     f.obj.find(".select-wrapper").remove()
     f.select= f.obj.find("select")
 
@@ -93,11 +93,11 @@ exports.default= function($, f){
 
         var vv= e.value||""
         op.attr("value", vv)
-        
+
         var a= $("<a>")
         a.attr("voxs","voxs")
         a.data("value", vv)
-        
+
         if(e.html)
             a.html(e.html)
         else
@@ -111,7 +111,7 @@ exports.default= function($, f){
         if(vv==""){
            f.selectDVal= e.text
         }
-        
+
         if(!av){
             if(e.selected!==undefined && e.disabled===undefined){
                 op.attr("selected", "selected")
@@ -137,51 +137,57 @@ exports.default= function($, f){
         var e=$(this)
         f.appendOption({
             html: e.html(),
-            text: e.text(), 
+            text: e.text(),
             disabled: e.attr("disabled"),
             selected: e.attr("selected"),
             value: e.val(),
             jOption: e
         })
     })
-    
 
+    var adjtime=0
+    var atm= function(){
+      if(adjtime)
+        clearTimeout(adjtime)
+      adjtime= setTimeout(function(){
+          f.adjustValue()
+          adjtime=0
+      },200)
+    }
+
+
+    
     if(f.scope && f.observable){
-        console.info("List ", f.scope, f.observable)
+
 
         var options=[], items=[]
         var values= {}
-      
+
 
         var args= {
             "name": f.observable,
             "array": true,
             "onremoveall": function(){
-                //alert("REMOVING ALL")
-                //alert(items.length)
-               options.forEach((f)=>{
+
+               options.forEach(function(f){
                     f&&f.remove()
                     /*&& (f.get(0).__optionwrapper&&f.get(0).__optionwrapper.remove())*/
 
                     values[f.val()]= false
                 })
-               items.forEach((f)=>{
-                    console.info("REMOVING: ", f)
+               items.forEach(function(f){
+
                     f&&f.remove()
                 })
             },
             "onpush": function(ev){
-
-                console.info("PUSHED .....", ev)
-               //alert("PUSHED")
-                //console.info("PUSHED: ", ev)
                 var observable= ev.observable
                 var value= observable.value
                 var option= $("<option>")
                 if(values[value.value])
-                    return 
+                    return
                 values[value.value]= true
-                value.jOption= option 
+                value.jOption= option
                 var t, item= f.appendOption(value)
                 items.push(item)
                 if(!value.text){
@@ -190,7 +196,6 @@ exports.default= function($, f){
                     value.text= t.text()
                 }
 
-                
                 options.push(option)
                 option.text(value.text)
                 option.val(value.value)
@@ -205,46 +210,36 @@ exports.default= function($, f){
                     f.select.val(value.value)
                     f.r()
                 }
-
                 observable.on("remove", function(){
                     item.remove()
                     option.remove()
                 })
-
-
-
                 observable.on("change", function(e){
                     if(e.value.html)
                         item.html(e.value.html)
                     else if(e.value.text)
                         item.text(e.value.text)
-
                     option.val(e.value.value)
                     item.val(e.value.value)
-
                 })
-                
-                setTimeout(function(){
-                    f.adjustValue() 
-                },100)
-                
+                atm()
             }
         }
         f.scope.observer.observe(args)
     }
 
-    
+
     if(!val)
         i1.val(f.selectDVal)
-    
-    
+
+
     f.sw.append(i1)
     f.sw.append(caret)
     f.sw.append(f.opw)
     f.sw.append(f.voxStyle)
-    
-    
-    
+
+
+
     f.opw.addClass("dropdown-menu")
     f.dropdown= f.sw.voxdropdown()[0]
     var h= function(){

@@ -1,7 +1,7 @@
 
 
 class Router{
-	
+
 	constructor(){
 		this.$={}
 		this.$.routes= []
@@ -30,13 +30,13 @@ class Router{
 	get params(){
 		return this.$.params
 	}
-	
+
 
 
 	start(index, Uri){
 
 		if(this.noprocesar)
-			return 
+			return
 
 		if(Uri){
 			this.noprocesar= true
@@ -79,7 +79,7 @@ class Router{
 		}
 
 		if(ret)
-			return 
+			return
 
 		var parts= url.split("/"), part1, part2, correcto, params={}
 		index= index |0
@@ -94,7 +94,7 @@ class Router{
 				correcto= true
 				for(var y=0;y<route.length;y++){
 					part1= route[y]
-					part2= parts[y]
+					part2= decodeURIComponent(parts[y])
 					if(!part1.param){
 						if(part1.name!=part2){
 							correcto= false
@@ -107,7 +107,7 @@ class Router{
 				}
 
 
-				
+
 			}
 
 			if(correcto){
@@ -126,8 +126,8 @@ class Router{
 			return this.start(index+1)
 		}
 		var req= {
-			params: params, 
-			location: this.location, 
+			params: params,
+			location: this.location,
 			continue: continuar
 		}
 		this.$.params= params

@@ -38,10 +38,10 @@ class Elastic{
 	        "/": '&#x2F;'
 	    }
 	}
-	
+
 	static escapeHtml(html){
 
-		return String(html).replace(/[&<>"'\/]/g, function (s) {
+		return String(html).replace(/[&<>"'\/]/g, (s)=> {
           return this.entities[s]
         })
 	}
@@ -63,9 +63,10 @@ class Elastic{
 
 	    $(function(){
 	        vox.mutation.watchAppend($("body"), function(ev){
-	            ev.jTarget.voxinput()
+	            ev.jTarget.voxelastic()
+
 	        }, ".vox-textarea, .vox-elastic")
-	        $(".vox-textarea, .vox-elastic").voxelastic()
+	       $(".vox-textarea, .vox-elastic").voxelastic()
 	    })
 	}
 
@@ -78,20 +79,24 @@ class Elastic{
 
 
     refresh(){
-         
+
 
         var f= this.$
         var sxl=f.obj.get(0).sxl
         var refrescar= sxl.elastic ? sxl.elastic : null
         if(refrescar)
             refrescar()
+				else
+					this.adjust(f.obj)
     }
 
 
 	adjust(obj){
+
 		var elastic= this
 		obj.each(function(){
             var e= $(this)
+
             if(!this.sxl){
                 this.sxl={}
             }
@@ -99,17 +104,21 @@ class Elastic{
             if(!Elastic.adjustDiv){
                 div= $("<div>")
                 div.addClass("sxl-elastic-provider");
+
                 Elastic.adjustDiv= div
                 $("body").append(div)
             }
             else{
                 div= Elastic.adjustDiv
             }
-            
+
+
             div.css(Elastic.getStyleObject.call(e))
+						div.css("word-wrap", "break-word")
             div.css("height", "auto")
             div.css("position", "fixed")
-            div.css("top", "-100%")
+            div.css("top", "1000%")
+						div.css("left", "1000%")
             div.css("bottom", "auto")
             div.show()
             if(!this.value){
@@ -122,7 +131,7 @@ class Elastic{
                     div.append("&nbsp;")
                 }
             }
-            
+
             var h= div.height()
             e.height(h)
             e.css("overflow", "hidden")
@@ -133,15 +142,16 @@ class Elastic{
                         clearTimeout(self.sxl.elastic.i)
                         self.sxl.elastic.i=undefined
                     }
+
                     self.sxl.elastic.i= setTimeout(function(){
                         elastic.adjust($(self))
-                    }, 100)
+                    }, 200)
                 }
-                
-                e.bind("change input cut paste keyup resize", this.sxl.elastic)
+
+                e.bind("change click input cut paste keydown resize", this.sxl.elastic)
                 $(window).resize(this.sxl.elastic)
             }
-            
+
         })
 	}
 

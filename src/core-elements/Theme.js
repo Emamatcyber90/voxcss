@@ -302,6 +302,9 @@ Id = 0;
     Theme.$constructor = function () {
         Theme.current = this;
     };
+    Theme.__defineGetter__('colors', function () {
+        return colors;
+    });
     Theme.createClassFromColor = function (options) {
         var str = [];
         var className = options.className;
@@ -323,8 +326,13 @@ Id = 0;
         }
         var style = $('<style>');
         style.html(str.join('\n'));
+        style.addClass('voxcss-theme');
         style.attr('id', 'vox-color-themed-' + ++Id);
         $('head').append(style);
+    };
+    Theme.clear = function () {
+        $('.voxcss-theme').remove();
+        return this;
     };
     Theme.definePalette = function (color) {
         var c = {}, names = [
