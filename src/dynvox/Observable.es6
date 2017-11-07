@@ -124,9 +124,20 @@ class Observable extends EventEmitter{
 
 	_triggerRemove(){
 		var ev= {
-			object: this
+			object: this,
+			observable:this
 		}
 		this.emit("remove", ev)
+	}
+
+
+	_triggerIndexChanged(){	
+		// En caso sea array ..
+		var ev= {
+			observable:this,
+			value: this.$index
+		}
+		this.emit("indexchange", ev)
 	}
 
 
@@ -135,7 +146,8 @@ class Observable extends EventEmitter{
 			return
 
 		var ev= {
-			object: this
+			object: this,
+			observable:this
 		}
 		this.emit("hide", ev)
 		this._hide= true
@@ -146,7 +158,8 @@ class Observable extends EventEmitter{
 			return 
 
 		var ev= {
-			object: this
+			object: this,
+			observable:this
 		}
 		this.emit("show", ev)
 		this._show= true

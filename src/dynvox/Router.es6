@@ -1,24 +1,53 @@
 
 
+// Add this:
+var _wr = function(type) {
+    var orig = history[type];
+    return function() {
+        var rv = orig.apply(this, arguments);
+        var e = new Event(type);
+        e.arguments = arguments;
+        window.dispatchEvent(e);
+        return rv;
+    };
+};
+history.pushState = _wr('pushState')
+//history.popState = _wr('popState')
+history.replaceState = _wr('replaceState')
+
 class Router{
 
 	constructor(){
 		this.$={}
 		this.$.routes= []
-		this.attachEvents()
+
 	}
 
 
 
 	attachEvents(){
+		if(this.attached)
+			return
+
+
 		var hashChange= this.start.bind(this)
 		if(window.addEventListener) {
-		    window.addEventListener("hashchange", hashChange, false);
+			//if(this.pushstate)
+				window.addEventListener('pushState', hashChange, false)
+				window.addEventListener('popstate', hashChange, false)
+			//else
+		    	window.addEventListener("hashchange", hashChange, false)
 		}
 		else if (window.attachEvent) {
-		    window.attachEvent("onhashchange", hashchange);//SEE HERE...
+			//if(this.pushstate)
+				window.attachEvent("onpushState", hashchange)
+				window.attachEvent("onpopstate", hashchange)
+			//else
+		    	window.attachEvent("onhashchange", hashchange);//SEE HERE...
 		    //missed the on. Fixed thanks to @Robs answer.
 		}
+
+		this.attached= true
 	}
 
 
@@ -35,17 +64,22 @@ class Router{
 
 	start(index, Uri){
 
+
 		if(this.noprocesar)
 			return
 
+		this.attachEvents()
 		if(Uri){
 			this.noprocesar= true
-			location= Uri
+			if(this.pushstate)
+				history.pushState({},"",Uri)
+			else
+				location= Uri
 			this.noprocesar= false
 		}
 
 
-		var href= location.hash.substring(1)
+		var href= this.pushstate? location.pathname + location.hash : location.hash.substring(1)
 		var url, search, hash
 
 		var z= href.indexOf("?")
@@ -117,7 +151,12 @@ class Router{
 	}
 
 	redirect(url){
-		location= "#"+url
+
+		if(this.pushstate)
+			history.pushState({},"",url)
+		else
+			location= url
+
 	}
 
 

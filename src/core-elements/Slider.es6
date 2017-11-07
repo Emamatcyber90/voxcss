@@ -13,6 +13,9 @@ var w={}
 if(typeof window !=="undefined")
 	w=window
 
+
+var body=$("body")
+
 function init(window){
 	class Slider extends Element{
 
@@ -164,8 +167,14 @@ function init(window){
 
 
     _changeValue(ev){
+
+
+
+
       var f= this.$
       var discrete= f.obj.hasClass("discrete"), v1=ev.value
+	  if(body.find(f.obj).length==0)
+	  	return 
 
 
       var percent=ev.value,v=0
@@ -319,7 +328,7 @@ function init(window){
 		 if(bc==transparent)
 		 	bc=inherited.call(f.obj.get(0))
 
-			
+
 
       if(this.style)
         this.style.remove()

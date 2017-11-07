@@ -58,26 +58,18 @@ class ObservableList extends Observable{
 	}
 
 	push(value){
-		//this.length= this.length|0
 		var v1= new ObservableValue(this.length.toString())
 		v1.value= value
-		//v1.parent= this
+		v1.$index= this.length
 		this.add(v1)
 	 	Array.prototype.push.call(this, value)
 		this.emit("push", {
 			object: this,
-			observable: v1
+			observable: v1,
+			index: v1.$index
 		})
 	}
 
-	/*
-	get(index){
-		return this[index].value
-	}
-
-	set(value, index){
-		this[index].value= value
-	}*/
 
 
 	pop(){
@@ -98,14 +90,14 @@ class ObservableList extends Observable{
 			return Fn.apply(this, arguments)
 		}
 	}*/
-	
 
-	
+
+
 	sort(){
 		Array.prototype.sort.apply(this, arguments)
 		return this
 	}
-	
+
 
 
 
@@ -117,13 +109,17 @@ class ObservableList extends Observable{
 	}
 
 
-	
+
 
 
 
 	_removeIndex(index){
 		for(var i=index;i<this.length;i++){
 			this.v[i]= this.v[i+1]
+			if(this.v[i]){
+				this.v[i].$index--
+				this.v[i]._triggerIndexChanged()
+			}
 		}
 		Array.prototype.pop.call(this)
 	}

@@ -18,7 +18,8 @@
 .row{
     width:100%;
     margin-bottom:20px;
-    
+    //white-space: nowrap;
+
 
 
     &:after,&:before {
@@ -26,9 +27,10 @@
       display: table;
       clear: both;
     }
-    
+
     .col{
         /*float:left;*/
+        //white-space: initial;
         display:inline-block;
         vertical-align:top;
         padding:0 0.7em;
@@ -76,7 +78,7 @@
     .sl10{ width: (100%*10/12); }
     .sl11{ width: (100%*11/12); }
     .sl12{ width: (100%*12/12); }
-    
+
 }
 
 
@@ -140,4 +142,3 @@
 .container.fluid{
     width:100%;
 }
-

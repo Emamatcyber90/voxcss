@@ -11,6 +11,7 @@ if(typeof $ === "undefined")
 	throw new core.System.ArgumentException("Debe añadir jQuery")
 
 
+var zzz=0
 class DomParser{
 
 
@@ -44,7 +45,10 @@ class DomParser{
           this.parse(obj, scope)
         }
       }
+	  delete l[i]
     }
+
+	l=null
 
   }
 
@@ -74,23 +78,38 @@ class DomParser{
 		this.analize(scope,obj, options)
 	}
 
+	uniqueIdDOM2(dom){
+		if(zzz>2000000)
+			zzz=0
+		dom[0].__id= dom[0].__id || Date.now() + (zzz++).toString()
+	}
+	uniqueIdDOM(dom){
+		if(zzz>2000000)
+			zzz=0
+		dom.__id= dom.__id || Date.now() + (zzz++).toString()
+	}
+
+	setScope(dom,scope){
+		this.uniqueIdDOM(dom)
+		DomParser.vScopes= DomParser.vScopes||{}
+		DomParser.vScopes[dom.__id]= scope
+	}
 
   parseOne(jObject, scope){
-    var attrs, atxr,attr,val, val2, i, y, html, varname, event, special
-		jObject.get(0)._voxscope= scope
+    var attrs, atxr,attr,val, val2, i, y, html, varname, event, special, names
+		//jObject.get(0)._voxscope= scope
+
+		this.setScope(jObject[0],scope)
 
 
 		if(!jObject.attr("voxs-i2r")){
 			if(jObject.attr("voxs-repeat")!==undefined){
 				special= true
 				this.withScopeList(scope, jObject)
-
-
 			}
 			if(jObject.attr("voxs-if")!==undefined){
 				special= true
 				this.ifScope(scope, jObject)
-
 			}
 			if(jObject.attr("voxs")!==undefined){
 				atxr= jObject.get(0).attributes
@@ -111,7 +130,71 @@ class DomParser{
 					}
 					else{
 
-						val= attr.value
+
+						if(jObject.attr("voxs-compiled")!=undefined){
+
+							val= attr.value
+							i= val.indexOf("#{")
+							if(i>=0){
+								names= scope.observer.extractVars(val)
+								for(var name of names){
+									this.withScopeVar2(scope, jObject, {
+										name,
+										attr: attr.name,
+										format: val
+									})
+								}
+							}
+
+						}
+						else{
+							val= attr.value
+							val2= val
+							i= val.indexOf("#{")
+							if(i>=0){
+								html= val[i-1]=="#"
+								val= val.substring(i+2)
+								y= val.indexOf("}")
+								if(y>=0){
+									varname= val.substring(0, y)
+									val= val.substring(y+1)
+								}
+
+								//console.info("ATTR NAME:",attr.name, "VALUE: ",attr.value, ".", varname,val2)
+								attr.value= attr.value.substring(0, i) + val
+								this.withScopeVar2(scope, jObject, {
+									name: varname,
+									attr: attr.name,
+									format: val2
+								})
+							}
+
+						}
+
+					}
+				}
+
+				val= jObject.html()
+
+				if(jObject.attr("voxs-compiled")!==undefined){
+					//val= attr.value
+					i= val.indexOf("#{")
+					html= val.indexOf("##{")>=0
+					if(i>=0){
+						names= scope.observer.extractVars(val)
+						for(var name of names){
+							this.withScopeVar2(scope, jObject, {
+								name,
+								format: val,
+								text: !html,
+								html
+							})
+						}
+					}
+				}
+				else{
+					if(val.indexOf("<")<0){
+						val= jObject.text()
 						val2= val
 						i= val.indexOf("#{")
 						if(i>=0){
@@ -122,41 +205,17 @@ class DomParser{
 								varname= val.substring(0, y)
 								val= val.substring(y+1)
 							}
-
-							//console.info("ATTR NAME:",attr.name, "VALUE: ",attr.value, ".", varname,val2)
-							attr.value= attr.value.substring(0, i) + val
+							jObject.html(jObject.html().substring(0, i-(html?1:0))  + val)
 							this.withScopeVar2(scope, jObject, {
 								name: varname,
-								attr: attr.name,
-								format: val2
+								format: val2,
+								html,
+								text: !html
 							})
 						}
 					}
 				}
 
-				val= jObject.html()
-				if(val.indexOf("<")<0){
-					val= jObject.text()
-					val2= val
-					i= val.indexOf("#{")
-					if(i>=0){
-						html= val[i-1]=="#"
-						val= val.substring(i+2)
-						y= val.indexOf("}")
-						if(y>=0){
-							varname= val.substring(0, y)
-							val= val.substring(y+1)
-						}
-
-						jObject.html(jObject.html().substring(0, i-(html?1:0))  + val)
-						this.withScopeVar2(scope, jObject, {
-							name: varname,
-							format: val2,
-							html,
-							text: !html
-						})
-					}
-				}
 			}
 			else{
 				this.withScopeVar(scope, jObject)
@@ -171,6 +230,8 @@ class DomParser{
     if(!special)
       this.parse(jObject, scope)
 
+	 jObject=null
+
 
   }
 
@@ -179,7 +240,7 @@ class DomParser{
 		if(name=="arrayAñadir")
 			console.info("------------------- Attach event", scope, DOM,event,name)
 
-		if(DOM.data("voxs-i1r"))
+		if(DOM.data("voxs-i1r"+event))
 			return
 		DOM.on(event,function(){
 			var args= arguments
@@ -192,7 +253,24 @@ class DomParser{
 				return value.apply(this, args)
 			}
 		})
-		DOM.data("voxs-i1r",1)
+		DOM.data("voxs-i1r"+event,1)
+		DOM=null
+	}
+
+
+	destroy(){
+
+		if(this.vEvents){
+			for(var id in this.vEvents){
+				v= this.vEvents[id]
+				v&&v.destroy&&v.destroy()
+				delete this.vEvents[id]
+			}
+		}
+
+		for(var id in this){
+			delete this[id]
+		}
 	}
 
 
@@ -274,33 +352,53 @@ class DomParser{
 		obj.attr("voxs-ya", "voxs-ya")
 		var Observable= scope, vr, last
 		var varname= options.varname
-
 		this.createEventFunction(scope, obj, Observable, options)
+		scope=null
+		obj=null
+		Observable=null
+		options=null
 		return true
 
 	}
 
-  createEventFunction(scope, DOM, Observable, options){
-
+  	createEventFunction(scope, DOM, Observable, options){
 		var dom= DOM.get(0),v
-		dom.VoxSEvents= new DomEvents(DOM, this)
-		v= dom.VoxSEvents
+		//dom.VoxSEvents= new DomEvents(DOM, this)
+		//v= dom.VoxSEvents
+
+		v= new DomEvents(DOM, this)
+		dom.__id= Date.now() + (zzz++).toString()
+		this.vEvents=this.vEvents||{}
+		this.vEvents[dom.__id]= v
+
+
 		v.setArguments(scope, Observable, options)
 		v.createEventFunction()
-
+		dom=null
+		DOM=null
+		scope=null
+		Observable=null
+		options=null
 	}
 
 
 
+	static free(){
+		if(this.vScopes){
+			for(var id in this.vScopes){
 
+				delete this.vScopes[id]
+			}
+		}
+	}
 }
 
 
 $.fn.voxscope= function(){
 	var e= this.get(0)
-	var scname, sc=e._voxscope, p
+	var scname, sc=DomParser.vScopes?DomParser.vScopes[e.__id]:null, p
 	if(!sc){
-		p= this.parents("[voxs]")
+		p= this.parent()
 		if(p.length>0){
 			return p.voxscope()
 		}

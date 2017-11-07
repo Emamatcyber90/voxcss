@@ -4,6 +4,7 @@ var vox = core.VW.Web.Vox;
 var w = {};
 if (typeof window !== 'undefined')
     w = window;
+var body = $('body');
 function init(window) {
     {
         var Slider = function Slider() {
@@ -133,6 +134,8 @@ function init(window) {
         Slider.prototype._changeValue = function (ev) {
             var f = this.$;
             var discrete = f.obj.hasClass('discrete'), v1 = ev.value;
+            if (body.find(f.obj).length == 0)
+                return;
             var percent = ev.value, v = 0;
             if (ev.value === undefined || ev.value === null)
                 ev.value = 0;

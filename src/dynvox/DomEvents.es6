@@ -23,6 +23,19 @@ class DomEvents{
 		return options.name + "#" + (options.attr||"") + "#" + (options.text?"text":"")
 	}
 
+	destroy(){
+		/*
+		if(this.DOM && this.DOM[0])
+			delete this.DOM[0].VoxSEvents
+			*/
+		for(var id in this){
+			delete this[id]
+		}
+	}
+
+
+
+
 	createEventFunction(){
 
 		var args= {
@@ -33,7 +46,7 @@ class DomEvents{
 
 
 
-		var scopeObserver= this.scope.observer, self= this
+		var scopeObserver= this.scope.observer, self= this, parser
 		var Exe= function(){
 			if(args.options.repeat){
 
@@ -60,9 +73,13 @@ class DomEvents{
 
 					scope2= args.scope.clone()
 					scope2.add(ev.observable, args.options.vname)
+					scope2.createVariable("$index", ev.index)
+					ev.observable.on("indexchange", function(ev){
+						scope2.$index= ev.value
+					})
 					args.scope.append(scope2)
 
-
+					console.info("SCOPE:",scope2)
 					self.DomParser.parse(dq, scope2)
 					if(self.DOM.attr("voxs-reverse")!==undefined){
 						var temp=self.DOM.find(">*:eq(0)")
@@ -77,10 +94,12 @@ class DomEvents{
 
 
 					b.each(function(){
-						this._voxscope= scope2
+						//this._voxscope= scope2
+						self.DomParser.setScope(this, scope2)
 					})
 
-
+					b.
+					temp=null
 					ev.observable.on("remove", function(){
 						b.remove()
 					})
@@ -141,12 +160,10 @@ class DomEvents{
 							//console.info("Placing here")
 							self.DOM.data("voxs-i0r",1)
 							try{
-								self.DomParser.parse(self.DOM, self.DOM.voxscope())
+								self.DomParser.parse(self.DOM, args.scope /*self.DOM.voxscope()*/ )
 							}catch(e){
 								console.error("Error in if-condition: ",e)
 							}
-
-
 						}
 					}
 					else{
@@ -196,7 +213,8 @@ class DomEvents{
 					}
 					*/
 
-					if(args.options.format){
+
+					if(args.options.format && self.DOM.attr("voxs-compiled")===undefined){
 						// Convertir el contenido ...
 						if(args.options.text)
 							value= args.scope.observer.format(args.options.format, true)
@@ -204,14 +222,38 @@ class DomEvents{
 							value= args.scope.observer.format(args.options.format)
 
 					}
+					else{
 
 
-					value= value ? value.toString() : null
+						if(!args.options.compiled && args.options.format){
+							args.options.compiled= scopeObserver.compileFormat(args.options.format)
+						}
+						if(args.options.format){
+
+							try{
+								value= args.options.compiled(scopeObserver)
+							}catch(e){
+								console.error("Error en función compilada: ", e)
+							}
+							
+							/*
+							if(!args.options.text){
+								value= core.dynvox.EscapeHtml(value)
+								value= value.replace(/\r?\n|\r/ig, "<br/>")
+							}*/
+						}
+					}
+
+
+					value= value ? value.toString() : value
+					if(value===undefined)
+						value=null
 					if(args.options.html){
 
 						self.DOM.html(value)
 						if(self.DOM.attr("dynvox-code")!==undefined){
-							self.DomParser.parse(self.DOM, self.DOM.voxscope())
+							console.info("HAHAHAH---")
+							//self.DomParser.parse(self.DOM, self.DOM.voxscope())
 						}
 
 					}
@@ -223,7 +265,13 @@ class DomEvents{
 					}
 					else if(args.options.attr=="value"){
 						if(self.DOM.is("input[type=checkbox]"))
-							self.DOM.get(0).checked= !!value
+							self.DOM.get(0).checked= value==1 || value=="true"
+						else
+							self.DOM.val(value)
+					}
+					else if(args.options.attr=="bind"){
+						if(self.DOM.is("input[type=radio]"))
+							self.DOM.get(0).checked= value==1 || value=="true"
 						else
 							self.DOM.val(value)
 					}
@@ -237,7 +285,7 @@ class DomEvents{
 
 
 				}
-				if(self.DOM.is("input,textarea,select") && args.options.attr=="value"){
+				if(self.DOM.is("input,textarea,select") && (args.options.attr=="value"||args.options.attr=="bind")){
 					self.DOM.on("change input", function(){
 						self.noTrigger= true
 						if($(this).is("input[type=checkbox]"))
@@ -246,277 +294,18 @@ class DomEvents{
 							args.options.value= this.value
 
 						//console.info("CHANGING", args)
-						scopeObserver.assignValue(args.options)
+						$(this).voxscope().observer.assignValue(args.options)
 					})
 				}
-				scopeObserver.observe(args.options)
-
+				//console.info("OPTIONS:", args.options, args.scope, self.DOM.voxscope())
+				//console.info("                 --")
+				self.DOM.voxscope().observer.observe(args.options)
 			}
-
 		}
 		Exe()
+		//console.info("SCOPE1:", this.scope)
 
 
-		/***
-
-		console.info(args)
-		var Exe= ()=>{
-			var Observable= args.observable
-			var Fn, self= this
-			var id= Observable.id + DomEvents.optionsToString(args.options)
-			if(args.options.repeat){
-
-				if(!this.events[id]){
-
-					var procesar, observable2, observable1
-
-					var getObservable= function(Observable){
-						let v= Observable.value, l, saved
-						//console.info("PROPS: ", self.options.prop)
-						try{
-							if(args.options.prop){
-								l= args.options.prop.length
-								for(var i=0;i<l;i++){
-									v= v[args.options.prop[i]]
-								}
-							}
-						}
-						catch(e){
-							console.error(e)
-						}
-
-						if(! (v instanceof ObservableList)){
-							saved= v
-							v= new ObservableList()
-
-							if(saved instanceof Array){
-								for(var i=0;i<saved.length;i++){
-									v.push(saved[i])
-								}
-							}
-							//console.info("V: ", v, saved)
-
-							if(args.options.prop){
-								saved= Observable.value
-								l= args.options.prop.length-1
-								for(var i=0;i<l;i++){
-									if(saved)
-										saved= saved[args.options.prop[i]]
-								}
-								if(saved){
-									saved[args.options.prop[args.options.prop.length-1]]= v
-									Observable= v
-								}
-							}
-							else{
-								Observable= Observable.value = v
-							}
-						}
-						else{
-							Observable= v
-						}
-
-						//console.info(Observable)
-						return Observable
-					}
-
-
-
-
-					Observable.on("change", function(){
-						if(observable2 instanceof ObservableList)
-							observable2.removeAll()
-
-						if(observable2!=Observable)
-								procesar()
-
-					})
-
-					procesar= function(){
-
-
-
-						observable2= getObservable(Observable)
-						id= observable2.id + DomEvents.optionsToString(args.options)
-						if(self.events[id])
-							return
-						//console.info("HERE ----", observable2)
-						if(!self.Body){
-							self.Body= self.DOM.find(">*")
-							self.Body.remove()
-						}
-
-						Fn= function(ev){
-
-							//console.warn("PUSHED", ev)
-							var scope2, b= self.Body.clone(true)
-							var dq= $("<div>")
-							dq.append(b)
-							//self.DOM.append(b)
-							dq.find(DomParser.q).removeAttr("voxs-ya")
-
-							scope2= args.scope.clone()
-							args.scope.append(scope2)
-							scope2.add(ev.observable, args.options.vname)
-
-							self.DomParser.paso2(dq, scope2)
-							self.DOM.append(b)
-							ev.observable.on("remove", function(){
-								b.remove()
-							})
-							ev.observable.on("change", function(){
-								self.DomParser.paso2(self.DOM, scope2)
-							})
-						}
-						observable2.on("push", Fn)
-						for(var i=0;i<observable2.length;i++){
-							Fn({
-								observable: observable2.getObservable(i)
-							})
-						}
-
-						id= observable2.id + DomEvents.optionsToString(args.options)
-						self.events[id]= Fn
-
-					}
-					procesar()
-				}
-
-
-			}
-			else if(args.options.ifcondition){
-
-				if(!this.events[id]){
-					Fn= function(ev){
-
-						let v= Observable.value, l
-						if(args.options.prop){
-							l= args.options.prop.length
-							for(var i=0;i<l;i++){
-								if(v)
-									v= v[args.options.prop[i]]
-							}
-						}
-
-						v= !v
-						if(!args.options.negate)
-							v= !v
-
-						if(v)
-							self.DOM.show()
-						else
-							self.DOM.hide()
-					}
-					Fn()
-					Observable.on("change", Fn)
-					if(self.DOM.is("input[type=check]")){
-						self.DOM.on("change", function(){
-							self.noTrigger= true;
-							if(args.options.prop){
-								let v= Observable.value, l
-								l= args.options.prop.length-1
-								for(var i=0;i<l;i++){
-									v= v[args.options.prop[i]]
-								}
-								v[l]= this.checked
-								Observable.value= Observable.value
-							}
-							else{
-								Observable.value= this.checked
-							}
-						})
-					}
-					this.events[id]= Fn
-				}
-
-
-			}
-			else{
-
-
-				if(!this.events[id]){
-
-
-					Fn= function(ev){
-
-						if(self.noTrigger)
-							return self.noTrigger= false
-
-						let v= Observable.value, l
-						if(args.options.prop){
-							l= args.options.prop.length
-							for(var i=0;i<l;i++){
-								if(v)
-									v= v[args.options.prop[i]]
-							}
-						}
-
-						if(args.options.event){
-
-							if(!args.options.fnEvent){
-								args.options.fnEvent= function(){
-									if(args.options.fnEvent1)
-										args.options.fnEvent1.apply(this,arguments)
-								}
-
-								self.DOM.on(args.options.event, args.options.fnEvent)
-							}
-
-							args.options.fnEvent1= v
-
-						}
-						else if(args.options.html)
-							self.DOM.html(v)
-						else if(args.options.text)
-							self.DOM.text(v)
-						else if(args.options.attr=="value")
-							self.DOM.val(v)
-						else
-							self.DOM.attr(args.options.attr, v)
-					}
-					Fn()
-					Observable.on("change", Fn)
-					if(self.DOM.is("input,textarea,select")){
-						self.DOM.on("change input", function(){
-							self.noTrigger= true
-							if(args.options.prop){
-								let v= Observable.value, l
-								l= args.options.prop.length-1
-								for(var i=0;i<l;i++){
-									if(v)
-										v= v[args.options.prop[i]]
-								}
-								v[args.options.prop[l]]= this.value
-								Observable.value= Observable.value
-							}
-							else{
-								Observable.value= this.value
-							}
-						})
-					}
-					this.events[id]= Fn
-				}
-
-			}
-
-			if(!this.events[id]){
-				if(args.options.remove){
-					Observable.on("remove", function(ev){
-						self.DOM.remove()
-					})
-				}
-
-				if(args.options.hide){
-					Observable.on("remove", function(ev){
-						self.DOM.hide()
-					})
-				}
-			}
-		}
-
-		Exe()
-
-		**/
 	}
 }
 DomEvents.dq= $("<div>")
