@@ -270,7 +270,8 @@ class DomParser {
 	attachObserverAttr(scope, jobject, attr){
 		return this.attachObserver(scope,jobject, {
 			attr, 
-			text: attr.value
+			text: attr.value,
+			html: attr.name=="value"
 		})	
 	}
 	
@@ -665,7 +666,7 @@ class DomParser {
 					else if(script.type=="dynamic"){
 						expr= script.value()
 						str= expr===null || expr===undefined?"": expr.toString()
-						if(!script.html){
+						if(!script.html /*&& item.attr.name!="value"*/){
 							str=core.dynvox.EscapeHtml(str)
 						}
 						content+= str
