@@ -403,11 +403,16 @@ class DomParser {
 			
 			
 			if(options.ifcondition){
-				
+				var udom= jobject.find(">*")
 				// DELAYED CREATION OF DOM ...
-				if(jobject.find(">*").length>0){
+				if(udom.length>0){
 					var ihtml= jobject.html()
 					jobject.html("")
+					
+					
+					udom.attr("voxs-ya", "true")
+					udom= null 
+					
 					jobject.data("delayed-dom", ihtml)
 				}
 				
