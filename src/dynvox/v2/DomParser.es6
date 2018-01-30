@@ -154,15 +154,16 @@ class DomParser {
 				g.event= arrname + "." + child.$index
 				//scope.onchange(arrname + "." + child.$index, g, null/*, uniqueId + ">" + arrname*/)
 				
-				scope.attach({
-					event: "change", 
-					name: arrname + "." + child.$index, 
-					func: g,
-					dom: newdom
-				})
-				
-				// parse with new scope
-				self.parse(temporal, child)
+				if(newdom && newdom.length){
+					scope.attach({
+						event: "change", 
+						name: arrname + "." + child.$index, 
+						func: g,
+						dom: newdom
+					})
+					// parse with new scope
+					self.parse(temporal, child)
+				}
 			}
 			
 			if(!current)
