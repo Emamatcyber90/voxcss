@@ -666,7 +666,7 @@ class DomParser {
 					else if(script.type=="dynamic"){
 						expr= script.value()
 						str= expr===null || expr===undefined?"": expr.toString()
-						if(!script.html && item.attr.name!="value"){
+						if(!script.html && (!item.attr || item.attr.name!="value")){
 							str=core.dynvox.EscapeHtml(str)
 						}
 						content+= str
