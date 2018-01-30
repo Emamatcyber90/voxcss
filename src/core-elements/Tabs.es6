@@ -18,15 +18,26 @@ function init(document){
     class Tabs extends Element{
         
         static register(){
+        	
+        	if(this.registered)
+				return 
+			
             $.fn.voxtabgroup= function(){
                 var dp=[]
                 this.each(function(){
                     var o= $(this)
                     var t=undefined
+                    /*
                     if(!(t=o.data("vox-tabgroup"))){
                         t=new Tabs(o)
                         o.data("vox-tabgroup", t)
-                    }
+                    }*/
+                    this.voxcss_element= this.voxcss_element||{}
+		            t= this.voxcss_element["vox-tabgroup"]
+		            if(!t){
+		            	t=new Tabs(o)
+		            	this.voxcss_element["vox-tabgroup"]= t
+		            }
                     dp.push(t)
                 })
                 return dp
@@ -37,7 +48,10 @@ function init(document){
                     ev.jTarget.voxtabgroup()
                 }, ".tabs");
                 $(".tabs").voxtabgroup()
-            });
+            })
+            
+            if(this.registered)
+				return 
         }
 
     	constructor(/* Node */obj){

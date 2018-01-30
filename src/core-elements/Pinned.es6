@@ -13,14 +13,24 @@ var vox= core.VW.Web.Vox
 class Pinned extends Element{
 	
 	static register(){
+		if(this.registered)
+			return 
+			
 		$.fn.voxpinned= function(){
 	        var dp=[]
 	        this.each(function(){
 	            var o= $(this)
 	            var t=undefined
+	            /*
 	            if(!(t=o.data("vox-pinned"))){
 	                t=new Pinned(o)
 	                o.data("vox-pinned", t)
+	            }*/
+	            this.voxcss_element= this.voxcss_element||{}
+	            t= this.voxcss_element["vox-pinned"]
+	            if(!t){
+	            	t=new Pinned(o)
+	            	this.voxcss_element["vox-pinned"]= t
 	            }
 	            dp.push(t)
 	        })
@@ -33,6 +43,8 @@ class Pinned extends Element{
 	        }, ".pinned")
 	        $(".pinned").voxpinned()
 	    })
+	    
+	    this.registered=true
 	}
 
 	constructor(/* Node */obj){

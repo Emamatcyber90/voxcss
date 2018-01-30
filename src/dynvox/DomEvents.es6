@@ -37,16 +37,18 @@ class DomEvents{
 
 
 	createEventFunction(){
-
+	
+		//var scope= this.DOM.voxscope()
 		var args= {
 			"options": this.options,
 			"scope": this.scope,
 			"observable": this.observable
 		}
 
-
-
-		var scopeObserver= this.scope.observer, self= this, parser
+	
+		
+		var scopeObserver= this.scope.observer
+		var self= this, parser
 		var Exe= function(){
 			if(args.options.repeat){
 
@@ -114,7 +116,6 @@ class DomEvents{
 					self.DOM.html("")
 				}
 				args.options.array= true
-
 				if(!self.Body){
 					self.Body= self.DOM.html() //find(">*")
 					self.DOM.find(">*").remove()
@@ -181,8 +182,9 @@ class DomEvents{
 					})
 				}
 				*/
-
+	
 				scopeObserver.observe(args.options)
+				//self.DOM.voxscope().observer.observe(args.options)
 			}
 			else if(true){
 
@@ -299,12 +301,15 @@ class DomEvents{
 				}
 				//console.info("OPTIONS:", args.options, args.scope, self.DOM.voxscope())
 				//console.info("                 --")
-				self.DOM.voxscope().observer.observe(args.options)
+				//self.DOM.voxscope().observer.observe(args.options)
+				scopeObserver.observe(args.options)
 			}
 		}
 		Exe()
-		//console.info("SCOPE1:", this.scope)
-
+		
+		
+		if(args.options.name.indexOf("input._array")>=0)
+			console.info("SCOPE 1 ------:", this.scope)
 
 	}
 }

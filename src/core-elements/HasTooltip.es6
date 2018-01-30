@@ -30,15 +30,28 @@ function init(window){
 
 
     	static register(){
+    		if(this.registered)
+				return 
     		$.fn.voxhastooltip= function(){
 		        var dp=[]
 		        this.each(function(){
 		            var o= $(this)
 		            var t=undefined
+		            
+		            /*
 		            if(!(t=o.data("vox-hastooltip"))){
 		                t=new Tooltip(o)
 		                o.data("vox-hastooltip", t)
+		            }*/
+		            
+		            this.voxcss_element= this.voxcss_element||{}
+		            t= this.voxcss_element["vox-hastooltip"]
+		            if(!t){
+		            	t=new HasTooltip(o)
+		            	this.voxcss_element["vox-hastooltip"]= t
 		            }
+		            
+		            
 		            dp.push(t)
 		        })
 		        return dp
@@ -48,6 +61,7 @@ function init(window){
 	            ev.jTarget.voxhastooltip()
 	        }, "[data-hover=tooltip]")
 	        $("[data-hover=tooltip]").voxhastooltip()
+	        this.registered=true
     	}
 
     	constructor(/* Node */obj){

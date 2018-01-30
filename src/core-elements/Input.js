@@ -14,14 +14,18 @@ var fnVal = $.fn.val;
     Input.$super = Element.prototype;
     Input.$superClass = Element;
     Input.register = function () {
+        if (this.registered)
+            return;
         $.fn.voxinput = function () {
             var dp = [];
             this.each(function () {
                 var o = $(this);
                 var t = undefined;
-                if (!(t = o.data('vox-input'))) {
+                this.voxcss_element = this.voxcss_element || {};
+                t = this.voxcss_element['vox-input'];
+                if (!t) {
                     t = new Input(o);
-                    o.data('vox-input', t);
+                    this.voxcss_element['vox-input'] = t;
                 }
                 dp.push(t);
             });
@@ -42,7 +46,7 @@ var fnVal = $.fn.val;
                     var o = $(this);
                     var p = o.parents('.input-field').eq(0);
                     if (p.length > 0) {
-                        var t = p.data('vox-input');
+                        var t = p[0].voxcss_element ? p[0].voxcss_element['vox-input'] : null;
                         if (t) {
                             t.adjustValue();
                             t.$.r();
@@ -59,12 +63,14 @@ var fnVal = $.fn.val;
             }
             return result;
         };
+        this.registered = true;
     };
     Input.$constructor = function (obj) {
         Input.$superClass.call(this);
         obj = $(obj);
         var f = this.$ = {};
         f.obj = obj;
+        this.func = [];
         this.obtainProps();
         this.init();
     };
@@ -86,14 +92,19 @@ var fnVal = $.fn.val;
         this.events();
         f.r();
     };
+    Input.prototype.imask = function (input) {
+        setTimeout(function () {
+            var d = input.data('imask');
+            if (typeof d != 'object' && d) {
+                input.mask(d.toString());
+            }
+        }, 30);
+    };
     Input.prototype.obtainProps = function () {
-        var f = this.$;
+        var f = this.$, self = this;
         f.inp = f.obj.find('input,textarea');
         f.inp.each(function () {
-            var d = $(this).data('imask');
-            if (typeof d != 'object' && d !== undefined) {
-                $(this).mask(d.toString());
-            }
+            self.imask($(this));
         });
         f.label = f.obj.find('label');
         f.label.addClass('normal');
@@ -107,6 +118,18 @@ var fnVal = $.fn.val;
             f.obj.data('warning-color', 'orange');
         if (!f.obj.data('ok-color'))
             f.obj.data('ok-color', 'green');
+    };
+    Input.prototype.dynamicDispose = function () {
+        Element.prototype.dynamicDispose.call(this);
+        if (this.$) {
+            if (this.$.sw) {
+                this.$.sw.remove();
+            }
+            for (var id in this.$) {
+                delete this.$[id];
+            }
+            delete this.$;
+        }
     };
     Input.prototype.adjustValue = function () {
         var f = this.$;
@@ -165,7 +188,7 @@ var fnVal = $.fn.val;
                     self$0.adjustValue();
                 };
             }(this));
-            f.dropdown.on('select', function (ev) {
+            this.attachEvent(f.dropdown, 'select', function (ev) {
                 f.select.val(ev.value);
                 f.select.change();
             });

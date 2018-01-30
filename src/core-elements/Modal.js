@@ -38,14 +38,18 @@ var modals = [];
         m.show();
     };
     Modal.register = function () {
+        if (this.registered)
+            return;
         $.fn.voxmodal = function () {
             var dp = [];
             this.each(function () {
                 var o = $(this);
                 var t = undefined;
-                if (!(t = o.data('vox-modal'))) {
+                this.voxcss_element = this.voxcss_element || {};
+                t = this.voxcss_element['vox-modal'];
+                if (!t) {
                     t = new Modal(o);
-                    o.data('vox-modal', t);
+                    this.voxcss_element['vox-modal'] = t;
                 }
                 dp.push(t);
             });
@@ -66,6 +70,7 @@ var modals = [];
                 }
             });
         });
+        this.registered = true;
     };
     Modal.$constructor = function (obj) {
         Modal.$superClass.call(this);

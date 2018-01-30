@@ -18,14 +18,27 @@ class ScrollFire extends Element{
 	
 
 	static register(){
+		
+		if(this.registered)
+			return 
+			
+			
 		$.fn.voxscrollfire= function(){
 	        var dp=[]
 	        this.each(function(){
 	            var o= $(this)
 	            var t=undefined
+	            /*
 	            if(!(t=o.data("vox-scrollfire"))){
 	                t=new ScrollFire(o)
 	                o.data("vox-scrollfire", t)
+	            }*/
+	            
+	            this.voxcss_element= this.voxcss_element||{}
+	            t= this.voxcss_element["vox-scrollfire"]
+	            if(!t){
+	            	t=new ScrollFire(o)
+	            	this.voxcss_element["vox-scrollfire"]= t
 	            }
 	            dp.push(t)
 	        })
@@ -38,6 +51,8 @@ class ScrollFire extends Element{
 	        }, ".scroll-fire")
 	        $(".scroll-fire").voxscrollfire()
 	    })
+	    
+	    this.registered= true
 	}
 
 
@@ -127,18 +142,30 @@ class ScrollFire extends Element{
                 g(ev)
             }, delay)
         }
-        w.bind("scroll", h)
+        w.on("scroll", h)
         
         f.h=h
         var r1= this.refresh.bind(this)
-        w.resize(()=>{
+        f.resize_func= ()=>{
             if(f.r){
                 clearTimeout(f.r)
                 f.r=undefined
             }
             f.r= setTimeout(r1, 100)
-        })
+        }
+        
+        w.resize(f.resize_func)
         setTimeout(r1, 100)
+	}
+	
+	dynamicDispose(){
+		var w=vox.platform.scrollObject
+		if(this.$.resize_func){
+			w.off("resize", this.$.resize_func)
+		}
+		if(this.$.h){
+			w.off("scroll", this.$.h)
+		}
 	}
 }
 

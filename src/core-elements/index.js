@@ -60,6 +60,32 @@ e.get_Theme = function () {
 };
 core.VW.Util.createProperties(e);
 e.register = function () {
+    var jqueryCleanData = jQuery.cleanData;
+    jQuery.cleanData = function (elems) {
+        var g = function (self) {
+            var ev, eves;
+            if (self.voxcss_element) {
+                for (var id in self.voxcss_element) {
+                    ev = self.voxcss_element[id];
+                    if (ev) {
+                        try {
+                            if (ev.dynamicDispose) {
+                                ev.dynamicDispose();
+                            }
+                        } catch (e) {
+                            console.error('Error in dispose method:', e);
+                        }
+                    }
+                    delete self.voxcss_element[id];
+                }
+            }
+            delete self.voxcss_element;
+        };
+        for (var i = 0, elem; (elem = elems[i]) != null; i++) {
+            g(elem);
+        }
+        return jqueryCleanData.apply(this, arguments);
+    };
     if (!e.Theme.current)
         e.Theme.default();
     e.Card.register();

@@ -25,18 +25,29 @@ class Toast extends Element{
     }
 
     static register(){
+        
+        if(this.registered)
+			return 
+			
         Toast.init()
-
+		
 
         $.fn.voxtoast= function(){
             var dp=[]
             this.each(function(){
                 var o= $(this)
                 var t=undefined
+                /*
                 if(!(t=o.data("vox-toast"))){
                     t=new Toast(o)
                     o.data("vox-toast", t)
-                }
+                }*/
+                this.voxcss_element= this.voxcss_element||{}
+	            t= this.voxcss_element["vox-toast"]
+	            if(!t){
+	            	t=new Toast(o)
+	            	this.voxcss_element["vox-toast"]= t
+	            }
                 dp.push(t)
             })
             return dp
@@ -60,6 +71,8 @@ class Toast extends Element{
                }
             })
         })
+        
+        this.registered=true
 
     }
 

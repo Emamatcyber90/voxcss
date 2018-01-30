@@ -22,15 +22,19 @@ var vox = core.VW.Web.Vox;
         }
     };
     Toast.register = function () {
+        if (this.registered)
+            return;
         Toast.init();
         $.fn.voxtoast = function () {
             var dp = [];
             this.each(function () {
                 var o = $(this);
                 var t = undefined;
-                if (!(t = o.data('vox-toast'))) {
+                this.voxcss_element = this.voxcss_element || {};
+                t = this.voxcss_element['vox-toast'];
+                if (!t) {
                     t = new Toast(o);
-                    o.data('vox-toast', t);
+                    this.voxcss_element['vox-toast'] = t;
                 }
                 dp.push(t);
             });
@@ -53,6 +57,7 @@ var vox = core.VW.Web.Vox;
                 }
             });
         });
+        this.registered = true;
     };
     Toast.$constructor = function (obj) {
         Toast.$superClass.call(this);

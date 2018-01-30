@@ -47,14 +47,25 @@ class Elastic{
 	}
 
 	static register(){
+		if(this.registered)
+			return 
 		$.fn.voxelastic= function(){
 	        var dp=[]
 	        this.each(function(){
 	            var o= $(this)
 	            var t=undefined
+	            
+	            /*
 	            if(!(t=o.data("vox-elastic"))){
 	                t=new Elastic(o)
 	                o.data("vox-elastic", t)
+	            }*/
+	            
+	            this.voxcss_element= this.voxcss_element||{}
+	            t= this.voxcss_element["vox-elastic"]
+	            if(!t){
+	            	t=new Elastic(o)
+	            	this.voxcss_element["vox-elastic"]= t
 	            }
 	            dp.push(t)
 	        })
@@ -68,6 +79,7 @@ class Elastic{
 	        }, ".vox-textarea, .vox-elastic")
 	       $(".vox-textarea, .vox-elastic").voxelastic()
 	    })
+	    this.registered= true
 	}
 
 	constructor(obj){

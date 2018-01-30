@@ -34,14 +34,18 @@ function init(window) {
             }
         };
         SideNav.register = function () {
+            if (this.registered)
+                return;
             $.fn.voxsidenav = function () {
                 var dp = [];
                 this.each(function () {
                     var o = $(this);
                     var t = undefined;
-                    if (!(t = o.data('vox-sidenav'))) {
+                    this.voxcss_element = this.voxcss_element || {};
+                    t = this.voxcss_element['vox-sidenav'];
+                    if (!t) {
                         t = new SideNav(o);
-                        o.data('vox-sidenav', t);
+                        this.voxcss_element['vox-sidenav'] = t;
                     }
                     dp.push(t);
                 });
@@ -53,6 +57,7 @@ function init(window) {
                 }, '.side-nav');
                 $('.side-nav').voxsidenav();
             });
+            this.registered = true;
         };
         SideNav.$constructor = function (obj) {
             SideNav.$superClass.call(this);

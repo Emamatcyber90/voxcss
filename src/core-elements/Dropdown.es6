@@ -10,47 +10,68 @@ var Element= require("./Element").default
 var $=core.VW.Web.JQuery
 var vox= core.VW.Web.Vox
 
-function init(document){
+//function init(document){
 
 	class Dropdown extends Element{
 
 
 		static register(){
+			if(this.registered)
+				return 
 			$.fn.voxdropdown= function(){
 		        var dp=[]
 		        this.each(function(){
 		            var o= $(this)
 		            var t=undefined
+		            
+		            /*
 		            if(!(t=o.data("vox-dropdown"))){
 		                t=new Dropdown(o)
 		                o.data("vox-dropdown", t)
+		            }*/
+		            
+		            this.voxcss_element= this.voxcss_element||{}
+		            t= this.voxcss_element["vox-dropdown"]
+		            if(!t){
+		            	t=new Dropdown(o)
+		            	this.voxcss_element["vox-dropdown"]= t
 		            }
 		            dp.push(t);
 		        })
 		        return dp
 		    }
 		    
-		    $(function(){
+		    Dropdown.registerWatch()
+		    this.registered=true
+		}
+
+
+		static registerWatch(){
+			$(function(){
 		        vox.mutation.watchAppend($("body"), function(ev){
-		            ev.jTarget.voxdropdown()
+		           ev.jTarget.voxdropdown()
 		        }, ".dropdown")
 		        $(".dropdown").voxdropdown()
 		    })
 		}
 
-
 		constructor(/* Node */obj){
             super()
+			this.func=[]
 			obj= $(obj)
 			var f= this.$={}
 			f.obj=obj
 			this.obtainProps()
+			
 			this.init()
+			
 		}
-
+		
+		
 
 		init(){
 			this.events()
+			
 		}
 
 		obtainProps(){
@@ -72,7 +93,7 @@ function init(document){
 
 		$pEvents(/*jquery element*/ a){
 			var self=this
-			a.click(function(){
+			var y= function(){
                 var a0= $(this)
                 var ev= self.createEvent("beforeselect")
                 ev.dropdown= self
@@ -92,8 +113,13 @@ function init(document){
                     return
                 }
                 self.close()
-            })
+            }
+            
+			this.attachEvent(a,"click",y)
 		}
+		
+		
+		
 
 		open(event){
             var f= this.$
@@ -152,16 +178,27 @@ function init(document){
                 this.open()
             
 		}
+		
+		dynamicDispose(){
+			if(this.watchRemoveListener){
+				this.watchRemoveListener()
+			}
+			this.watchRemoveListener=null 
+			Element.prototype.dynamicDispose.call(this)
+		}
 
 		events(){
-			var f= this.$
-			vox.mutation.watchAppend(f.menu, (ev)=>{
+			var f= this.$, ab
+			
+			// LEAK MEMORY DETECTED (13/11/2017)
+			this.watchRemoveListener= vox.mutation.watchAppend(f.menu, (ev)=>{
 	                this.$pEvents(ev.jTarget.find(">a"));
 	        }, "li");
             this.$pEvents(f.menu.find("li>a"))
-
 			var self=this
-	        $(document).keyup(function(ev){
+			
+			
+	        this.attachEvent($(document), "keyup", function(ev){
                 if(f.captureKeyboard){
                     ev.preventDefault()
                     ev.dropdown= self
@@ -169,15 +206,15 @@ function init(document){
                     if(ev.defaultPrevented){
                         return;
                     }
-                    
                     if(ev.keyCode==39){
-                        
                     }
                     return false
                 }
             })
             
-	        $(document).click(function(ev){
+            
+            
+	        this.attachEvent($(document), "click", function(ev){
                 if(!self.isOpened()){
                     return 
                 }
@@ -194,16 +231,16 @@ function init(document){
                     
                     self.close()
                 }
-                
             })
 
             f.btn=f.obj.find("a,.button").eq(0)
-            f.btn.click(function(){
+            
+            this.attachEvent(f.btn,"click", function(){
                 if(f.lEvent=="mouseenter")
                     return self.open()
                 
                 self.toggle()
-            });
+            })
             
             
             var j= function(ev){
@@ -233,18 +270,21 @@ function init(document){
                     }
                 }
             }
-            f.btn.hover(j)
-            f.menu.hover(j)
+            //f.btn.hover(j)
+            //f.menu.hover(j)
+            	
+            this.attachEvent(f.btn, "hover", j)	
+            this.attachEvent(f.menu, "hover", j)	
             
 
 		}
 	}
 
-	return Dropdown
-}
+//	return Dropdown
+//}
 
 var doc={}
 if(typeof document === "object")
 	doc=document
 
-export default init(doc)
+export default Dropdown

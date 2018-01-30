@@ -11,14 +11,18 @@ var vox = core.VW.Web.Vox;
     Anchor.$super = Element.prototype;
     Anchor.$superClass = Element;
     Anchor.register = function () {
+        if (this.registered)
+            return;
         $.fn.voxanchor = function () {
             var dp = [];
             this.each(function () {
                 var o = $(this);
                 var t = undefined;
-                if (!(t = o.data('anchor'))) {
+                this.voxcss_element = this.voxcss_element || {};
+                t = this.voxcss_element['anchor'];
+                if (!t) {
                     t = new Anchor(o);
-                    o.data('anchor', t);
+                    this.voxcss_element['anchor'] = t;
                 }
                 dp.push(t);
             });
@@ -30,6 +34,7 @@ var vox = core.VW.Web.Vox;
             }, '[hash-effect]');
             $('[hash-effect]').voxanchor();
         });
+        this.registered = true;
     };
     Anchor.$constructor = function (obj) {
         Anchor.$superClass.call(this);

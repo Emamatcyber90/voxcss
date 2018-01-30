@@ -24,14 +24,24 @@ class Input extends Element{
 
 
 	static register(){
+		if(this.registered)
+			return 
+			
 		$.fn.voxinput= function(){
 	        var dp=[]
 	        this.each(function(){
 	            var o= $(this)
 	            var t=undefined
+	            /*
 	            if(!(t=o.data("vox-input"))){
 	                t=new Input(o)
 	                o.data("vox-input", t)
+	            }*/
+	            this.voxcss_element= this.voxcss_element||{}
+	            t= this.voxcss_element["vox-input"]
+	            if(!t){
+	            	t=new Input(o)
+	            	this.voxcss_element["vox-input"]= t
 	            }
 	            dp.push(t)
 	        })
@@ -57,7 +67,7 @@ class Input extends Element{
                     //if(o.attr("vox-input")!==undefined){
                         var p= o.parents(".input-field").eq(0)
                         if(p.length>0){
-                            var t= p.data("vox-input")
+                            var t= p[0].voxcss_element?p[0].voxcss_element["vox-input"]:null
                             if(t){
                                 t.adjustValue()
                                 t.$.r()
@@ -71,8 +81,6 @@ class Input extends Element{
 	    		er=e
 
 	    	}
-
-
 	    	$.fn.val= replaceval
 
 	    	if(er){
@@ -80,6 +88,7 @@ class Input extends Element{
 	    	}
 	    	return result;
 	    }
+	    this.registered= true
 	}
 
 
@@ -88,8 +97,11 @@ class Input extends Element{
 		obj= $(obj)
 		var f= this.$={}
 		f.obj=obj
+		this.func=[]
 		this.obtainProps()
+		
 		this.init()
+		
 
 	}
 
@@ -109,25 +121,30 @@ class Input extends Element{
 
         f.r= this.r.bind(this)
         f.adjustValue= this.adjustValue.bind(this)
-				if(f.obj.is(".select")){
+		if(f.obj.is(".select")){
             require("./Input-createSelect").default($,f)
             f.select.attr("vox-input", "vox-input")
         }
         this.events()
 		f.r()
 	}
+	
+	imask(input){
+		 
+		setTimeout(function(){
+			var d=input.data("imask")
+	        if((typeof d!="object") && d ){
+	          input.mask(d.toString())
+	        }	
+		},30)
+		
+	}
 
 	obtainProps(){
-		var f=this.$
+		var f=this.$, self=this
 		f.inp= f.obj.find("input,textarea")
-
         f.inp.each(function(){
-            //alert($(this).data("mask"))
-            var d=$(this).data("imask")
-            if((typeof d!="object") &&  d!==undefined){
-              $(this).mask(d.toString())
-              //$(this).data("imask", undefined)
-            }
+          self.imask($(this))
         })
 
         f.label= f.obj.find("label")
@@ -148,7 +165,21 @@ class Input extends Element{
             f.obj.data("ok-color", "green")
 
 	}
-
+	
+	dynamicDispose(){
+		
+		Element.prototype.dynamicDispose.call(this)
+		if(this.$){
+			if(this.$.sw){
+				this.$.sw.remove()
+			}
+			for(var id in this.$){
+				delete this.$[id]
+			}
+			delete this.$
+			
+		}
+	}
 
 
 
@@ -203,6 +234,9 @@ class Input extends Element{
 
 
     }
+    
+    
+   
 
 	events(){
 		var f= this.$;
@@ -232,11 +266,11 @@ class Input extends Element{
                 this.adjustValue()
             })
 
-
-            f.dropdown.on("select", function(ev){
+			this.attachEvent(f.dropdown, "select", function(ev){
                 f.select.val(ev.value)
                 f.select.change()
             })
+            
         }
 
         f.addactive= function(){

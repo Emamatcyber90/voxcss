@@ -1,6 +1,6 @@
 
 class VoxScope{
-
+	/*
 	static get Observable(){
 		return require("./Observable").default
 	}
@@ -15,12 +15,12 @@ class VoxScope{
 
 	static get ObservableObject(){
 		return require("./ObservableObject").default
-	}
+	}*/
 
 	static get EscapeHtml(){
 		return require("./EscapeHtml")
 	}
-
+/*
 	static get Scope(){
 		return require("./Scope").default
 	}
@@ -36,7 +36,7 @@ class VoxScope{
 	static get ScopeBestObserver2(){
 		return require("./ScopeBestObserver2").default
 	}
-
+*/
 	static get Router(){
 		return require("./Router").default
 	}
@@ -45,7 +45,7 @@ class VoxScope{
 	static get Convert(){
 		return require("./Convert").default
 	}
-
+/*
 	static get DomParser(){
 		return require("./DomParser").default
 	}
@@ -53,9 +53,11 @@ class VoxScope{
 	static get DomEvents(){
 		return require("./DomEvents").default
 	}
-
+	
+*/	
 }
 
 exports= module.exports= VoxScope
 core.dynvox= VoxScope
+require("./v2/init")
 //VoxScope.DomParser.init()

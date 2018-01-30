@@ -18,14 +18,18 @@ function init(window) {
         Slider.init = function () {
         };
         Slider.register = function () {
+            if (this.registered)
+                return;
             $.fn.voxslider = function () {
                 var dp = [];
                 this.each(function () {
                     var o = $(this);
                     var t = undefined;
-                    if (!(t = o.data('vox-slider'))) {
+                    this.voxcss_element = this.voxcss_element || {};
+                    t = this.voxcss_element['vox-slider'];
+                    if (!t) {
                         t = new Slider(o);
-                        o.data('vox-slider', t);
+                        this.voxcss_element['vox-slider'] = t;
                     }
                     dp.push(t);
                 });
@@ -37,6 +41,7 @@ function init(window) {
                 }, '.slider');
                 $('.slider').voxslider();
             });
+            this.registered = true;
         };
         Slider.$constructor = function (obj) {
             Slider.$superClass.call(this);

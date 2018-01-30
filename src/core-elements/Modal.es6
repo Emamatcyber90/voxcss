@@ -46,14 +46,24 @@ class Modal extends Element{
 	}
 
 	static register(){
+		if(this.registered)
+			return 
 		$.fn.voxmodal= function(){
 	        var dp=[]
 	        this.each(function(){
 	            var o= $(this)
 	            var t=undefined
+	            
+	            /*
 	            if(!(t=o.data("vox-modal"))){
 	                t=new Modal(o)
 	                o.data("vox-modal", t)
+	            }*/
+	            this.voxcss_element= this.voxcss_element||{}
+	            t= this.voxcss_element["vox-modal"]
+	            if(!t){
+	            	t=new Modal(o)
+	            	this.voxcss_element["vox-modal"]= t
 	            }
 	            dp.push(t)
 	        })
@@ -76,6 +86,7 @@ class Modal extends Element{
 	           }
 	        })
 	    })
+	    this.registered=true
 	}
 
 

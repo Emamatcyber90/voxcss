@@ -11,14 +11,18 @@ var vox = core.VW.Web.Vox;
     Card.$super = Element.prototype;
     Card.$superClass = Element;
     Card.register = function () {
+        if (this.registered)
+            return;
         $.fn.voxcard = function () {
             var dp = [];
             this.each(function () {
                 var o = $(this);
                 var t = undefined;
-                if (!(t = o.data('vox-card'))) {
+                this.voxcss_element = this.voxcss_element || {};
+                t = this.voxcss_element['vox-card'];
+                if (!t) {
                     t = new Card(o);
-                    o.data('vox-card', t);
+                    this.voxcss_element['vox-card'] = t;
                 }
                 dp.push(t);
             });
@@ -30,6 +34,7 @@ var vox = core.VW.Web.Vox;
             }, '.card');
             $('.card').voxcard();
         });
+        this.registered = true;
     };
     Card.$constructor = function (obj) {
         Card.$superClass.call(this);

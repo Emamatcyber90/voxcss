@@ -12,6 +12,26 @@ var vox = core.VW.Web.Vox;
     Element.$constructor = function () {
         Element.$superClass.call(this);
     };
+    Element.prototype.attachEvent = function (obj, event, func) {
+        this.func = this.func || [];
+        this.func.push({
+            obj: obj,
+            event: event,
+            func: func
+        });
+        obj.on(event, func);
+    };
+    Element.prototype.dynamicDispose = function () {
+        var ev;
+        if (this.func) {
+            for (var i = 0; i < this.func.length; i++) {
+                ev = this.func[i];
+                ev.obj.removeListener ? ev.obj.removeListener(ev.event, ev.func) : ev.obj.off(ev.event, ev.func);
+                this.func[i] = undefined;
+            }
+            delete this.func;
+        }
+    };
     Element.prototype.createEvent = function (eventName, originalEvent) {
         var ev = vox.platform.createEvent(eventName);
         if (originalEvent)

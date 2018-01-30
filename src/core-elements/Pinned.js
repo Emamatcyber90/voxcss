@@ -11,14 +11,18 @@ var vox = core.VW.Web.Vox;
     Pinned.$super = Element.prototype;
     Pinned.$superClass = Element;
     Pinned.register = function () {
+        if (this.registered)
+            return;
         $.fn.voxpinned = function () {
             var dp = [];
             this.each(function () {
                 var o = $(this);
                 var t = undefined;
-                if (!(t = o.data('vox-pinned'))) {
+                this.voxcss_element = this.voxcss_element || {};
+                t = this.voxcss_element['vox-pinned'];
+                if (!t) {
                     t = new Pinned(o);
-                    o.data('vox-pinned', t);
+                    this.voxcss_element['vox-pinned'] = t;
                 }
                 dp.push(t);
             });
@@ -30,6 +34,7 @@ var vox = core.VW.Web.Vox;
             }, '.pinned');
             $('.pinned').voxpinned();
         });
+        this.registered = true;
     };
     Pinned.$constructor = function (obj) {
         Pinned.$superClass.call(this);

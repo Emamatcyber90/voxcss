@@ -51,14 +51,18 @@ var vox = core.VW.Web.Vox;
         }(this));
     };
     Elastic.register = function () {
+        if (this.registered)
+            return;
         $.fn.voxelastic = function () {
             var dp = [];
             this.each(function () {
                 var o = $(this);
                 var t = undefined;
-                if (!(t = o.data('vox-elastic'))) {
+                this.voxcss_element = this.voxcss_element || {};
+                t = this.voxcss_element['vox-elastic'];
+                if (!t) {
                     t = new Elastic(o);
-                    o.data('vox-elastic', t);
+                    this.voxcss_element['vox-elastic'] = t;
                 }
                 dp.push(t);
             });
@@ -70,6 +74,7 @@ var vox = core.VW.Web.Vox;
             }, '.vox-textarea, .vox-elastic');
             $('.vox-textarea, .vox-elastic').voxelastic();
         });
+        this.registered = true;
     };
     Elastic.$constructor = function (obj) {
         obj = $(obj);

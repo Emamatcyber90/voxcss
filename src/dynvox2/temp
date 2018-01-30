@@ -1,0 +1,172 @@
+var _id=0
+class Observable{
+
+	constructor(m){
+		this.id= _id++
+		this.m= m || {}
+		this.m.$$observable= this
+	}
+	
+	
+	
+	emit(){}
+	
+	set _name(value){
+		this._iname= value
+	}
+	get _name(){
+		return this._iname
+	}
+	
+	
+	setParent(name, object){
+		this._parents=this._parents||{}
+		this._parents[name+"$"+object._id]= object
+	}
+	
+	removeParent(name,object){
+		this._parents=this._parents||{}
+		delete this._parents[name+"$"+object._id]
+	}
+	
+	
+	getProxy(){
+		if(this.$proxy)
+			return this.$proxy
+		
+		this.$proxy= new Proxy(this.m, this)
+		return this.$proxy
+	}
+	
+	get $$isobservable(){
+		return true
+	}
+	
+	getObservableAndObject(prop, value){
+		
+		var obs
+		if(typeof value=="object"){
+			if(value.$$observable){
+				obs= value.$$observable
+			}
+			else{
+				if(!value.$$isobservable)
+					obs= new Observable(value)
+				obs._name= prop
+				value= obs.getProxy()
+			}
+		}
+		return {
+			obs, 
+			value
+		}
+		
+	}
+	
+	set(m, prop,value){
+		
+		if(prop=="$$observable"){
+			throw new core.System.Exception("Denied Exception")
+		}
+		
+		var obs= null
+		var obs2=null
+		var result
+		
+		
+		result= this.getObservableAndObject(prop, value)
+		obs=result.obs
+		if(obs)
+			value=result.value
+		
+		
+		if(obs && obs.$$isobservable)
+			obs.setParent(prop, this)
+			
+			
+		
+		var current= m[prop], keys
+		if(current!=value){
+			if(typeof current=="object"){
+				if(current.$$observable){
+					obs2= current.$$observable
+				}
+			}
+			
+			if(obs2)
+				obs2.removeParent(prop, this)
+			
+			
+			m[prop]= value
+			this.emit("change", {
+				prop,
+				value
+			})
+			this.emitToScope(prop, value)
+			
+			var emitProps= (value, name)=>{
+				var key, keys, val, noEmit= false
+				if(typeof value=="object"){
+					keys=Object.keys(value)
+					if(keys && keys.length){
+						for(var i=0;i<keys.length;i++){
+							key=keys[i]
+							if(key!="$$observable"){
+								val= value[key]
+								
+								result= this.getObservableAndObject(key, val)
+								if(result.obs && val!=result.value){
+									val=result.value
+									value[key]= val
+									noEmit= value.$$observable
+								}
+								if(!noEmit){
+									emitProps(val, name? name + "." + key : key )
+									this.emitToScope(name? name + "." + key : key, val)
+								}
+								noEmit= false
+							}
+						}
+					}
+				}
+			}
+			
+			emitProps(value, prop)
+			
+			
+		}
+		return value
+	}
+	
+	
+	emitToScope(name,value){
+		var p
+		name= name ? (this._iname?this._iname + ".":"") + name : this._iname
+		if(this._parents){
+			for(var id in this._parents){
+				p= this._parents[id]
+				
+				if(p.$$isscope){
+					p.emit("change", {
+						origin: this, 
+						name,
+						value
+					})
+				}
+				else {
+					p.emitToScope(name,value)
+				}
+			}
+		}
+		else{
+			p.emit("change", {
+				origin: this, 
+				name,
+				value
+			})
+			//console.info("NAME CHANGED: ", name,  "VALUE: ", value)
+		}
+	}
+	
+
+}

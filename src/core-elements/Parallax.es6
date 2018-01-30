@@ -26,14 +26,23 @@ function init(window){
 		}
 
 		static register(){
+			if(this.registered)
+				return 
 			$.fn.voxparallax= function(){
 		        var dp=[]
 		        this.each(function(){
 		            var o= $(this)
 		            var t=undefined
+		            /*
 		            if(!(t=o.data("vox-parallax"))){
 		                t=new Parallax(o)
 		                o.data("vox-parallax", t)
+		            }*/
+		            this.voxcss_element= this.voxcss_element||{}
+		            t= this.voxcss_element["vox-parallax"]
+		            if(!t){
+		            	t=new Parallax(o)
+		            	this.voxcss_element["vox-parallax"]= t
 		            }
 		            dp.push(t)
 		        })
@@ -47,6 +56,8 @@ function init(window){
 		        $(".parallax").voxparallax()
 		        
 		    })
+		    
+		    this.registered=true
 		}
 
 		constructor(/* Node */obj){

@@ -24,14 +24,18 @@ function init(window) {
             return s;
         };
         Tooltip.register = function () {
+            if (this.registered)
+                return;
             $.fn.voxhastooltip = function () {
                 var dp = [];
                 this.each(function () {
                     var o = $(this);
                     var t = undefined;
-                    if (!(t = o.data('vox-hastooltip'))) {
-                        t = new Tooltip(o);
-                        o.data('vox-hastooltip', t);
+                    this.voxcss_element = this.voxcss_element || {};
+                    t = this.voxcss_element['vox-hastooltip'];
+                    if (!t) {
+                        t = new HasTooltip(o);
+                        this.voxcss_element['vox-hastooltip'] = t;
                     }
                     dp.push(t);
                 });
@@ -41,6 +45,7 @@ function init(window) {
                 ev.jTarget.voxhastooltip();
             }, '[data-hover=tooltip]');
             $('[data-hover=tooltip]').voxhastooltip();
+            this.registered = true;
         };
         Tooltip.$constructor = function (obj) {
             Tooltip.$superClass.call(this);

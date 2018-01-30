@@ -15,14 +15,18 @@ function init(window) {
         Tooltip.$super = Element.prototype;
         Tooltip.$superClass = Element;
         Tooltip.register = function () {
+            if (this.registered)
+                return;
             $.fn.voxtooltip = function () {
                 var dp = [];
                 this.each(function () {
                     var o = $(this);
                     var t = undefined;
-                    if (!(t = o.data('vox-tooltip'))) {
+                    this.voxcss_element = this.voxcss_element || {};
+                    t = this.voxcss_element['vox-tooltip'];
+                    if (!t) {
                         t = new Tooltip(o);
-                        o.data('vox-tooltip', t);
+                        this.voxcss_element['vox-tooltip'] = t;
                     }
                     dp.push(t);
                 });
@@ -32,6 +36,7 @@ function init(window) {
                 ev.jTarget.voxtooltip();
             }, '.tooltip');
             $('.tooltip').voxtooltip();
+            this.registered = true;
         };
         Tooltip.$constructor = function (obj) {
             Tooltip.$superClass.call(this);

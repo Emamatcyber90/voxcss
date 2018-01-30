@@ -14,14 +14,20 @@ class Card extends Element{
 
 
 	static register(){
+		if(this.registered)
+			return 
 		$.fn.voxcard= function(){
 	        var dp=[]
 	        this.each(function(){
 	            var o= $(this);
 	            var t=undefined;
-	            if(!(t=o.data("vox-card"))){
-	                t=new Card(o);
-	                o.data("vox-card", t);
+	            
+	            
+	            this.voxcss_element= this.voxcss_element||{}
+	            t= this.voxcss_element["vox-card"]
+	            if(!t){
+	            	t=new Card(o)
+	            	this.voxcss_element["vox-card"]= t
 	            }
 	            dp.push(t);
 	    	});
@@ -33,7 +39,8 @@ class Card extends Element{
 	            ev.jTarget.voxcard();
 	        }, ".card");
 	        $(".card").voxcard();
-	    });
+	    })
+	    this.registered=true
 	}
 
 

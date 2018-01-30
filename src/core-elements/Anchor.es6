@@ -14,14 +14,25 @@ class Anchor extends Element{
 
 
 	static register(){
+		if(this.registered)
+			return 
 		$.fn.voxanchor= function(){
 	        var dp=[]
 	        this.each(function(){
 	            var o= $(this);
 	            var t=undefined;
+	            
+	            /*
 	            if(!(t=o.data("anchor"))){
 	                t=new Anchor(o);
 	                o.data("anchor", t);
+	            }*/
+	            
+	            this.voxcss_element= this.voxcss_element||{}
+	            t= this.voxcss_element["anchor"]
+	            if(!t){
+	            	t=new Anchor(o)
+	            	this.voxcss_element["anchor"]= t
 	            }
 	            dp.push(t);
 	    	});
@@ -33,7 +44,8 @@ class Anchor extends Element{
 	            ev.jTarget.voxanchor();
 	        }, "[hash-effect]");
 	        $("[hash-effect]").voxanchor();
-	    });
+	    })
+	    this.registered= true
 	}
 
 
@@ -42,6 +54,7 @@ class Anchor extends Element{
 		obj= $(obj)
 		var f= this.$={}
 		f.obj=obj
+		
 		this.obtainProps()
 		this.init()
 	}

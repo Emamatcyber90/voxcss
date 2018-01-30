@@ -17,14 +17,18 @@ function init(document) {
         Tabs.$super = Element.prototype;
         Tabs.$superClass = Element;
         Tabs.register = function () {
+            if (this.registered)
+                return;
             $.fn.voxtabgroup = function () {
                 var dp = [];
                 this.each(function () {
                     var o = $(this);
                     var t = undefined;
-                    if (!(t = o.data('vox-tabgroup'))) {
+                    this.voxcss_element = this.voxcss_element || {};
+                    t = this.voxcss_element['vox-tabgroup'];
+                    if (!t) {
                         t = new Tabs(o);
-                        o.data('vox-tabgroup', t);
+                        this.voxcss_element['vox-tabgroup'] = t;
                     }
                     dp.push(t);
                 });
@@ -36,6 +40,8 @@ function init(document) {
                 }, '.tabs');
                 $('.tabs').voxtabgroup();
             });
+            if (this.registered)
+                return;
         };
         Tabs.$constructor = function (obj) {
             Tabs.$superClass.call(this);
