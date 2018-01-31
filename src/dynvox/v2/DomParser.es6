@@ -423,7 +423,7 @@ class DomParser {
 				if(jobject.is("input,textarea,select")  && compilation.vars.length==1){
 					code2= `proxy.${compilation.vars[0].real}= arguments[0]` 
 					put= this.compile(scope, code2)
-					if(jobject.is("input[type=check]")){
+					if(jobject.is("input[type=checkbox]")){
 						jobject.on("change", function(){
 							disable= true
 							clearTimeout(u)
