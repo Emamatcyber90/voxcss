@@ -705,7 +705,7 @@ class DomParser {
 				else{
 					if(item.attr.name=="value"){
 						item.jobject.val(content)
-						if(item.jobject.is("input[type=check]")){
+						if(item.jobject.is("input[type=checkbox]")){
 							item.jobject.each(function(){
 								this.checked= !!expr
 							})
